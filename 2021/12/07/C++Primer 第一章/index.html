@@ -28,7 +28,7 @@
 <meta property="og:description" content="序： ​        由于想全面巩固C++相关知识，准备看完此书，此文章不仅用作笔记，也用来督促我的学习，也欢迎各位与我一起学习，并指出我的错误。由于这不是第一次学习C++，所有不会把所有知识都放在笔记中（不然也不会叫笔记了），但基本会把大部分重要的部分记下来。附上电子书，那就开始吧！ [电子书籍]链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;14J7cjdVIZkHNwejzU2Cme">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-07T13:57:59.461Z">
+<meta property="article:modified_time" content="2021-12-07T14:29:59.756Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="书籍">
@@ -221,7 +221,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-12-07 00:00:00 / 修改时间：21:57:59" itemprop="dateCreated datePublished" datetime="2021-12-07T00:00:00+08:00">2021-12-07</time>
+              <time title="创建时间：2021-12-07 00:00:00 / 修改时间：22:29:59" itemprop="dateCreated datePublished" datetime="2021-12-07T00:00:00+08:00">2021-12-07</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,6 +247,9 @@
         <p><strong>序：</strong></p>
 <p>​        由于想全面巩固C++相关知识，准备看完此书，此文章不仅用作笔记，也用来督促我的学习，也欢迎各位与我一起学习，并指出我的错误。由于这不是第一次学习C++，所有不会把所有知识都放在笔记中（不然也不会叫笔记了），但基本会把大部分重要的部分记下来。附上电子书，那就开始吧！</p>
 <p>[电子书籍]链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA">https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA</a><br>提取码：oqdy </p>
+<span id="more"></span>
+
+
 <h1 id="1、读取数量不定的流输入数据"><a href="#1、读取数量不定的流输入数据" class="headerlink" title="1、读取数量不定的流输入数据"></a>1、读取数量不定的流输入数据</h1><p>​        C++并未定义任何的输入输出语句，取而代之的是使用一个全面的标准库来提供IO机制，比如iostream库，这个库里包含了两个基础类型：istream、ostream。以输入操作为例，输入运算符“&gt;&gt;“接受两个运算对象，左侧的运算对象必须是一个istream对象，右侧则是一个普通对象，它从输入流中读取数据，并存入其右侧对象中，并且返回其左侧运算对象作为运算结果。因此，<label style="color:red">表达式：cin&gt;&gt;c1&gt;&gt;c2等价于：（cin&gt;&gt;c1）&gt;&gt;c2</label>。&lt;&lt;运算符也是这个原理。<br>于是，我们便可以利用这种特性去读取数量不定的输入数据，代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> value,sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; value)&#123;</span><br><span class="line">	sum += value;</span><br><span class="line">	cout &lt;&lt; sum &lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -270,8 +273,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0/" rel="prev" title="C++ Primer 第二章（上）">
-      <i class="fa fa-chevron-left"></i> C++ Primer 第二章（上）
+    <a href="/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/" rel="prev" title="解决hexo博客中文无法正常显示问题">
+      <i class="fa fa-chevron-left"></i> 解决hexo博客中文无法正常显示问题
     </a></div>
       <div class="post-nav-item">
     <a href="/2021/12/07/%E7%B1%BB%E5%90%8D%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/" rel="next" title="类名冲突问题">

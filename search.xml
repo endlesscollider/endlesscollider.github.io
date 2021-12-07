@@ -6,6 +6,8 @@
     <content><![CDATA[<p><strong>一般来说，leetcode给出的测试用例数量足够多，覆盖范围足够广，基本可以证明代码正确</strong></p>
 <p>​        </p>
 <p>​        这里可能是因为命名空间的问题，因为力扣中所有类名均为Solution，倘若在同一源文件下可能会造成命名冲突，这里有两种解决方法。</p>
+<span id="more"></span>
+
 <h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p>​        更改类名，如</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;;```</span><br></pre></td></tr></table></figure>
 
@@ -27,6 +29,9 @@
     <content><![CDATA[<p><strong>序：</strong></p>
 <p>​        由于想全面巩固C++相关知识，准备看完此书，此文章不仅用作笔记，也用来督促我的学习，也欢迎各位与我一起学习，并指出我的错误。由于这不是第一次学习C++，所有不会把所有知识都放在笔记中（不然也不会叫笔记了），但基本会把大部分重要的部分记下来。附上电子书，那就开始吧！</p>
 <p>[电子书籍]链接：<a href="https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA">https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA</a><br>提取码：oqdy </p>
+<span id="more"></span>
+
+
 <h1 id="1、读取数量不定的流输入数据"><a href="#1、读取数量不定的流输入数据" class="headerlink" title="1、读取数量不定的流输入数据"></a>1、读取数量不定的流输入数据</h1><p>​        C++并未定义任何的输入输出语句，取而代之的是使用一个全面的标准库来提供IO机制，比如iostream库，这个库里包含了两个基础类型：istream、ostream。以输入操作为例，输入运算符“&gt;&gt;“接受两个运算对象，左侧的运算对象必须是一个istream对象，右侧则是一个普通对象，它从输入流中读取数据，并存入其右侧对象中，并且返回其左侧运算对象作为运算结果。因此，<label style="color:red">表达式：cin&gt;&gt;c1&gt;&gt;c2等价于：（cin&gt;&gt;c1）&gt;&gt;c2</label>。&lt;&lt;运算符也是这个原理。<br>于是，我们便可以利用这种特性去读取数量不定的输入数据，代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> value,sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; value)&#123;</span><br><span class="line">	sum += value;</span><br><span class="line">	cout &lt;&lt; sum &lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -41,11 +46,35 @@
       </tags>
   </entry>
   <entry>
+    <title>解决hexo博客中文无法正常显示问题</title>
+    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
+<span id="more"></span>
+
+<p>2：找到language字段，添加zh-CN，如下</p>
+<p><code>language: zh-CN </code></p>
+<p>3： 主题配置文件以next为例，打开\blog\themes\next_config.yml文件。</p>
+<p>4： 同样进行如上操作</p>
+<h3 id="这里建议直接创建Mardown文件"><a href="#这里建议直接创建Mardown文件" class="headerlink" title="这里建议直接创建Mardown文件"></a>这里建议直接创建Mardown文件</h3><p>以下为方法链接，并附上软件下载链接</p>
+<p>[右键新建markdown文件]<a href="https://blog.csdn.net/huangjun0210/article/details/105952385">https://blog.csdn.net/huangjun0210/article/details/105952385</a></p>
+<p>链接：<a href="https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA">https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA</a><br>提取码：5p7c<br>–来自百度网盘超级会员V4的分享</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++ Primer 第二章（上）</title>
-    <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0/</url>
-    <content><![CDATA[<h1 id="1、基本内置类型"><a href="#1、基本内置类型" class="headerlink" title="1、基本内置类型"></a>1、基本内置类型</h1><p>​    内置类型包括算术类型和空类型</p>
+    <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%8A/</url>
+    <content><![CDATA[<h1 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h1><p>​    内置类型包括算术类型和空类型</p>
 <h2 id="算术类型"><a href="#算术类型" class="headerlink" title="算术类型"></a>算术类型</h2><p>1、算术类型分为两类：整型（包括字符和布尔类型）和浮点型。</p>
 <p>2、布尔类型（bool）：取值是真或假。</p>
+<span id="more"></span>
+
 <p>3、字符类型（char）：一个char的空间应确保可以存放机器基本字符集中任意字符对应的数字值，即一个char的大小和一个机器字节一样（8位）。</p>
 <p>4、短整型（short）：16位</p>
 <p>5、整型（int）：16位</p>
@@ -92,7 +121,7 @@
 <p>布尔字面值：true、false。字符字面值由单引号定义：’2’（char类型）、L’a’（wchar_t类型）。</p>
 <p><strong>4.</strong> <strong>非打印字符和转义序列</strong></p>
 <p>非打印字符和特殊字符（如单引号、双引号、反斜杠）都要写为转义字符（以反斜杠开头）。</p>
-<p><img src="https://images0.cnblogs.com/blog/457289/201301/22171515-7f2f7caf5f944e3d8c2a4f744a5d4e84.jpg" alt="img"> </p>
+<p><img src="https://s2.loli.net/2021/12/07/vCu3TR6SWiftqVL.png" alt="image.png"></p>
 <p>无论是普通字符，还是非打印字符和特殊字符，都可以表示为“通用转义字符”。如八进制形式的“\7（响铃符）、\12（换行符）、\0（空字符）、\62（数字2）”（可以对照ASCII码表看一下）。“通用转义字符”也可以用十六进制表示（\xddd）。</p>
 <p><strong>5.</strong> <strong>字符串字面值</strong></p>
 <p>需要用双引号括起来，非打印字符写要转义，编译器会自动在末尾添加一个空字符。</p>
@@ -176,29 +205,11 @@
       </tags>
   </entry>
   <entry>
-    <title>解决hexo博客中文无法正常显示问题</title>
-    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
-<p>2：找到language字段，添加zh-CN，如下</p>
-<p><code>language: zh-CN </code></p>
-<p>3： 主题配置文件以next为例，打开\blog\themes\next_config.yml文件。</p>
-<p>4： 同样进行如上操作</p>
-<h3 id="这里建议直接创建Mardown文件"><a href="#这里建议直接创建Mardown文件" class="headerlink" title="这里建议直接创建Mardown文件"></a>这里建议直接创建Mardown文件</h3><p>以下为方法链接，并附上软件下载链接</p>
-<p>[右键新建markdown文件]<a href="https://blog.csdn.net/huangjun0210/article/details/105952385">https://blog.csdn.net/huangjun0210/article/details/105952385</a></p>
-<p>链接：<a href="https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA">https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA</a><br>提取码：5p7c<br>–来自百度网盘超级会员V4的分享</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我的第一篇博客</title>
     <url>/2021/12/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="hello-大家好，这是我的第一篇博客"><a href="#hello-大家好，这是我的第一篇博客" class="headerlink" title="hello! 大家好，这是我的第一篇博客"></a>hello! 大家好，这是我的第一篇博客</h1><h2 id="1、-我是谁？"><a href="#1、-我是谁？" class="headerlink" title="1、 我是谁？"></a>1、 我是谁？</h2><p>​        我是谁不重要。重要的是我想成为知识的传播者。</p>
+<span id="more"></span>
+
 <h2 id="2、创建博客的初衷"><a href="#2、创建博客的初衷" class="headerlink" title="2、创建博客的初衷"></a>2、创建博客的初衷</h2><p>​        我在解决一个又一个的问题的时候，各种博客、平台帮了我很多，这其中有很多非常详细且友好的帖子，但也有充斥各种问题的帖子，如语意不清、啰嗦、付费、繁杂等等，虽然最后我还是解决了这些问题，我不希望获得知识的路上充满荆棘，所以我创建了自己的博客，希望分享我所获得的知识，同时把我解决问题的过程、思考、以及总结的经验保存下来。为了你，也为了以后的我不再重蹈覆辙。</p>
 <h2 id="3、我的计划"><a href="#3、我的计划" class="headerlink" title="3、我的计划"></a>3、我的计划</h2><p>​        我计划首先分享我在阅读书籍中、以前unity项目中、刷题中、以及搭建博客中的遇到的问题，同时因为我目前从事的是忆阻器件的制备，我也会分享在半导体方向所收获的知识（这方面的知识网上尤其的少）。也希望自己能够再接再厉。学更多的知识、看更远的风景。</p>
 ]]></content>
