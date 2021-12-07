@@ -1,3 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
+  <entry>
+    <title>类名冲突问题</title>
+    <url>/2021/12/07/%E7%B1%BB%E5%90%8D%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><strong>一般来说，leetcode给出的测试用例数量足够多，覆盖范围足够广，基本可以证明代码正确</strong></p>
+<p>​        </p>
+<p>​        这里可能是因为命名空间的问题，因为力扣中所有类名均为Solution，倘若在同一源文件下可能会造成命名冲突，这里有两种解决方法。</p>
+<h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p>​        更改类名，如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;;```</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h3><p>​        添加命名空间，如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> letter &#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>c++</category>
+      </categories>
+      <tags>
+        <tag>leetcode</tag>
+        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决hexo博客中文无法正常显示问题</title>
+    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
+<p>2：找到language字段，添加zh-CN，如下</p>
+<p><code>language: zh-CN </code></p>
+<p>3： 主题配置文件以next为例，打开\blog\themes\next_config.yml文件。</p>
+<p>4： 同样进行如上操作</p>
+<h3 id="这里建议直接创建Mardown文件"><a href="#这里建议直接创建Mardown文件" class="headerlink" title="这里建议直接创建Mardown文件"></a>这里建议直接创建Mardown文件</h3><p>以下为方法链接，并附上软件下载链接</p>
+<p>[右键新建markdown文件]<a href="https://blog.csdn.net/huangjun0210/article/details/105952385">https://blog.csdn.net/huangjun0210/article/details/105952385</a></p>
+<p>链接：<a href="https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA">https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA</a><br>提取码：5p7c<br>–来自百度网盘超级会员V4的分享</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客</title>
+    <url>/2021/12/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="hello-大家好，这是我的第一篇博客"><a href="#hello-大家好，这是我的第一篇博客" class="headerlink" title="hello! 大家好，这是我的第一篇博客"></a>hello! 大家好，这是我的第一篇博客</h1><h2 id="1、-我是谁？"><a href="#1、-我是谁？" class="headerlink" title="1、 我是谁？"></a>1、 我是谁？</h2><p>​        我是谁不重要。重要的是我想成为知识的传播者。</p>
+<h2 id="2、创建博客的初衷"><a href="#2、创建博客的初衷" class="headerlink" title="2、创建博客的初衷"></a>2、创建博客的初衷</h2><p>​        我在解决一个又一个的问题的时候，各种博客、平台帮了我很多，这其中有很多非常详细且友好的帖子，但也有充斥各种问题的帖子，如语意不清、啰嗦、付费、繁杂等等，虽然最后我还是解决了这些问题，我不希望获得知识的路上充满荆棘，所以我创建了自己的博客，希望分享我所获得的知识，同时把我解决问题的过程、思考、以及总结的经验保存下来。为了你，也为了以后的我不再重蹈覆辙。</p>
+<h2 id="3、我的计划"><a href="#3、我的计划" class="headerlink" title="3、我的计划"></a>3、我的计划</h2><p>​        我计划首先分享我在以前unity项目中、刷题中、以及搭建博客中的遇到的问题，同时因为我目前从事的是忆阻器件的制备，我也会分享在半导体方向所收获的知识（这方面的知识网上尤其的少）。也希望自己能够再接再厉。学更多的知识、看更远的风景。</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+      </tags>
+  </entry>
 </search>
