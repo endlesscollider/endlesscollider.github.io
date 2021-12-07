@@ -14,11 +14,165 @@
 
 ]]></content>
       <categories>
-        <category>c++</category>
+        <category>C/C++</category>
       </categories>
       <tags>
+        <tag>C/C++</tag>
         <tag>leetcode</tag>
-        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ Primer 第一章</title>
+    <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%B8%80%E7%AB%A0/</url>
+    <content><![CDATA[<p><strong>序：</strong></p>
+<p>​        由于想全面巩固C++相关知识，准备看完此书，此文章不仅用作笔记，也用来督促我的学习，也欢迎各位与我一起学习，并指出我的错误。由于这不是第一次学习C++，所有不会把所有知识都放在笔记中（不然也不会叫笔记了），但基本会把大部分重要的部分记下来。附上电子书，那就开始吧！</p>
+<p>[电子书籍]链接：<a href="https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA">https://pan.baidu.com/s/14J7cjdVIZkHNwejzU2CmeA</a><br>提取码：oqdy </p>
+<h1 id="1、读取数量不定的流输入数据"><a href="#1、读取数量不定的流输入数据" class="headerlink" title="1、读取数量不定的流输入数据"></a>1、读取数量不定的流输入数据</h1><p>​        C++并未定义任何的输入输出语句，取而代之的是使用一个全面的标准库来提供IO机制，比如iostream库，这个库里包含了两个基础类型：istream、ostream。以输入操作为例，输入运算符“&gt;&gt;“接受两个运算对象，左侧的运算对象必须是一个istream对象，右侧则是一个普通对象，它从输入流中读取数据，并存入其右侧对象中，并且返回其左侧运算对象作为运算结果。因此，<label style="color:red">表达式：cin&gt;&gt;c1&gt;&gt;c2等价于：（cin&gt;&gt;c1）&gt;&gt;c2</label>。&lt;&lt;运算符也是这个原理。<br>于是，我们便可以利用这种特性去读取数量不定的输入数据，代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> value,sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; value)&#123;</span><br><span class="line">	sum += value;</span><br><span class="line">	cout &lt;&lt; sum &lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用istream对象作为条件，其效果时检测流的状态，则返回true，如遇到文件结束符或无效输入（输入不为整数）则返回false。</p>
+]]></content>
+      <categories>
+        <category>C/C++</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>书籍</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ Primer 第二章（上）</title>
+    <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0/</url>
+    <content><![CDATA[<h1 id="1、基本内置类型"><a href="#1、基本内置类型" class="headerlink" title="1、基本内置类型"></a>1、基本内置类型</h1><p>​    内置类型包括算术类型和空类型</p>
+<h2 id="算术类型"><a href="#算术类型" class="headerlink" title="算术类型"></a>算术类型</h2><p>1、算术类型分为两类：整型（包括字符和布尔类型）和浮点型。</p>
+<p>2、布尔类型（bool）：取值是真或假。</p>
+<p>3、字符类型（char）：一个char的空间应确保可以存放机器基本字符集中任意字符对应的数字值，即一个char的大小和一个机器字节一样（8位）。</p>
+<p>4、短整型（short）：16位</p>
+<p>5、整型（int）：16位</p>
+<p>6、长整型（long）；32位</p>
+<p>7、长整型（long long）：64位</p>
+<p>8、单精度浮点类型（float）：32位，保留6位有效数字</p>
+<p>9、双精度浮点类型（double）：64位，保留10位有效数字</p>
+<p>10、扩展精度浮点类型（long double）：96或128位，保留10位有效数字</p>
+<h3 id="带符号与无符号类型"><a href="#带符号与无符号类型" class="headerlink" title="带符号与无符号类型"></a>带符号与无符号类型</h3><p>​        除去<a href="https://so.csdn.net/so/search?from=pc_blog_highlight&q=%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B">布尔类型</a>和扩展的字符型之外，其他整型可以划分为<strong>带符号的（signed）</strong>  和 <strong>无符号类型（unsigned）</strong> 两种，带符号类型可以表示正数、负数或0，无符号类型仅能表示大于等于0的值。</p>
+<p><label style="color:red">只有整型才有符号型和无符号型之分，浮点型无此区别</label></p>
+<p>​        类型int 、short 、 long 和 long long 都是带符号的，通过在这些类型名前添加unsigned就可以得到无符号类型，</p>
+<p>例如 unsigned long 。类型 unsigned int 可以缩写为 unsigned 。</p>
+<p><strong>特殊的char</strong></p>
+<p>​        与其他整型不同，字符型被分为了三种：char 、 signed char 和 unsigned char。特别注意的是：类型 cahr 和 类型 signed char 并不一样。尽管字符型有三种，但是字符型的表现形式却只有两种： 带符号和无符号的。类型char实际上会表现为上述两种形式的一种 ，具体是哪种由编译器决定。</p>
+<p>​        无符号类型中所有比特都用来存储值，例如，8比特的unsigned char 可以表示0至255区间内的值。</p>
+<p>​        但是约定了在表示范围内正值和负值的最应该平衡。因此，8比特的signed char 理论上应该可以表示-127至127区间内的值，大多数现代计算器实际的表示范围定位 -128 至 127。可以理解为：因为把0划分到了无符号类型，所以0+127 = 128.</p>
+<p>看一段代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> c = <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">signed</span> <span class="keyword">char</span> c2 = <span class="number">256</span>;</span><br></pre></td></tr></table></figure>
+
+<p>（均假设cahr占8比特）这两个语句的运行结果是：</p>
+<p>c的值为255，</p>
+<p>c2的值是未定义的。</p>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><ul>
+<li>当我们把一个非布尔类型的算术值赋给布尔类型时，初始值为o则结果为false,否则结果为true。</li>
+<li>当我们把一个布尔值赋给非布尔类型时，初始值为false 则结果为o，初始值为true则结果为1。</li>
+<li>当我们把一个浮点数赋给整数类型时，进行了近似处理。结果值将仅保留浮点数中小数点之前的部分。</li>
+<li>当我们把一个整数值赋给浮点类型时，小数部分记为0。如果该整数所占的空间超过了浮点类型的容量，精度可能有损失。</li>
+</ul>
+<p><strong>结论：</strong></p>
+<p>1.当我们赋给无符号类型一个超出它表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数。例如，8比特大小的unsigned char 可以表示0至255区间内的值，如果我们赋了一个区间意外的值，则实际的结果是该值对256取模后所得的余数。因此，把-1赋给8比特大小的unsigned char 所得的结果是255.</p>
+<p>2.当我们赋给符号类型一个超出它表示范围的值时，结果是未定义的（undefined）。此时，程序可能继续工作、可能崩溃，也可能生成垃圾数据。</p>
+<h3 id="字面值常量"><a href="#字面值常量" class="headerlink" title="字面值常量"></a>字面值常量</h3><p>​        <strong>字面值常量</strong>（literal constant），“字面值”是指只能用它的值称呼它，“常量”是指其值不能修改。每个字面值都有相应的类型，3.14是double型，2是int型。只有内置类型存在字面值。</p>
+<p><strong>1.</strong> <strong>整形字面值规则</strong></p>
+<p>整形字面值常量可以用十进制、八进制、十六进制表示。</p>
+<p>20    // dec</p>
+<p>024   // oct（以0开头）</p>
+<p>0x14  // hex（以0x或0X开头）</p>
+<p>整形字面值常量的类型默认为int或long，其值适合int就是int类型，比int大就是long类型。在数值后加L或l（小写字母l容易与数字1混淆，建议用L）可以指定为long，加U或u指定为unsigned类型，加UL或LU定义为unsigned long类型。没有short类型的字面值常量。</p>
+<p><strong>2.</strong> <strong>浮点字面值规则</strong></p>
+<p>可以用十进制或科学计数法（指数用E或e）表示，默认为double，在数值后加F或f表示单精度，加L或l表示扩展精度。</p>
+<p>3.14159F      .001f    12.345L     0.</p>
+<p>3.14159E0f     1E-3F   1.2345E1L   0e0</p>
+<p><strong>3.</strong> <strong>布尔字面值和字符字面值</strong></p>
+<p>布尔字面值：true、false。字符字面值由单引号定义：’2’（char类型）、L’a’（wchar_t类型）。</p>
+<p><strong>4.</strong> <strong>非打印字符和转义序列</strong></p>
+<p>非打印字符和特殊字符（如单引号、双引号、反斜杠）都要写为转义字符（以反斜杠开头）。</p>
+<p><img src="https://images0.cnblogs.com/blog/457289/201301/22171515-7f2f7caf5f944e3d8c2a4f744a5d4e84.jpg" alt="img"> </p>
+<p>无论是普通字符，还是非打印字符和特殊字符，都可以表示为“通用转义字符”。如八进制形式的“\7（响铃符）、\12（换行符）、\0（空字符）、\62（数字2）”（可以对照ASCII码表看一下）。“通用转义字符”也可以用十六进制表示（\xddd）。</p>
+<p><strong>5.</strong> <strong>字符串字面值</strong></p>
+<p>需要用双引号括起来，非打印字符写要转义，编译器会自动在末尾添加一个空字符。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">“hello c++”       <span class="comment">// simple string literal</span></span><br><span class="line">“”                <span class="comment">// empty string literal</span></span><br><span class="line">“\n hello \t c++” <span class="comment">// string literal using newlines and tabs</span></span><br><span class="line">L”hello c++”      <span class="comment">// a wide string literal</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>6.</strong> <strong>字符串字面值的连接</strong></p>
+<p>两个相邻的，仅由空格、制表符、换行符分隔的字符串字面值，将连接在一起。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::cout &lt;&lt; “a multi-line “ “string literal “</span><br><span class="line">            “<span class="keyword">using</span> concatenation”</span><br><span class="line">          &lt;&lt; std::endl</span><br></pre></td></tr></table></figure>
+
+<p>输出：<strong>a multi-line string literal using concatenation</strong></p>
+<p><strong>7</strong> <strong>多行字面值</strong></p>
+<p>可以使用反斜杠，将多行内容当作同一行处理。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// multiline string literal``std::cout &lt;&lt; “a multi-line \``string literal \``using` `a backslash”``   ``&lt;&lt; std::endl;</span></span><br></pre></td></tr></table></figure>
+
+<p>反斜杠必须是行尾字符，后面不能有注释或空格。后继行行首的任何空格和制表符都是字符串字面值的一部分。</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>​        变量类型决定所占空间的大小的布局方式以及所能参与的运算，变量与对象可互换。</p>
+<h3 id="变量的定义"><a href="#变量的定义" class="headerlink" title="变量的定义"></a>变量的定义</h3><p>​        命名空间 : : 类型说明符 空格 一个或多个变量名（中间以逗号分隔，以分号结束），可同时附初始值。</p>
+<p><label style="color:red">初始化不是赋值,初始化的含义是创建变量时赋予其一个初始值,而赋值的含义是把对象的当前值擦除,而以一个新值来替代。</label></p>
+<p><strong>列表初始化</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> unit = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> unit = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> unit&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">unit</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>以上效相同，但2、3无法转换类型、因为存在丢失信息风险。</p>
+<p><strong>默认初始化</strong></p>
+<p>​        定义于函数体内的内置类型的对象如果没有初始化，则其值未定义。类的对象如果没有显式地初始化,则其值由类确定。</p>
+<h3 id="变量声明和定义的关系"><a href="#变量声明和定义的关系" class="headerlink" title="变量声明和定义的关系"></a>变量声明和定义的关系</h3><p>​        由于C++支持分离式编译，一个变量可被多个文件使用，则可使用变量名前加extern</p>
+<p><code>extern int i</code></p>
+<p>若给extern变量赋予初始值，则关键字失效。</p>
+<p><label style="color:red">变量能且只能被定义一次，但可以被多次声明</label></p>
+<p><strong>静态类型</strong></p>
+<p>​    ·    <em>C+是一种静态类型（statically typed)语言,其含义是在编译阶段检查类型。其中,检查类型的过程称为类型检查(type checking)。<br>我们已经知道，对象的类型决定了对象所能参与的运算。在C++语言中，编译器负责检查数据类型是否支持要执行的运算,如果试图执行类型不支持的运算,编译器将报错并且不会生成可执行文件。</em></p>
+<h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><p>​        用户自定义的标识符中不能连续出现两个下画线，也不能以下画线紧连大写字母开头。此外，定义在函数体外的标识符不能以下画线开头。</p>
+<h3 id="名字的作用域"><a href="#名字的作用域" class="headerlink" title="名字的作用域"></a>名字的作用域</h3><p>**全局作用域( global scope)**。一旦声明之后，全局作用域内的名字在整个程序的范围内都可使用。</p>
+<p>**块作用域(block scope)**。只在自己所声明区域可用。</p>
+<p><label style="color:red">当局部变量与全局变量相同，局部变量会覆盖全局变量。不建议使用相同名称</label></p>
+<h2 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h2><p>​        一条声明语句由一个基本数据类型(base type）和紧随其后的一个声明符( declarator）（变量名）列表组成。每个声明符命名了一个变量并指定该变量为与基本数据类型有关的某种类型。</p>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>​        引用并非对象，它只是已经存在对象的另一个名字，它出生就必须和初始值绑在一起，永不分离！</p>
+<p><strong>引用的定义</strong></p>
+<p><code>int i = 1024; int &amp;i1 = i;</code></p>
+<p><label style="color:red">引用的初始值必须是像<strong>匹配</strong>的<strong>对象</strong></label></p>
+<h3 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h3><p>​        与引用类似，指针也实现了对其他对象的<strong>间接访问</strong>。然而指针与引用的不同点如下</p>
+<ul>
+<li>指针本身就是一个对象，允许对指针赋值和拷贝，而且在指针的生命周期内它可以先后指向几个不同的对象。</li>
+<li>指针无须在定义时赋初值。和其他内置类型一样，在块作用域内定义的指针如果没有被初始化，也将拥有一个不确定的值。</li>
+</ul>
+<p><strong>指针的定义</strong></p>
+<p><code>int i = 1024; int *p = i;</code></p>
+<p><label style="color:red">因为引用不是对象，所以不可以定义指向引用</label></p>
+<p><strong>指针值</strong></p>
+<p>指针的值（即地址）应属下列4种状态之一:</p>
+<ul>
+<li>指向一个对象。</li>
+<li>指向紧邻对象所占空间的下一个位置。</li>
+<li>空指针，意味着指针没有指向任何对象。</li>
+<li>无效指针，也就是上述情况之外的其他值。</li>
+</ul>
+<p>使用解引用符*可访问所指对象，仅适用于状态1。</p>
+<p><label style="color:red">无效指针不允许拷贝或访问，2、3指针虽然有效，但仍不允许访问</label></p>
+<p><strong>空指针</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1 = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">int</span> *p2 = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">int</span> z = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *p4 = z;    </span><br></pre></td></tr></table></figure>
+
+<p>p1，p2，p3都定义了一个空指针，但p4并不是空指针。</p>
+<p><label style="color:red">建议初始化所有的指针</label></p>
+<p><strong>赋值和指针</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">int</span> *p1 = <span class="number">0</span>;</span><br><span class="line">*p = <span class="number">100</span>;</span><br><span class="line">p = p1;</span><br></pre></td></tr></table></figure>
+
+<p>赋值改变的永远是等号左侧的对象。则第4行为改指向对象，第5行改指针。</p>
+<p><em><em>void</em>  指针</em>*</p>
+<p>​        它可以指向任意类型，但也无法进行大部分操作，如输入、输出、赋给另一个void* 指针且不能直接操作所指对象。以它的视角，它只知道自己指向了一块内存空间。</p>
+<p><strong>指向指针的指针</strong></p>
+<p>​        <code>int *p1 = nullptr; int **p2 = p1;</code></p>
+<p><strong>指向指针的引用</strong></p>
+<p><code>        int *p = nullptr; int *&amp;r = p;</code></p>
+<p>要理解r的类型到底是什么，最简单的办法是从右向左阅读r的定义。离变量名最近的符号（此例中是&amp;r的符号&amp;）对变量的类型有最直接的影响，因此r是一个引用。声明符的其余部分用以确定r引用的类型是什么，此例中的符号*说明r引用的是一个指针，则r为p的别名。</p>
+]]></content>
+      <categories>
+        <category>C++ Primer</category>
+      </categories>
+      <tags>
+        <tag>书籍</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -46,7 +200,7 @@
     <url>/2021/12/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="hello-大家好，这是我的第一篇博客"><a href="#hello-大家好，这是我的第一篇博客" class="headerlink" title="hello! 大家好，这是我的第一篇博客"></a>hello! 大家好，这是我的第一篇博客</h1><h2 id="1、-我是谁？"><a href="#1、-我是谁？" class="headerlink" title="1、 我是谁？"></a>1、 我是谁？</h2><p>​        我是谁不重要。重要的是我想成为知识的传播者。</p>
 <h2 id="2、创建博客的初衷"><a href="#2、创建博客的初衷" class="headerlink" title="2、创建博客的初衷"></a>2、创建博客的初衷</h2><p>​        我在解决一个又一个的问题的时候，各种博客、平台帮了我很多，这其中有很多非常详细且友好的帖子，但也有充斥各种问题的帖子，如语意不清、啰嗦、付费、繁杂等等，虽然最后我还是解决了这些问题，我不希望获得知识的路上充满荆棘，所以我创建了自己的博客，希望分享我所获得的知识，同时把我解决问题的过程、思考、以及总结的经验保存下来。为了你，也为了以后的我不再重蹈覆辙。</p>
-<h2 id="3、我的计划"><a href="#3、我的计划" class="headerlink" title="3、我的计划"></a>3、我的计划</h2><p>​        我计划首先分享我在以前unity项目中、刷题中、以及搭建博客中的遇到的问题，同时因为我目前从事的是忆阻器件的制备，我也会分享在半导体方向所收获的知识（这方面的知识网上尤其的少）。也希望自己能够再接再厉。学更多的知识、看更远的风景。</p>
+<h2 id="3、我的计划"><a href="#3、我的计划" class="headerlink" title="3、我的计划"></a>3、我的计划</h2><p>​        我计划首先分享我在阅读书籍中、以前unity项目中、刷题中、以及搭建博客中的遇到的问题，同时因为我目前从事的是忆阻器件的制备，我也会分享在半导体方向所收获的知识（这方面的知识网上尤其的少）。也希望自己能够再接再厉。学更多的知识、看更远的风景。</p>
 ]]></content>
       <categories>
         <category>生活</category>
