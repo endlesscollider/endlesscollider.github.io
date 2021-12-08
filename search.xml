@@ -61,28 +61,6 @@
       </tags>
   </entry>
   <entry>
-    <title>解决hexo博客中文无法正常显示问题</title>
-    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
-<span id="more"></span>
-
-<p>2：找到language字段，添加zh-CN，如下</p>
-<p><code>language: zh-CN </code></p>
-<p>3： 主题配置文件以next为例，打开\blog\themes\next_config.yml文件。</p>
-<p>4： 同样进行如上操作</p>
-<h3 id="这里建议直接创建Mardown文件"><a href="#这里建议直接创建Mardown文件" class="headerlink" title="这里建议直接创建Mardown文件"></a>这里建议直接创建Mardown文件</h3><p>以下为方法链接，并附上软件下载链接</p>
-<p>[右键新建markdown文件]<a href="https://blog.csdn.net/huangjun0210/article/details/105952385">https://blog.csdn.net/huangjun0210/article/details/105952385</a></p>
-<p>链接：<a href="https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA">https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA</a><br>提取码：5p7c<br>–来自百度网盘超级会员V4的分享</p>
-]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++ Primer 第二章</title>
     <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%8A/</url>
     <content><![CDATA[<h1 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h1><p>​    内置类型包括算术类型和空类型</p>
@@ -328,7 +306,7 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> price = <span class="number">0</span>; <span class="comment">//书的单价，用于计算销售收入</span></span><br><span class="line"><span class="comment">//读入第1笔交易:ISBN、销售数量、单价</span></span><br><span class="line">std: :cin &gt;&gt; data1.bookNo &gt;&gt; datal.units_sold &gt;&gt; price;</span><br><span class="line"><span class="comment">//计算销售收入</span></span><br><span class="line">data1.revenue = data1.units_sold *price;</span><br></pre></td></tr></table></figure>
 
 <p><strong>输出和</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (data1 . bookNo m= data2.bookNo)&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> totalCnt = data1.units_sold + data2.units_sold;</span><br><span class="line">	<span class="keyword">double</span> totalRevenue = data1.revenue + data2.revenue;</span><br><span class="line">	<span class="comment">//输出:ISBN、总销售量、总销售额、平均价格</span></span><br><span class="line">	std::cout &lt;&lt; data1.bookNo&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; totalCnt&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; totalRevenue 	&lt;&lt; <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="keyword">if</span> (totalcnt != o)</span><br><span class="line">		std:: cout &lt;&lt; totalRevenue/totalCnt &lt;&lt; std: :endl;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		std: :cout &lt;&lt;<span class="string">&quot; (no sales) &quot;</span> &lt;&lt; std: :endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//标示成功</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">//两笔交易的ISBN不一样</span></span><br><span class="line">	std: :cerr &lt;&lt;<span class="string">&quot;Data must refer to the same ISBN&quot;</span> &lt;&lt;std: :endl;</span><br><span class="line">	<span class="keyword">return</span> -l;<span class="comment">//标示失败</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (data1 . bookNo m= data2.bookNo)&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> totalCnt = data1.units_sold + data2.units_sold;</span><br><span class="line">	<span class="keyword">double</span> totalRevenue = data1.revenue + data2.revenue;</span><br><span class="line">	<span class="comment">//输出:ISBN、总销售量、总销售额、平均价格</span></span><br><span class="line">	std::cout &lt;&lt; data1.bookNo&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; totalCnt&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; totalRevenue &lt;&lt; <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="keyword">if</span> (totalcnt != o)</span><br><span class="line">		std:: cout &lt;&lt; totalRevenue/totalCnt &lt;&lt; std: :endl;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		std: :cout &lt;&lt;<span class="string">&quot; (no sales) &quot;</span> &lt;&lt; std: :endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//标示成功</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">//两笔交易的ISBN不一样</span></span><br><span class="line">	std: :cerr &lt;&lt;<span class="string">&quot;Data must refer to the same ISBN&quot;</span> &lt;&lt;std: :endl;</span><br><span class="line">	<span class="keyword">return</span> -l;<span class="comment">//标示失败</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -346,6 +324,28 @@
       <tags>
         <tag>C/C++</tag>
         <tag>书籍</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决hexo博客中文无法正常显示问题</title>
+    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
+<span id="more"></span>
+
+<p>2：找到language字段，添加zh-CN，如下</p>
+<p><code>language: zh-CN </code></p>
+<p>3： 主题配置文件以next为例，打开\blog\themes\next_config.yml文件。</p>
+<p>4： 同样进行如上操作</p>
+<h3 id="这里建议直接创建Mardown文件"><a href="#这里建议直接创建Mardown文件" class="headerlink" title="这里建议直接创建Mardown文件"></a>这里建议直接创建Mardown文件</h3><p>以下为方法链接，并附上软件下载链接</p>
+<p>[右键新建markdown文件]<a href="https://blog.csdn.net/huangjun0210/article/details/105952385">https://blog.csdn.net/huangjun0210/article/details/105952385</a></p>
+<p>链接：<a href="https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA">https://pan.baidu.com/s/118PmZiKsJV8fLqjFd9X1JA</a><br>提取码：5p7c<br>–来自百度网盘超级会员V4的分享</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
