@@ -1,31 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>类名冲突问题</title>
-    <url>/2021/12/07/%E7%B1%BB%E5%90%8D%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><strong>一般来说，leetcode给出的测试用例数量足够多，覆盖范围足够广，基本可以证明代码正确</strong></p>
-<p>​        </p>
-<p>​        这里可能是因为命名空间的问题，因为力扣中所有类名均为Solution，倘若在同一源文件下可能会造成命名冲突，这里有两种解决方法。</p>
-<span id="more"></span>
-
-<h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p>​        更改类名，如</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;;```</span><br></pre></td></tr></table></figure>
-
-<h3 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h3><p>​        添加命名空间，如</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> letter &#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>C/C++</category>
-      </categories>
-      <tags>
-        <tag>C/C++</tag>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++ Primer 第三章</title>
-    <url>/2021/12/07/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/</url>
+    <url>/2021/12/09/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/</url>
     <content><![CDATA[<h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><p>​        第2章介绍的内置类型是由C++语言直接定义的。这些类型，比如数字和字符，体现了大多数计算机硬件本身具备的能力。标准库定义了另外一组具有更高级性质的类型，它们尚未直接实现到计算机硬件中。<br>​        本章将介绍两种最重要的标准库类型: string 和 vector。string表示可变长的字符序列，vector存放的是某种给定类型对象的可变长序列。本章还将介绍内置数组类型，和其他内置类型一样，<strong>数组的实现与硬件密切相关</strong>。因此相较于标准库类型string和 vector，数组在灵活性上稍显不足。</p>
 <span id="more"></span>
 
@@ -62,7 +39,7 @@
   </entry>
   <entry>
     <title>C++ Primer 第二章</title>
-    <url>/2021/12/07/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%8A/</url>
+    <url>/2021/12/08/C++Primer%20%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%8A/</url>
     <content><![CDATA[<h1 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h1><p>​    内置类型包括算术类型和空类型</p>
 <h2 id="算术类型"><a href="#算术类型" class="headerlink" title="算术类型"></a>算术类型</h2><p>1、算术类型分为两类：整型（包括字符和布尔类型）和浮点型。</p>
 <p>2、布尔类型（bool）：取值是真或假。</p>
@@ -328,7 +305,7 @@
   </entry>
   <entry>
     <title>解决hexo博客中文无法正常显示问题</title>
-    <url>/2021/12/07/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
+    <url>/2021/11/08/%E8%A7%A3%E5%86%B3hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%96%87%E6%97%A0%E6%B3%95%E6%AD%A3%E5%B8%B8%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1 id="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"><a href="#情况一：没有在站点配置文件或主题配置文件中将语言设置为中文" class="headerlink" title="情况一：没有在站点配置文件或主题配置文件中将语言设置为中文"></a>情况一：没有在站点配置文件或主题配置文件中将语言设置为中文</h1><h2 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h2><p>1：打开bolg目录下的_config.yml文件。</p>
 <span id="more"></span>
 
@@ -349,8 +326,31 @@
       </tags>
   </entry>
   <entry>
+    <title>类名冲突问题</title>
+    <url>/2021/11/07/%E7%B1%BB%E5%90%8D%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><strong>一般来说，leetcode给出的测试用例数量足够多，覆盖范围足够广，基本可以证明代码正确</strong></p>
+<p>​        </p>
+<p>​        这里可能是因为命名空间的问题，因为力扣中所有类名均为Solution，倘若在同一源文件下可能会造成命名冲突，这里有两种解决方法。</p>
+<span id="more"></span>
+
+<h3 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h3><p>​        更改类名，如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;;```</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h3><p>​        添加命名空间，如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> letter &#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span>  <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C/C++</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的第一篇博客</title>
-    <url>/2021/12/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    <url>/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="hello-大家好，这是我的第一篇博客"><a href="#hello-大家好，这是我的第一篇博客" class="headerlink" title="hello! 大家好，这是我的第一篇博客"></a>hello! 大家好，这是我的第一篇博客</h1><h2 id="1、-我是谁？"><a href="#1、-我是谁？" class="headerlink" title="1、 我是谁？"></a>1、 我是谁？</h2><p>​        我是谁不重要。重要的是我想成为知识的传播者。</p>
 <span id="more"></span>
 
