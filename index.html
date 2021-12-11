@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-11 20:25:04" itemprop="dateModified" datetime="2021-12-11T20:25:04+08:00">2021-12-11</time>
+                <time title="修改时间：2021-12-11 20:27:09" itemprop="dateModified" datetime="2021-12-11T20:27:09+08:00">2021-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,72 +254,14 @@
           <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><strong>一元运算符</strong>作用于一个运算对象，二元运算符作用于两个运算对象，三元对运算对象没有限制。</p>
 <p>C++语言定义了运算符作用于内置类型和复合类型的运算对象时所执行的操作。当运算符作用于类类型的运算对象时，用户可以自行定义其含义。因为这种自定义的过程事实上是为已存在的运算符赋予了另外一层含义，所以称之为**重载运算符（ overloadedoperator)**。IO库的&gt;&gt;和&lt;&lt;运算符以及string对象、vector对象和迭代器使用的运算</p>
 <p><strong>左值和右值</strong></p>
-<ul>
-<li>当一个对象被用作右值的时候，用的是对象的值（内容);</li>
-<li>当对象被用作左值的时候,用的是对象的身份（在内存中的位置)。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">decltype</span>(*p) d1;<span class="comment">//d1为引用类型</span></span><br><span class="line"><span class="keyword">decltype</span>(&amp;p) d2;<span class="comment">//d2为指针的指针</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">cout &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>&lt;&lt; ++i &lt;&lt; endl; <span class="comment">//未定义的</span></span><br></pre></td></tr></table></figure>
-
-<p>这里可能先++i再求值，结果为1 1，也可能求值，再++i，结果为0 1，所以避免出现此种代码。</p>
-<p>只有&amp;&amp;、||、？：、，四种运算符有明确的求值顺序。</p>
-<p>形如<code>f() + g() * h() + j()</code>，因为求值的顺序与优先级和结合律无关，所以如果函数内部改变了一些关联的参数，则无法预计</p>
-<h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h2><ul>
-<li>一元运算符大于二元运算符</li>
-<li>%不允许运算对象为浮点类型</li>
-<li>C++11规定无论正负一律向0取整</li>
-</ul>
-<h2 id="逻辑和关系运算符"><a href="#逻辑和关系运算符" class="headerlink" title="逻辑和关系运算符"></a>逻辑和关系运算符</h2><p><img src="C:\Users\28559\AppData\Roaming\Typora\typora-user-images\image-20211210152812002.png" alt="image-20211210152812002"></p>
-<p>逻辑与运算符和逻辑或运算符都是先求左侧运算对象的值再求右侧运算对象的值，当且仅当左侧运算对象无法确定表达式的结果时才会计算右侧运算对象的值。这种策略称为<strong>短路求值(short-circuit evaluation）</strong>。<br><strong>逻辑非运算符</strong></p>
-<p>在对象前加！表示取反，如<code>!s.empty()</code>。</p>
-<p><strong>关系运算符</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//哎哟!这个条件居然拿i&lt;j的布尔值结果和k比较!</span></span><br><span class="line"><span class="keyword">if</span> (i&lt;j&lt;k)<span class="comment">//若k 大于1则为真!</span></span><br><span class="line"><span class="comment">//正确:当i小于j并且j小于k时条件为真</span></span><br><span class="line"><span class="keyword">if</span>(i&lt;j &amp;&amp; j&lt;k)&#123;<span class="comment">/* ...* / &#125;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><p>赋值运算的结果是它的左侧运算对象，并且是一个左值。相应的，结果的类型就是左侧运算对象的类型。如果赋值运算符的左右两个运算对象类型不同，则右侧运算对象将转换成左侧运算对象的类型。</p>
-<p>C++11允许使用花括号赋值</p>
-<p>如<code>vector&lt;int&gt; v = &#123;0,5,3,4,8&#125;;</code></p>
-<p><strong>赋值运算满足右结合律</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//赋值运算符满足右结合律，这一点与其他二元运算符不太一样:</span></span><br><span class="line"><span class="keyword">int</span> ival,jval;</span><br><span class="line">ival = jval = <span class="number">0</span>;		<span class="comment">//正确:都被赋值为0</span></span><br><span class="line"><span class="keyword">int</span> ival, *pval;		<span class="comment">// ival的类型是int; pval是指向int的指针</span></span><br><span class="line">ival = pval = <span class="number">0</span> ;		<span class="comment">//错误:不能把指针的值赋给int</span></span><br><span class="line">string sl,s2;</span><br><span class="line">sl = s2 = <span class="string">&quot;OK&quot;</span> ;		<span class="comment">//字符串字面值&quot;OK&quot;转换成string对象</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这是一种形式烦琐、容易出错的写法</span></span><br><span class="line"><span class="keyword">int</span> i = <span class="built_in">get_value</span> () ;		<span class="comment">//得到第一个值</span></span><br><span class="line"><span class="keyword">while</span> (i != <span class="number">42</span>)&#123;</span><br><span class="line">	<span class="comment">//其他处理·</span></span><br><span class="line">	i = <span class="built_in">get_value</span> ( );		<span class="comment">//得到剩下的值</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i ;</span><br><span class="line"><span class="comment">//更好的写法:条件部分表达得更加清晰</span></span><br><span class="line"><span class="keyword">while</span> ((i = <span class="built_in">get_value</span>())!= <span class="number">42</span>)&#123;	<span class="comment">//其他处理…..</span></span><br></pre></td></tr></table></figure>
-
-<p><label stype = "color: red">切勿混淆”==”与“=”</label></p>
-<h2 id="递增和递减"><a href="#递增和递减" class="headerlink" title="递增和递减"></a>递增和递减</h2><p>++和–是加一减一一种简介的书写，若非必须，建议养成写前置版本的习惯。因为后置版本会造成性能浪费。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pbeg = v.<span class="built_in">begin</span> ();</span><br><span class="line"><span class="comment">//输出元素直至遇到第一个负值为止</span></span><br><span class="line"><span class="keyword">while</span> (pbeg != v.<span class="built_in">end</span> () &amp;&amp; *beg &gt;= <span class="number">0</span> )</span><br><span class="line">	cout&lt;&lt; *pbeg++ &lt;&lt; endl;<span class="comment">//输出当前值并将pbeg向前移动一个元素</span></span><br></pre></td></tr></table></figure>
-
-<p><code>*pbeg++</code>等价于<code>*(pbeg++)</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//该循环的行为是未定义的!</span></span><br><span class="line"><span class="keyword">while</span> (beg != s.<span class="built_in">end</span> () &amp; &amp; !<span class="built_in">isspace</span>(*beg))</span><br><span class="line">	*beg = <span class="built_in">toupper</span> ( *beg++); <span class="comment">//错误:该赋值语句未定义</span></span><br></pre></td></tr></table></figure>
-
-<p>如果一条子表达式改变了某个运算对象的值，另一条子表达式又要使用该值的话，运算对象的求值顺序就很关键了。因为递增运算符和递减运算符会改变运算对象的值，所以要提防在复合表达式中错用这两个运算符。</p>
-<h2 id="成员访问运算符"><a href="#成员访问运算符" class="headerlink" title="成员访问运算符"></a>成员访问运算符</h2><p>ptr-&gt;mem等价于(*ptr).mem；</p>
-<p>因为解引用运算符的优先级低于点运算符，所以执行解引用运算的子表达式两端必须加上括号。如果没加括号，代码的含义就大不相同了。</p>
-<h2 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h2><p>cond ? expr1 : expr2;</p>
-<p>此运算符只对expr1和expr2中的一个求值。</p>
-<p><strong>嵌套运算符</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">finalgrade = (grade &gt; <span class="number">90</span>) ? <span class="string">&quot;high pass&quot;</span></span><br><span class="line">						  : (grade &lt; <span class="number">60</span>)?<span class="string">&quot;fail&quot;</span> : <span class="string">&quot;pass&quot;</span> ;</span><br></pre></td></tr></table></figure>
-
-<p>条件运算符是满足右结合性质，意味着从右向左顺序组合，但嵌套最好不要超过两层。</p>
-<p><em>解释一下左（右）结合律，举个例子，假设<del>是一个运算符，又有表达式a</del>b<del>c，如果</del>是左结合的，那么该表达式被解析为(a<del>b)</del>c，如果<del>是右结合的，那么该表达式将被解析为a</del>(b~c)。比如上表中三目运算符?:是从右向左结合的</em></p>
-<p><strong>优先级</strong></p>
-<p>该运算符优先级非常低，所以长表达式嵌套时最好加上括号。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; ( (grade &lt; <span class="number">60</span>) ? <span class="string">&quot;fail&quot;</span> : <span class="string">&quot;pass&quot;</span> );	<span class="comment">// 输出pass或者fail</span></span><br><span class="line">cout &lt;&lt; (grade &lt; <span class="number">60</span>) ? <span class="string">&quot;fail&quot;</span> : <span class="string">&quot;pass&quot;</span>;		<span class="comment">//输出1或者0!</span></span><br><span class="line">cout &lt;&lt; grade &lt; <span class="number">60</span> ? <span class="string">&quot;fail&quot;</span> : <span class="string">&quot;pass&quot;</span>;		<span class="comment">//错误:试图比较cout和60</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&amp; 			位与</span><br><span class="line">| 			位或</span><br><span class="line">^ 			位异或</span><br><span class="line">~ 			取反</span><br><span class="line">&gt;&gt; 			向右移</span><br><span class="line">&gt;&gt;&gt; 		无符号右移</span><br><span class="line">&lt;&lt; 			向左移</span><br></pre></td></tr></table></figure>
-
-<p>关于符号位如何处理没有明确的规定，所以强烈建议仅将位运算符用于处理无符号类型，小整型在使用位运算符时会自动提升至大整型。</p>
-<p><strong>移位运算符</strong></p>
-<p>左移运算符(&lt;&lt;)在右侧插入值为0的二进制位。右移运算符(&gt;&gt;)的行为则依赖于其左侧运算对象的类型:如果该运算对象是无符号类型,在左侧插入值为0的二进制位;如果该运算对象是带符号类型，在左侧插入符号位的副本或值为0的二进制位，如何选择要视具体环境而定。</p>
-<p><strong>位求反运算符</strong></p>
-<p>位求反运算符(~）将运算对象逐位求反后生成一个新值，将1置为0、将0置为1。char类型的运算对象首先提升成int类型，提升时运算对象原来的位保持不变，往高位添加0即可。因此在本例中，首先将bits提升成int类型，增加24个高位0，随后将提升后的值逐位求反。</p>
-<p><strong>使用位运算符</strong></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
