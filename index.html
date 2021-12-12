@@ -122,17 +122,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">6</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -190,6 +190,143 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">最全最详细的hexo博客搭建教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-12 11:31:40" itemprop="dateModified" datetime="2021-12-12T11:31:40+08:00">2021-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/10/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="最全最详细的hexo博客搭建教程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>因为网上很多叫教程都是缺一点东西，导致只能自己去看报错解决，花了一些时间，所以为了大家不继续踩坑，我将全部的过程都写了下来，如果还是不能成功欢迎在评论区留下你的问题。</strong></p>
+<h2 id="下载环境"><a href="#下载环境" class="headerlink" title="下载环境"></a>下载环境</h2><p>下载下面两个软件，安装时直接一直跳过就好</p>
+<ul>
+<li><p>Node.js下载:<a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn/">https://nodejs.org/zh-cn/</a></p>
+<p>选择长期维护版</p>
+<p>安装教程: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuqiyun/p/8133904.html">https://www.cnblogs.com/liuqiyun/p/8133904.html</a></p>
+</li>
+<li><p>Git下载:<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+<p><img src="https://s2.loli.net/2021/12/12/ysxOWvEPJ6GB9Qa.png" alt="image.png"></p>
+<p>蛋装教程，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p>
+</li>
+</ul>
+<p>win+r打开运行窗口输入cmd</p>
+<p>在窗口下载Hexo ：输入： npm install hexo-cli -g  </p>
+<p>之后回车，每个空格都不能漏掉！</p>
+<p><img src="https://s2.loli.net/2021/12/12/GhDAEYmnRQyrc8T.png" alt="image.png"></p>
+<h2 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h2><p>接着在刚才的cmd窗口输入以下三个命令，一个一个的输入</p>
+<p>node -v</p>
+<p>npm -v</p>
+<p>git –version</p>
+<p>hexo -v</p>
+<p>只要出来的是版本号就代表安装成功了</p>
+<p><img src="https://s2.loli.net/2021/12/12/OkwVzTdurtLgWsi.png" alt="image.png"></p>
+<h2 id="注册github账号"><a href="#注册github账号" class="headerlink" title="注册github账号"></a>注册github账号</h2><p>注册一个github账号，可以自行百度如何注册，因为账号名字就是以后的网址，所以起的好的一些</p>
+<p>接着点new，建立一个仓库，</p>
+<p><img src="https://s2.loli.net/2021/12/12/ASVpGWXZ6HFaTzB.png" alt="image.png"></p>
+<p>仓库名= 用户名.github.io,公共，底下无所谓</p>
+<p><img src="https://s2.loli.net/2021/12/12/OqJh6Z5tHnVzfx3.png" alt="image.png"></p>
+<p>在任何一个文件夹内右键，点击GIit Bash Here</p>
+<p>输入：ssh-keygen -t rsa -C “邮件地址”</p>
+<p>注意这里粘贴不是ctrl+v，可以右键粘贴，之后连续敲四次回车，间隔一点时间。</p>
+<p>成功之后大概是这样：</p>
+<p><img src="https://s2.loli.net/2021/12/12/MtlkbuqE9BrvFpD.png" alt="image.png"></p>
+<p>C:\ Users \ Administrator \ .ssh 在这个路径下找到.ssh,找不到就在c盘搜一下。</p>
+<p>用记事本打开id_rsa.pub，复制全部内容。</p>
+<p>打开github网站，点击右上角自己的头像旁边的小箭头，点击seting，之后如下</p>
+<p><img src="https://s2.loli.net/2021/12/12/ArjYKODFPVh2exb.png" alt="image.png"></p>
+<p>名称随便输一个，在下面粘贴刚才.ssh找到的内容。</p>
+<p>在GIit Bash Here窗口中测试ssh是否绑定成功，输入：ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a></p>
+<p>输入yes</p>
+<p>出现hi  。。。就成功了。</p>
+<h2 id="生成本地博客"><a href="#生成本地博客" class="headerlink" title="生成本地博客"></a>生成本地博客</h2><p>在电脑的任意一个自己喜欢的位置创建自己的bolg文件夹。</p>
+<p>进入这个文件夹，在里面右键打开GIit Bash Here，安装hexo。输入：hexo init<br>出现 start blogging with Hexo!就代表成功了</p>
+<p>接着要记住下面这两条命令，后面很常用。</p>
+<p>hexo g #生成网站静态文件到默认设置的 public 文件夹。<br>hexo s#启动本地服务器，用于预览主题。默认地址： <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p>依次输入它们，接着就可以通过这个上面的网址访问本地的博客。</p>
+<h2 id="发布博客到互联网"><a href="#发布博客到互联网" class="headerlink" title="发布博客到互联网"></a>发布博客到互联网</h2><p>在github找到自己的仓库打开，在左上角，依次点击复制你的SSH。</p>
+<p><img src="https://s2.loli.net/2021/12/12/sezBMXH63wDpOPG.png" alt="image.png"></p>
+<p>在自己的博客文件夹中找到_config.yml文件，打开。拉到最后找到deploy。删掉原来的deploy后面的东西输入下面的代码：</p>
+<p>deploy:<br>  type: git<br>  repo: 这里是你刚刚复制的东西。<br>  branch: main</p>
+<p><strong>注意：后有一个空格，且一定要是英文符号</strong></p>
+<p>依然在自己的博客文件夹GIit Bash Here窗口安装hexo-deployer-git自动部署发布工具，输入：npm install hexo-deployer-git –save</p>
+<p>之后绑定你的邮箱和账号，输入：git config user.name “username” 和 git config user.email “email”</p>
+<p>用户名和邮箱都是注册github提到的。</p>
+<h1 id="最后一步"><a href="#最后一步" class="headerlink" title="最后一步"></a>最后一步</h1><p>hexo -g </p>
+<p>hexo -d</p>
+<p>将你的仓库名复制粘贴到浏览器就可以啦！别忘了留下你的网站哦~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -221,7 +358,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-11 20:27:09" itemprop="dateModified" datetime="2021-12-11T20:27:09+08:00">2021-12-11</time>
+                <time title="修改时间：2021-12-12 14:54:59" itemprop="dateModified" datetime="2021-12-12T14:54:59+08:00">2021-12-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -788,20 +925,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
