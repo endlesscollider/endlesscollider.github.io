@@ -77,6 +77,8 @@
 <p>当某个地方语法上需要，逻辑上不需要，则会使用，且应该加注释标明。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//重复读入数据直至到达文件末尾或某次输入的值等于sought</span></span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; s &amp;&amp;s != sought)</span><br><span class="line">	; <span class="comment">//空语句</span></span><br></pre></td></tr></table></figure>
 
+<span id="more"></span>
+
 <p><strong>复合语句</strong></p>
 <p>指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作块(block)。一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止，通常在语法上需要一条语句，但逻辑上需要多条语句的使用。</p>
 <p><em>所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句:</em></p>
