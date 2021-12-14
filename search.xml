@@ -11,6 +11,8 @@
 <p>安装教程: <a href="https://www.cnblogs.com/liuqiyun/p/8133904.html">https://www.cnblogs.com/liuqiyun/p/8133904.html</a></p>
 </li>
 <li><p>Git下载:<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+<span id="more"></span>
+
 <p><img src="https://s2.loli.net/2021/12/12/ysxOWvEPJ6GB9Qa.png" alt="image.png"></p>
 <p>蛋装教程，<a href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p>
 </li>
@@ -41,7 +43,7 @@
 <p>打开github网站，点击右上角自己的头像旁边的小箭头，点击seting，之后如下</p>
 <p><img src="https://s2.loli.net/2021/12/12/ArjYKODFPVh2exb.png" alt="image.png"></p>
 <p>名称随便输一个，在下面粘贴刚才.ssh找到的内容。</p>
-<p>在GIit Bash Here窗口中测试ssh是否绑定成功，输入：ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a></p>
+<p>在GIit Bash Here窗口中测试ssh是否绑定成功，输入：ssh -T <a href="mailto:&#103;&#x69;&#x74;&#x40;&#x67;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#109;">&#103;&#x69;&#x74;&#x40;&#x67;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#109;</a></p>
 <p>输入yes</p>
 <p>出现hi  。。。就成功了。</p>
 <h2 id="生成本地博客"><a href="#生成本地博客" class="headerlink" title="生成本地博客"></a>生成本地博客</h2><p>在电脑的任意一个自己喜欢的位置创建自己的bolg文件夹。</p>
@@ -66,6 +68,294 @@
       </categories>
       <tags>
         <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ Primer 第五章</title>
+    <url>/2021/12/10/%E7%AC%AC%E4%BA%94%E7%AB%A0/</url>
+    <content><![CDATA[<h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><h2 id="简单语句"><a href="#简单语句" class="headerlink" title="简单语句"></a>简单语句</h2><p><strong>空语句</strong></p>
+<p>当某个地方语法上需要，逻辑上不需要，则会使用，且应该加注释标明。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//重复读入数据直至到达文件末尾或某次输入的值等于sought</span></span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; s &amp;&amp;s != sought)</span><br><span class="line">	; <span class="comment">//空语句</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>复合语句</strong></p>
+<p>指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作块(block)。一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止，通常在语法上需要一条语句，但逻辑上需要多条语句的使用。</p>
+<p><em>所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句:</em></p>
+<hr>
+<h2 id="语句作用域"><a href="#语句作用域" class="headerlink" title="语句作用域"></a>语句作用域</h2><p>可以在if、switch、while和 for语句的控制结构内定义变量。定义在控制结构当中的变量只在相应语句的内部可见，一旦语句结束，变量也就超出其作用范围了。</p>
+<hr>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//if else语句的形式是</span></span><br><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">	statement</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">	statement2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>悬垂else</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//错误:实际的执行过程并非像缩进格式显示的那样; else 分支匹配的是内层if语句</span></span><br><span class="line"><span class="keyword">if</span> (grade % <span class="number">10</span> &gt;= <span class="number">3</span>)</span><br><span class="line">	<span class="keyword">if</span>(grade % <span class="number">10</span> &gt;<span class="number">7</span>)</span><br><span class="line">		lettergrade += <span class="string">&#x27;+&#x27;</span>; <span class="comment">//末尾是8或者9的成绩添加一个加号</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	lettergrade += <span class="string">&#x27;-&#x27;</span>;<span class="number">1</span>/末尾是<span class="number">3</span>、<span class="number">4</span>、<span class="number">5</span>、<span class="number">6</span>或者<span class="number">7</span>的成绩添加一个减号!</span><br></pre></td></tr></table></figure>
+
+<p>这里程序将else与内层if匹配，导致错误，加上花括号可避免此问题。</p>
+<h3 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (ch)&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span>:</span><br><span class="line">		++aCnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;e&#x27;</span>:</span><br><span class="line">		++eCnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>break 跳转出switch，case必须是整形常量表达式，一个switch内case不能相同。</p>
+<p><strong>内部控制流</strong></p>
+<p>有时候故意省略break语句，使得程序连续执行多个标签。如：也许我们想统计的是所有元音字母出现的总次数:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> voweICnt =o;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (ch)&#123;</span><br><span class="line">	<span class="comment">//出现了a、e、 i、o或u中的任意一个都会将vowelCnt的值加1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;e&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;i&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;o&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;u&#x27;</span> :<span class="comment">//也可以不换行，写成case &#x27;a&#x27; : case &#x27;e&#x27; : case &#x27;i&#x27; : case &#x27;o&#x27; : case &#x27;u&#x27; :</span></span><br><span class="line">		++Vowelcnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><label stype = "color:red">一般情况不要漏写break，不写需加注释说明。</label></p>
+<p><strong>default标签</strong></p>
+<p>如果没有任何一个case 标签能匹配上 switch 表达式的值，程序将执行紧跟在default 标签(default label）后面的语句。例如，可以增加一个计数值来统计非元音字母的数量，只要在 default分支内不断递增名为otherCnt的变量就可以了。</p>
+<p><strong>内部变量定义</strong></p>
+<p>如果需要为某个case分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有case标签都在变量的作用域之外。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="literal">true</span>:&#123;</span><br><span class="line">	<span class="comment">//正确:声明语句位于语句块内部</span></span><br><span class="line">	string file_name = <span class="built_in">get_file_name</span> () ;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="literal">false</span>:</span><br><span class="line">	<span class="keyword">if</span> (file_name . <span class="built_in">empty</span>())<span class="comment">//错误:file_name不在作用域之内</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="迭代语句"><a href="#迭代语句" class="headerlink" title="迭代语句"></a>迭代语句</h2><h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p>当不确定循环多少次时或循环结束后访问循环控制变量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="comment">//重复读入数据，直至到达文件末尾或者遇到其他输入问题</span></span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; i)</span><br><span class="line">	v.<span class="built_in">push_back</span> (i);</span><br><span class="line"><span class="comment">//寻找第一个负值元素</span></span><br><span class="line"><span class="keyword">auto</span> beg = v.<span class="built_in">begin</span> ( );</span><br><span class="line"><span class="keyword">while</span> (beg != v.<span class="built_in">end</span> () &amp;&amp; *beg &gt;= <span class="number">0</span>)</span><br><span class="line">	++beg;</span><br><span class="line"><span class="keyword">if</span> (beg == v.<span class="built_in">end</span>( ))</span><br><span class="line">	<span class="comment">//此时我们知道v中的所有元素都大于等于0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="传统for语句"><a href="#传统for语句" class="headerlink" title="传统for语句"></a>传统for语句</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-statemen; condition; expression)</span><br><span class="line">	statement</span><br></pre></td></tr></table></figure>
+
+<p><label stype = "color:red">init-statemen指挥执行一次，牢记for语句头中定义的对象只在for循环体内可见。</label></p>
+<p><strong>for语句头中的多重定义</strong></p>
+<p>init-statemen可以定义多个变量，但只能定义一种类型。</p>
+<p><strong>for语句头省略</strong></p>
+<p>for语句头能省略掉init-statement、condition和 expression中的任何一个(或者全部)，但分号必须保留。</p>
+<h3 id="范围for语句"><a href="#范围for语句" class="headerlink" title="范围for语句"></a>范围for语句</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">	statement</span><br></pre></td></tr></table></figure>
+
+<h3 id="do-while语句"><a href="#do-while语句" class="headerlink" title="do while语句"></a>do while语句</h3><p>do while语句( do while statement）和 while语句非常相似，唯一的区别是，do while语句先执行循环体后检查··条件。不管条件的值如何，我们都至少执行一次循环。do while语句的语法形式如下所示:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">do</span></span></span><br><span class="line"><span class="function">	statement</span></span><br><span class="line"><span class="function"><span class="title">while</span> <span class="params">(condition)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+<p>do while语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
+<p><label stype = "color:red">因为对于do while来说先执行语句或者块，后判断条件，所以不允许在条件部分定义变量。</label></p>
+<hr>
+<h2 id="跳转语句"><a href="#跳转语句" class="headerlink" title="跳转语句"></a>跳转语句</h2><h3 id="break语句"><a href="#break语句" class="headerlink" title="break语句"></a>break语句</h3><p>break语句(break statement）负责终止离它最近的while、do while、for或switch语句，并从这些语句之后的第一条语句开始继续执行。</p>
+<h3 id="continue语句"><a href="#continue语句" class="headerlink" title="continue语句"></a>continue语句</h3><p>continue语句（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。continue语句只能出现在 for、while和 do while循环的内部，或者嵌套在此类循环里的语句或块的内部。和 break语句不同的是，只有当switch语句嵌套在迭代语句内部时，才能在 switch里使用continue，它会使程序直接跳出switch，并重新执行switch外的循环。</p>
+<h3 id="goto语句"><a href="#goto语句" class="headerlink" title="goto语句"></a>goto语句</h3><p>不要在程序中使用goto语句，因为它使得程序既难理解又难修改。</p>
+<hr>
+<h2 id="try语句块和异常处理"><a href="#try语句块和异常处理" class="headerlink" title="try语句块和异常处理"></a>try语句块和异常处理</h2><h3 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">sales_item item1, item2;</span><br><span class="line">cin &gt;&gt; item1 &gt;&gt; item2;</span><br><span class="line"><span class="comment">//首先检查item1和item2是否表示同一种书籍</span></span><br><span class="line"><span class="keyword">if</span> (item1.<span class="built_in">isbn</span> () == item2 .<span class="built_in">isbn</span> () ) &#123;</span><br><span class="line">	cout &lt;&lt; item1 + item2 &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//表示成功</span></span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">	cerr &lt;&lt; <span class="string">&quot;Data must refer to same ISBN&quot;</span> &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> -l; <span class="comment">//表示失败</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在真实的程序中，应该把对象相加的代码和用户交互的代码分离开来。此例中，我们改写程序使得检查完成后不再直接输出一条信息，而是抛出一个异常:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//首先检查两条数据是否是关于同一种书籍的</span></span><br><span class="line"><span class="keyword">if</span> (item1.<span class="built_in">isbn</span> () != item2 .<span class="built_in">isbn</span> ( ))</span><br><span class="line">	<span class="keyword">throw</span> <span class="built_in">runtime_error</span> ( <span class="string">&quot;Data must refer to same ISBN&quot;</span>);</span><br><span class="line">	<span class="comment">//如果程序执行到了这里，表示两个ISBN是相同的</span></span><br><span class="line">cout &lt;&lt; item1 + item2 &lt;&lt; endl ;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，如果ISBN不一样就抛出一个异常，该异常是类型runtime_error的对象。抛出异常将终止当前的函数，并把控制权转移给能处理该异常的代码。</p>
+<h3 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	program-statements</span><br><span class="line">&#125; <span class="built_in"><span class="keyword">catch</span></span> (exception-declaration)&#123;</span><br><span class="line">	handler-statements</span><br><span class="line">&#125; <span class="built_in"><span class="keyword">catch</span></span> (exception-declaration) &#123;</span><br><span class="line">	handler-statements</span><br><span class="line">&#125; <span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>try语句块的一开始是关键字try，随后紧跟着一个块，跟在try 块之后的是一个或多个catch子句。catch子句包括三部分:关键字catch、括号内一个(可能未命名的）对象的声明（称作<strong>异常声明，exception declaration</strong>）以及一个块。当选中了某个catch子句处理异常之后，执行与之对应的块。catch 一旦完成，程序跳转到try语句块最后一个catch子句之后的那条语句继续执行。</p>
+</li>
+<li><p>try语句块中的program-statements组成程序的正常逻辑，像其他任何块一样，program-statements可以有包括声明在内的任意C++语句。一如往常，try语句块内声明的变量在块外部无法访问，特别是在catch子句内也无法访问。</p>
+</li>
+</ul>
+<p><strong>编写处理的代码</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (cin &gt;&gt; item1 &gt;&gt; item2) &#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">//执行添加两个Sales_item对象的代码	</span></span><br><span class="line">		<span class="comment">//如果添加失败，代码抛出一个runtime_error异常</span></span><br><span class="line">		&#125; <span class="built_in"><span class="keyword">catch</span></span> (runtime_error err) &#123;</span><br><span class="line">			<span class="comment">//提醒用户两个ISBN必须一致，询问是否重新输入</span></span><br><span class="line">			cout &lt;&lt; err.<span class="built_in">what</span> () </span><br><span class="line">				 &lt;&lt; <span class="string">&quot;\nTry Again? Enter y or n&quot;</span> &lt;&lt; endl;</span><br><span class="line">			<span class="keyword">char</span> c ;</span><br><span class="line">			cin &gt;&gt; c;</span><br><span class="line">        	<span class="keyword">if</span>(!cin || c== <span class="string">&#x27;n&#x27;</span>) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么如果输入书籍不同，则会输出两句话：</p>
+<p>Data must refer to same ISBN</p>
+<p>Try Again? Enter y or n</p>
+<p><strong>函数在寻找处理代码的过程中退出</strong>（*****）<br>在复杂系统中，程序在遇到抛出异常的代码前，其执行路径可能已经经过了多个try语句块。例如，一个try语句块可能调用了包含另一个try语句块的函数，新的try语句块可能调用了包含又一个try语句块的新函数，以此类推。</p>
+<p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的 catch子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的 catch子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的catch子句为止。</p>
+<p>如果最终还是没能找到任何匹配的 catch子句，程序转到名为terminate的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。</p>
+<p>处理复杂异常超出了本书的范围。</p>
+<hr>
+<h3 id="标准异常（-）"><a href="#标准异常（-）" class="headerlink" title="标准异常（*）"></a>标准异常（*）</h3><p>表5.1:<stdexcept>定义的异常类</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">exception</td>
+<td align="center">最常见的问题</td>
+</tr>
+<tr>
+<td align="center">runtime_error</td>
+<td align="center">只有在运行时才能检测出的问题</td>
+</tr>
+<tr>
+<td align="center">range_error</td>
+<td align="center">运行时错误:生成的结果超出了有意义的值域范围</td>
+</tr>
+<tr>
+<td align="center">overflow_error</td>
+<td align="center">运行时错误:计算上溢</td>
+</tr>
+<tr>
+<td align="center">underflow_error</td>
+<td align="center">运行时错误:计算下溢</td>
+</tr>
+<tr>
+<td align="center">logic_error</td>
+<td align="center">程序逻辑错误</td>
+</tr>
+<tr>
+<td align="center">domain_error</td>
+<td align="center">逻辑错误:参数对应的结果值不存在</td>
+</tr>
+<tr>
+<td align="center">invalid_argument</td>
+<td align="center">逻辑错误:无效参数</td>
+</tr>
+<tr>
+<td align="center">length_error</td>
+<td align="center">逻辑错误:试图创建一个超出该类型最大长度的对象</td>
+</tr>
+<tr>
+<td align="center">out_of_range</td>
+<td align="center">逻辑错误:使用一个超出有效范围的值</td>
+</tr>
+</tbody></table>
+<p>我们只能以默认初始化的方式初始化 exception,bad_alloc和 bad _cast对象，不允许为这些对象提供初始值。</p>
+<p>其他异常类型的行为则恰好相反:应该使用string对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。</p>
+]]></content>
+      <categories>
+        <category>C++ Primer</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>书籍</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ Primer 第六章</title>
+    <url>/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/</url>
+    <content><![CDATA[<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数基础"><a href="#函数基础" class="headerlink" title="函数基础"></a>函数基础</h2><p>包括返回类型、函数名字、0到多个形参组成的列表及函数体。</p>
+<p>调用运算符来执行函数。函数的调用完成两项工作:一是用实参初始化函数对应的形参，二是将控制权转移给被调用函数。此时，主调函数(calling function)的执行被暂时中断，被调函数（called function)开始执行。</p>
+<p><strong>形参和实参</strong></p>
+<p>形参和实参数量类型顺序必须一一对应。</p>
+<span id="more"></span>
+
+<h3 id="局部对象"><a href="#局部对象" class="headerlink" title="局部对象"></a>局部对象</h3><p>形参和函数内部定义变量统称<strong>局部变量</strong>。同时局部变量还会隐藏在外层作用域中。函数体之外的对象存在于程序的整个执行过程中。局部变量的生命周期依赖定义的方式。</p>
+<p><strong>自动对象</strong></p>
+<p>对于普通局部变量对应的对象来说，当函数的控制路径经过变量定义语句时创建该对象，当到达定义所在的块末尾时销毁它。</p>
+<p><strong>局部静态对象</strong></p>
+<p>可以将局部变量定义成static类型从而获得这样的对象。局部静态对象(local static object）在程序的执行路径第一次经过对象定义语句时初始化，并且直到程序终止才被销毁，在此期间即使对象所在的函数结束执行也不会对它有影响。</p>
+<p>如果局部静态变量没有显式的初始值，它将执行值初始化，内置类型的局部静态变量初始化为0。</p>
+<h3 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h3><p>函数的声明和函数的定义非常类似，唯一的区别是函数声明无须函数体，用一个分号替代即可。</p>
+<p>因为函数的声明不包含函数体，所以也就无须形参的名字。在函数的声明中经常省略形参的名字。尽管如此，写上形参的名字可以帮助使用者更好地理解函数的功能。</p>
+<p>函数的三要素（返回类型、函数名、形参类型）描述了函数的接口，说明了调用该函数所需的全部信息。函数声明也称作<strong>函数原型</strong>。通常把它放在头文件中。</p>
+<h3 id="分离式编译"><a href="#分离式编译" class="headerlink" title="分离式编译"></a>分离式编译</h3><p>一个项目由若干个源文件共同实现，而每个源文件(<strong>.cpp</strong>)单独编译成目标文件(<strong>.obj</strong>)，最后将所有目标文件连接起来形成单一的可执行文件(<strong>.exe</strong>)的过程。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">---------------test.h-------------------</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;<span class="comment">//这里声明一个函数f</span></span><br><span class="line">---------------test.cpp--------------</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>”test.h”</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">…<span class="comment">//do something</span></span><br><span class="line">&#125;  <span class="comment">//这里实现出test.h中声明的f函数</span></span><br><span class="line">---------------main.cpp--------------</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span>”test.h”</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="built_in">f</span>(); <span class="comment">//调用f，f具有外部连接类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面程序在编译器内部的过程为：</p>
+<ul>
+<li>在编译mian.cpp的时候，编译器并不知道f的实现，所以当碰到对f的调用时只是给出一个<strong>指示</strong>，指示连接器为它寻找f的实现体，所以main.obj中没有关于f实现的二进制代码。</li>
+<li>在编译test.cpp的时候，编译器找到了f的实现，所以在test.obj里有f实现的二进制代码。</li>
+<li>连接时，连接器在test.obj中找到f实现的<strong>二进制地址</strong>，然后将main.obj中未解决的f地址替换成该二进制地址。</li>
+</ul>
+<p>作者：凉拌姨妈好吃<br>链接：<a href="https://www.jianshu.com/p/9ca511da30f4">https://www.jianshu.com/p/9ca511da30f4</a><br>来源：简书</p>
+<hr>
+<h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><p>形参初始化的机理与变量初始化一样。形参的类型决定了形参和实参交互的方式。如果形参是引用类型，它将绑定到对应的实参上;否则，将实参的值拷贝后赋给形参。</p>
+<ul>
+<li>当形参是引用类型时，我们说它对应的实参被引用传递或者函数被传引用调用。和其他引用一样，引用形参也是它绑定的对象的别名;也就是说，引用形参是它对应的实参的别名。</li>
+<li>当实参的值被拷贝给形参时，形参和实参是两个相互独立的对象。我们说这样的实参被值传递或者函数被传值调用。</li>
+</ul>
+<h3 id="传值参数"><a href="#传值参数" class="headerlink" title="传值参数"></a>传值参数</h3><p><code>ret *= val--; //将val的值减1</code></p>
+<p>尽管fact函数改变了val的值,但是这个改动不会影响传入fact的实参。调用fact (i)不会改变i的值。</p>
+<p><strong>形参指针</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> n= <span class="number">0</span>,i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;n, *q = &amp;i; 				<span class="comment">//p指向n;q指向i</span></span><br><span class="line">*p = <span class="number">42</span>;							<span class="comment">// n的值改变;p不变</span></span><br><span class="line">p =q;								<span class="comment">// p现在指向了i;但是i和n的值都不变</span></span><br></pre></td></tr></table></figure>
+
+<p>指针的行为和其他非引用类型一样。当执行指针拷贝操作时，拷贝的是指针的值。拷贝之后，两个指针是不同的指针。因为指针使我们可以间接地访问它所指的对象，所以通过指针可以修改它所指对象的值:</p>
+<p><em>C++中建议使用引用代替指针</em></p>
+<h3 id="传引用参数"><a href="#传引用参数" class="headerlink" title="传引用参数"></a>传引用参数</h3><p>引用参数可以改变引用对象的值。</p>
+<p><strong>使用引用避免拷贝</strong></p>
+<p>拷贝大的类类型对象或者容器对象比较低效，甚全有的类类型（包括IO类型在内)根本就不支持拷贝操作。当某种类型不支持拷贝操作时，函数只能通过引用形参访问该类型的对象。如string类型。若想避免改动可以加上const</p>
+<p><strong>使用引用形参返回额外的信息</strong></p>
+<p>一个函数只能返回一个值，然而有时函数需要同时返回多个值，引用形参为我们一次返回多个结果提供了有效的途径。</p>
+<p>举个例子，我们定义一个名为find_char的函数，它返回在string对象中某个指定字符第一次出现的位置。同时，我们也希望函数能返回该字符出现的总次数，该如何定义函数使得它能够既返回位置也返回出现次数呢?</p>
+<ul>
+<li>定义一个新的数据类型，让它包含位置和数量两个成员。</li>
+<li>还有另一种更简单的方法，我们可以给函数传入一个额外的引用实参，令其保存字符出现的次数:</li>
+</ul>
+<h3 id="caonst形参和实参"><a href="#caonst形参和实参" class="headerlink" title="caonst形参和实参"></a>caonst形参和实参</h3><p>和其他初始化过程一样，当用实参初始化形参时会忽略掉顶层const。换句话说，形参的顶层const被忽略掉了。当形参有顶层const时，传给它常量对象或者非常量对象都是可以的。</p>
+<p><code>void fcn ( const int i)&#123;/* fcn能够读取i，但是不能向i写值*/&#125;</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fcn</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> i)</span></span>&#123;<span class="comment">/* fcn能够读取i，但是不能向i写值*/</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fcn</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;<span class="comment">/* ...*/</span> &#125;<span class="comment">//错误:重复定义了fcn(int)</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然函数可以重载，但是上面由于忽略了const，所以时一模一样的。</p>
+<p><strong>指针或引用 形参与const</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//该函数接受一个int对象的引用，然后将对象的值置为0</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reset</span> <span class="params">(<span class="keyword">int</span> &amp;i)</span><span class="comment">//i是传给reset函数的对象的另一个名字</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">i =<span class="number">0</span>;								<span class="comment">//改变了i所引对象的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i =<span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *cp = &amp;i;				<span class="comment">//正确:但是cp不能改变i（参见2.4.2节，第56页)</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;				<span class="comment">//正确:但是r不能改变i（参见2.4.1节，第55 页)</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r2 = <span class="number">42</span>; 			<span class="comment">//正确:（参见2.4.1节，第55页)</span></span><br><span class="line"><span class="keyword">int</span> *p = cp;					<span class="comment">//错误:p的类型和cp 的类型不匹配（参见2.4.2节，第56页)</span></span><br><span class="line"><span class="keyword">int</span> &amp;r3 = r;					<span class="comment">//错误:r3的类型和r的类型不匹配（参见2.4.1节，第55页)</span></span><br><span class="line"><span class="keyword">int</span> &amp;r4 =<span class="number">42</span>;					<span class="comment">//错误:不能用字面值初始化一个非常量引用(参见2.3.1节，第45页)</span></span><br></pre></td></tr></table></figure>
+
+<p>将同样的初始化规则应用到参数传递上可得如下形式:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span> ;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = i;</span><br><span class="line">string : :size_type ctr =<span class="number">0</span> ;<span class="built_in">reset</span> (&amp;i) ;		<span class="comment">//调用形参类型是int*的reset函数</span></span><br><span class="line"><span class="built_in">reset</span> ( &amp;ci) ;									<span class="comment">//错误:不能用指向const int对象的指针初始化int*</span></span><br><span class="line"><span class="built_in">reset</span> (i);										<span class="comment">//调用形参类型是int&amp;的reset函数</span></span><br><span class="line"><span class="built_in">reset</span> (ci);										<span class="comment">//错误:不能把普通引用绑定到const对象ci上</span></span><br><span class="line"><span class="built_in">reset</span> (<span class="number">42</span>);										<span class="comment">//错误:不能把普通应用绑定到字面值上</span></span><br><span class="line"><span class="built_in">reset</span> (ctr) ;									<span class="comment">//错误:类型不匹配，ctr是无符号类型</span></span><br><span class="line"><span class="comment">//正确:find_char的第一个形参是对常量的引用</span></span><br><span class="line"><span class="built_in">find_char</span>( <span class="string">&quot;Hello world ! &quot;</span> , <span class="string">&#x27;o&#x27;</span>, ctr) ;</span><br></pre></td></tr></table></figure>
+
+<p>调用reset只能使用int类型。不能使用字面值、结果为int的表达式。</p>
+<p><strong>尽量使用常量引用</strong></p>
+<p>则尽可能在不需要改变的形参前加const。</p>
+<h3 id="数组形参"><a href="#数组形参" class="headerlink" title="数组形参"></a>数组形参</h3><p>尽管不能以值传递的方式传递数组，但是我们可以把形参写成类似数组的形式://尽管形式不同，但这三个 print函数是等价的</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//每个函数都有一个const int*类型的形参</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>* )</span> </span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> [] )</span></span>; <span class="comment">//可以看出来，函数的意图是作用于一个数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> [<span class="number">10</span>] )</span></span>;<span class="comment">//这里的维度表示我们期望数组含有多少元素，实际不一定</span></span><br></pre></td></tr></table></figure>
+
+<p>因为被转化为指针所以需要一个额外参数记录数组长度。</p>
+<p><strong>使用标准库规范</strong></p>
+<p>也可以使用标准库里的begin指针</p>
+<h3 id="main：处理命令行选项"><a href="#main：处理命令行选项" class="headerlink" title="main：处理命令行选项"></a>main：处理命令行选项</h3><p>main()函数的参数可以是不为空，main()函数中的参数有两个，一个是argc表示数组中元素的个数，一个是char *argv[],表示的是指向一个字符串数组的指针，所以也可以写成char **argv。有参的main()函数可写为main(int argc,char *argv[])。</p>
+<p>当实参传给main()函数时，argv的第一个元素是指向程序的名字或者是一个空字符串，接下来就是将实参传递给形参。最后一个元素是保证是0。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">argv[<span class="number">0</span>] = “test”;</span><br><span class="line">argv[<span class="number">1</span>]= ”-d”;</span><br><span class="line">argv[<span class="number">2</span>]= ”-o”;</span><br><span class="line">argv[<span class="number">3</span>]= ”ofile”;</span><br><span class="line">argv[<span class="number">4</span>]= ”data0”;</span><br><span class="line">argv[<span class="number">5</span>]= ”<span class="number">0</span>”;</span><br></pre></td></tr></table></figure>
+
+<p>这个数组的长度是5，因为argv[]实参是从1开始，argv[0]元素是程序的名字，非用户输入。</p>
+<h3 id="含有可变形参的函数"><a href="#含有可变形参的函数" class="headerlink" title="含有可变形参的函数"></a>含有可变形参的函数</h3><p><strong>initializer_list形参</strong></p>
+<p>如果函数的实参数量未知但是全部实参的类型都相同，我们可以使用initializer_list类型的形参。initializer_list是一种标准库类型，用于表示某种特定类型的值的数组。initializer_list类型定义在同名的头文件中。它的操作与vector相似，不同的时这个的元素永远时常量</p>
+<h2 id="返回类型和return语句"><a href="#返回类型和return语句" class="headerlink" title="返回类型和return语句"></a>返回类型和return语句</h2><h3 id="无返回值函数"><a href="#无返回值函数" class="headerlink" title="无返回值函数"></a>无返回值函数</h3><p>可以使用return退出函数，也可以return 返回一个void的函数。</p>
+<h3 id="有返回值的函数"><a href="#有返回值的函数" class="headerlink" title="有返回值的函数"></a>有返回值的函数</h3><p>该函数必须return一个与函数返回值类型相同的类型，也可以返回一个能隐式转换成返回值类型的类型。</p>
+<p><strong>值是如何被返回</strong></p>
+<p>返回的值是用于初始化调用的一个临时变量。</p>
+<p>如果使用引用作为返回值，则返回的知识一个别名，并不会拷贝对象。</p>
+<p><strong>不要返回局部对象的引用和指针</strong></p>
+<p><strong>引用返回左值</strong></p>
+<p>调用一个返回引用的函数得到左值，其他为右值，常量引用不能赋值。</p>
+<p><strong>列表初始化返回值</strong></p>
+<p>C++11新标准规定，函数可以返回花括号包围的值的列表。类似于其他返回结果，此处的列表也用来对表示函数返回的临时量进行初始化。如果列表为空，临时量执行值初始化，否则，返回的值由函数的返回类型决定。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;string&gt; <span class="title">process</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	<span class="comment">// expected 和actual是string对象</span></span><br><span class="line">	<span class="keyword">if</span> (expected . <span class="built_in">empty</span>())</span><br><span class="line">		<span class="keyword">return</span> &#123;f&#125;;							<span class="comment">//返回一个空vector对象</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (expected -= actual)</span><br><span class="line">		<span class="keyword">return</span> &#123; <span class="string">&quot;functionX&quot;</span> ,<span class="string">&quot;okay&quot;</span> &#125;;		<span class="comment">//返回列表初始化的vector对象</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> &#123; <span class="string">&quot;functionx&quot;</span> ,expected,actual &#125; ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>主函数main的返回值</strong></p>
+<p>之前介绍过，如果函数的返回类型不是void，那么它必须返回一个值。但是这条规则有个例外:我们允许main函数没有return语句直接结束。如果控制到达了main函数的结尾处而且没有return语句，编译器将隐式地插入一条返回0的return语句。</p>
+<p><strong>递归</strong></p>
+<p>指针函数调用自身。main函数不能嗲用自己</p>
+<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><p>因不能拷贝数组，所以可以返回一个数组指针</p>
+<p><strong>声明返回数组指针的函数</strong></p>
+<p><code>Tvpe ( * function (parameter list) )[dimensionl</code></p>
+<p><code>int(* func(int i)) [10];</code><br>可以按照以下的顺序来逐层理解该声明的含义:</p>
+<ul>
+<li><p><code>func(int i)</code>表示调用func函数时需要一个int类型的实参。</p>
+</li>
+<li><p><code>(*func(int i))</code>意味着我们可以对函数调用的结果执行解引用操作。</p>
+</li>
+<li><p><code>(*func(int i) ) [10]</code>表示解引用func的调用将得到一个大小是10的数组。</p>
+</li>
+<li><p><code>int(*func(int i) ) [10]</code>表示数组中的元素是int类型。</p>
+</li>
+</ul>
+<p><strong>使用位置返回类型</strong></p>
+<p>由于这里即使复杂度提升也没有很明显的提升，所以可以使用下面的方法</p>
+<p><strong>使用decltye</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> odd[] =&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>，<span class="number">7</span>,<span class="number">9</span>&#125; ;</span><br><span class="line"><span class="keyword">int</span> even [] = &#123; o ,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span> &#125; ;</span><br><span class="line"><span class="comment">//返回一个指针，该指针指向含有5个整数的数组</span></span><br><span class="line"><span class="keyword">decltype</span> (odd) *<span class="built_in">arrPtr</span>(<span class="keyword">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (i % <span class="number">2</span>)? &amp;odd : &amp;even;		<span class="comment">//返回一个指向数组的指针</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如何要返回指针务必加一个<code>*</code>。</p>
+<h2 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h2><p>如果同一作用域内的几个函数名字相同但形参列表不同，我们称之为重载函数。中我们定义了几个名为print 的函数，main函数不能重载。</p>
+<p><strong>定义重载函数</strong></p>
+<p>对于重载的函数来说，它们应该在形参数量或形参类型上有所不同。在上面的代码中，虽然每个函数都只接受一个参数，但是参数的类型不同。<br>不允许两个函数除了返回类型外其他所有的要素都相同。假设有两个函数，它们的形参列表一样但是返回类型不同，则第二个函数的声明是错误的。</p>
+<p><strong>判断两个形参的类型是否相异</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//每对声明的是同一个函数</span></span><br><span class="line"><span class="function">Record <span class="title">lookup</span> <span class="params">(<span class="keyword">const</span> Account &amp;acct)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span> <span class="params">(<span class="keyword">const</span> Account&amp;)</span></span>;			<span class="comment">//省略了形参的名字</span></span><br><span class="line"><span class="keyword">typedef</span> Phone Telno;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span> <span class="params">(<span class="keyword">const</span> Phone&amp;)</span></span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span> <span class="params">(<span class="keyword">const</span> Telno&amp;)</span></span>;			<span class="comment">//Telno和Phone 的类型相同</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>重载和const形参</strong></p>
+<p>因为顶层const不影响函数的对象，所以顶层const和无const形参无法区分。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">Record <span class="title">lookup</span> <span class="params">(Phone)</span> </span>;</span><br><span class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone)</span></span>;			<span class="comment">//重复声明了Record lookup(Phone)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>const_cast和重载</strong></p>
+<p>可以使用该函数去掉或者加上const，再返回去。</p>
+<p><strong>调用重载的函数</strong></p>
+<p>现在我们需要掌握的是，当调用重载函数时有三种可能的结果:</p>
+<ul>
+<li>编译器找到一个与实参最佳匹配(best match）的函数，并生成调用该函数的代码。</li>
+<li>找不到任何一个函数与调用的实参匹配，此时编译器发出无匹配（no match）的错误信息。</li>
+<li>有多于一个函数可以匹配,但是每一个都不是明显的最佳选择。此时也将发生错误，称为二义性调用( ambiguous call)。</li>
+</ul>
+<h3 id="重载与作用域"><a href="#重载与作用域" class="headerlink" title="重载与作用域"></a>重载与作用域</h3><p>重载对作用域的一般性质并没有什么改变:如果我们在内层作用域中声明名字，它将隐藏外层作用域中声明的同名实体。在不同的作用域中无法重载函数名:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">string read o) ;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="keyword">const</span> string &amp;)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="keyword">double</span>)</span></span>;<span class="number">1</span>/重载print函数<span class="function"><span class="keyword">void</span> <span class="title">fooBar</span><span class="params">(<span class="keyword">int</span> ival)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in"><span class="keyword">bool</span></span>(read= <span class="literal">false</span>; 			<span class="comment">//新作用域:隐藏了外层的read</span></span><br><span class="line">	string s = <span class="built_in">read</span> ( ); 		<span class="comment">//错误:read是一个布尔值，而非函数</span></span><br><span class="line">	<span class="comment">//不好的习惯:通常来说，在局部作用域中声明函数不是一个好的选择</span></span><br><span class="line">	<span class="keyword">void</span> print <span class="keyword">int</span>);			<span class="comment">//新作用域:隐藏了之前的print</span></span><br><span class="line">	<span class="built_in">print</span> (<span class="string">&quot;value: &quot;</span>);			<span class="comment">//错误:print (const string &amp;)被隐藏掉了</span></span><br><span class="line">	<span class="built_in">print</span>(ival);				<span class="comment">//正确:当前print (int)可见</span></span><br><span class="line">	<span class="built_in">print</span> (<span class="number">3.14</span>);				<span class="comment">//正确:调用print(int) ; print (double)被隐藏掉了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++ Primer</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>书籍</tag>
       </tags>
   </entry>
   <entry>

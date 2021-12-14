@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">9</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-12 11:31:40" itemprop="dateModified" datetime="2021-12-12T11:31:40+08:00">2021-12-12</time>
+                <time title="修改时间：2021-12-14 20:44:44" itemprop="dateModified" datetime="2021-12-14T20:44:44+08:00">2021-12-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,56 +259,314 @@
 <p>安装教程: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuqiyun/p/8133904.html">https://www.cnblogs.com/liuqiyun/p/8133904.html</a></p>
 </li>
 <li><p>Git下载:<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
-<p><img src="https://s2.loli.net/2021/12/12/ysxOWvEPJ6GB9Qa.png" alt="image.png"></p>
-<p>蛋装教程，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xueweisuoyong/p/11914045.html">https://www.cnblogs.com/xueweisuoyong/p/11914045.html</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/10/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E4%BA%94%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/%E7%AC%AC%E4%BA%94%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第五章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-13 18:16:15" itemprop="dateModified" datetime="2021-12-13T18:16:15+08:00">2021-12-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/10/%E7%AC%AC%E4%BA%94%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第五章" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><h2 id="简单语句"><a href="#简单语句" class="headerlink" title="简单语句"></a>简单语句</h2><p><strong>空语句</strong></p>
+<p>当某个地方语法上需要，逻辑上不需要，则会使用，且应该加注释标明。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//重复读入数据直至到达文件末尾或某次输入的值等于sought</span></span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; s &amp;&amp;s != sought)</span><br><span class="line">	; <span class="comment">//空语句</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>复合语句</strong></p>
+<p>指用花括号括起来的（可能为空的）语句和声明的序列，复合语句也被称作块(block)。一个块就是一个作用域，在块中引入的名字只能在块内部以及嵌套在块中的子块里访问。通常，名字在有限的区域内可见，该区域从名字定义处开始，到名字所在的（最内层）块的结尾为止，通常在语法上需要一条语句，但逻辑上需要多条语句的使用。</p>
+<p><em>所谓空块，是指内部没有任何语句的一对花括号。空块的作用等价于空语句:</em></p>
+<hr>
+<h2 id="语句作用域"><a href="#语句作用域" class="headerlink" title="语句作用域"></a>语句作用域</h2><p>可以在if、switch、while和 for语句的控制结构内定义变量。定义在控制结构当中的变量只在相应语句的内部可见，一旦语句结束，变量也就超出其作用范围了。</p>
+<hr>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//if else语句的形式是</span></span><br><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">	statement</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">	statement2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>悬垂else</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//错误:实际的执行过程并非像缩进格式显示的那样; else 分支匹配的是内层if语句</span></span><br><span class="line"><span class="keyword">if</span> (grade % <span class="number">10</span> &gt;= <span class="number">3</span>)</span><br><span class="line">	<span class="keyword">if</span>(grade % <span class="number">10</span> &gt;<span class="number">7</span>)</span><br><span class="line">		lettergrade += <span class="string">&#x27;+&#x27;</span>; <span class="comment">//末尾是8或者9的成绩添加一个加号</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	lettergrade += <span class="string">&#x27;-&#x27;</span>;<span class="number">1</span>/末尾是<span class="number">3</span>、<span class="number">4</span>、<span class="number">5</span>、<span class="number">6</span>或者<span class="number">7</span>的成绩添加一个减号!</span><br></pre></td></tr></table></figure>
+
+<p>这里程序将else与内层if匹配，导致错误，加上花括号可避免此问题。</p>
+<h3 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (ch)&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span>:</span><br><span class="line">		++aCnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;e&#x27;</span>:</span><br><span class="line">		++eCnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>break 跳转出switch，case必须是整形常量表达式，一个switch内case不能相同。</p>
+<p><strong>内部控制流</strong></p>
+<p>有时候故意省略break语句，使得程序连续执行多个标签。如：也许我们想统计的是所有元音字母出现的总次数:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> voweICnt =o;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (ch)&#123;</span><br><span class="line">	<span class="comment">//出现了a、e、 i、o或u中的任意一个都会将vowelCnt的值加1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;e&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;i&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;o&#x27;</span> :</span><br><span class="line">	<span class="keyword">case</span> <span class="string">&#x27;u&#x27;</span> :<span class="comment">//也可以不换行，写成case &#x27;a&#x27; : case &#x27;e&#x27; : case &#x27;i&#x27; : case &#x27;o&#x27; : case &#x27;u&#x27; :</span></span><br><span class="line">		++Vowelcnt;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><label stype = "color:red">一般情况不要漏写break，不写需加注释说明。</label></p>
+<p><strong>default标签</strong></p>
+<p>如果没有任何一个case 标签能匹配上 switch 表达式的值，程序将执行紧跟在default 标签(default label）后面的语句。例如，可以增加一个计数值来统计非元音字母的数量，只要在 default分支内不断递增名为otherCnt的变量就可以了。</p>
+<p><strong>内部变量定义</strong></p>
+<p>如果需要为某个case分支定义并初始化一个变量，我们应该把变量定义在块内，从而确保后面的所有case标签都在变量的作用域之外。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="literal">true</span>:&#123;</span><br><span class="line">	<span class="comment">//正确:声明语句位于语句块内部</span></span><br><span class="line">	string file_name = <span class="built_in">get_file_name</span> () ;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="literal">false</span>:</span><br><span class="line">	<span class="keyword">if</span> (file_name . <span class="built_in">empty</span>())<span class="comment">//错误:file_name不在作用域之内</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="迭代语句"><a href="#迭代语句" class="headerlink" title="迭代语句"></a>迭代语句</h2><h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p>当不确定循环多少次时或循环结束后访问循环控制变量</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="comment">//重复读入数据，直至到达文件末尾或者遇到其他输入问题</span></span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; i)</span><br><span class="line">	v.<span class="built_in">push_back</span> (i);</span><br><span class="line"><span class="comment">//寻找第一个负值元素</span></span><br><span class="line"><span class="keyword">auto</span> beg = v.<span class="built_in">begin</span> ( );</span><br><span class="line"><span class="keyword">while</span> (beg != v.<span class="built_in">end</span> () &amp;&amp; *beg &gt;= <span class="number">0</span>)</span><br><span class="line">	++beg;</span><br><span class="line"><span class="keyword">if</span> (beg == v.<span class="built_in">end</span>( ))</span><br><span class="line">	<span class="comment">//此时我们知道v中的所有元素都大于等于0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="传统for语句"><a href="#传统for语句" class="headerlink" title="传统for语句"></a>传统for语句</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-statemen; condition; expression)</span><br><span class="line">	statement</span><br></pre></td></tr></table></figure>
+
+<p><label stype = "color:red">init-statemen指挥执行一次，牢记for语句头中定义的对象只在for循环体内可见。</label></p>
+<p><strong>for语句头中的多重定义</strong></p>
+<p>init-statemen可以定义多个变量，但只能定义一种类型。</p>
+<p><strong>for语句头省略</strong></p>
+<p>for语句头能省略掉init-statement、condition和 expression中的任何一个(或者全部)，但分号必须保留。</p>
+<h3 id="范围for语句"><a href="#范围for语句" class="headerlink" title="范围for语句"></a>范围for语句</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (declaration : expression)</span><br><span class="line">	statement</span><br></pre></td></tr></table></figure>
+
+<h3 id="do-while语句"><a href="#do-while语句" class="headerlink" title="do while语句"></a>do while语句</h3><p>do while语句( do while statement）和 while语句非常相似，唯一的区别是，do while语句先执行循环体后检查··条件。不管条件的值如何，我们都至少执行一次循环。do while语句的语法形式如下所示:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">do</span></span></span><br><span class="line"><span class="function">	statement</span></span><br><span class="line"><span class="function"><span class="title">while</span> <span class="params">(condition)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+<p>do while语句应该在括号包围起来的条件后面用一个分号表示语句结束。</p>
+<p><label stype = "color:red">因为对于do while来说先执行语句或者块，后判断条件，所以不允许在条件部分定义变量。</label></p>
+<hr>
+<h2 id="跳转语句"><a href="#跳转语句" class="headerlink" title="跳转语句"></a>跳转语句</h2><h3 id="break语句"><a href="#break语句" class="headerlink" title="break语句"></a>break语句</h3><p>break语句(break statement）负责终止离它最近的while、do while、for或switch语句，并从这些语句之后的第一条语句开始继续执行。</p>
+<h3 id="continue语句"><a href="#continue语句" class="headerlink" title="continue语句"></a>continue语句</h3><p>continue语句（continue statement）终止最近的循环中的当前迭代并立即开始下一次迭代。continue语句只能出现在 for、while和 do while循环的内部，或者嵌套在此类循环里的语句或块的内部。和 break语句不同的是，只有当switch语句嵌套在迭代语句内部时，才能在 switch里使用continue，它会使程序直接跳出switch，并重新执行switch外的循环。</p>
+<h3 id="goto语句"><a href="#goto语句" class="headerlink" title="goto语句"></a>goto语句</h3><p>不要在程序中使用goto语句，因为它使得程序既难理解又难修改。</p>
+<hr>
+<h2 id="try语句块和异常处理"><a href="#try语句块和异常处理" class="headerlink" title="try语句块和异常处理"></a>try语句块和异常处理</h2><h3 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sales_item item1, item2;</span><br><span class="line">cin &gt;&gt; item1 &gt;&gt; item2;</span><br><span class="line"><span class="comment">//首先检查item1和item2是否表示同一种书籍</span></span><br><span class="line"><span class="keyword">if</span> (item1.<span class="built_in">isbn</span> () == item2 .<span class="built_in">isbn</span> () ) &#123;</span><br><span class="line">	cout &lt;&lt; item1 + item2 &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; <span class="comment">//表示成功</span></span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">	cerr &lt;&lt; <span class="string">&quot;Data must refer to same ISBN&quot;</span> &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> -l; <span class="comment">//表示失败</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在真实的程序中，应该把对象相加的代码和用户交互的代码分离开来。此例中，我们改写程序使得检查完成后不再直接输出一条信息，而是抛出一个异常:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先检查两条数据是否是关于同一种书籍的</span></span><br><span class="line"><span class="keyword">if</span> (item1.<span class="built_in">isbn</span> () != item2 .<span class="built_in">isbn</span> ( ))</span><br><span class="line">	<span class="keyword">throw</span> <span class="built_in">runtime_error</span> ( <span class="string">&quot;Data must refer to same ISBN&quot;</span>);</span><br><span class="line">	<span class="comment">//如果程序执行到了这里，表示两个ISBN是相同的</span></span><br><span class="line">cout &lt;&lt; item1 + item2 &lt;&lt; endl ;</span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，如果ISBN不一样就抛出一个异常，该异常是类型runtime_error的对象。抛出异常将终止当前的函数，并把控制权转移给能处理该异常的代码。</p>
+<h3 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	program-statements</span><br><span class="line">&#125; <span class="built_in"><span class="keyword">catch</span></span> (exception-declaration)&#123;</span><br><span class="line">	handler-statements</span><br><span class="line">&#125; <span class="built_in"><span class="keyword">catch</span></span> (exception-declaration) &#123;</span><br><span class="line">	handler-statements</span><br><span class="line">&#125; <span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>try语句块的一开始是关键字try，随后紧跟着一个块，跟在try 块之后的是一个或多个catch子句。catch子句包括三部分:关键字catch、括号内一个(可能未命名的）对象的声明（称作<strong>异常声明，exception declaration</strong>）以及一个块。当选中了某个catch子句处理异常之后，执行与之对应的块。catch 一旦完成，程序跳转到try语句块最后一个catch子句之后的那条语句继续执行。</p>
+</li>
+<li><p>try语句块中的program-statements组成程序的正常逻辑，像其他任何块一样，program-statements可以有包括声明在内的任意C++语句。一如往常，try语句块内声明的变量在块外部无法访问，特别是在catch子句内也无法访问。</p>
 </li>
 </ul>
-<p>win+r打开运行窗口输入cmd</p>
-<p>在窗口下载Hexo ：输入： npm install hexo-cli -g  </p>
-<p>之后回车，每个空格都不能漏掉！</p>
-<p><img src="https://s2.loli.net/2021/12/12/GhDAEYmnRQyrc8T.png" alt="image.png"></p>
-<h2 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h2><p>接着在刚才的cmd窗口输入以下三个命令，一个一个的输入</p>
-<p>node -v</p>
-<p>npm -v</p>
-<p>git –version</p>
-<p>hexo -v</p>
-<p>只要出来的是版本号就代表安装成功了</p>
-<p><img src="https://s2.loli.net/2021/12/12/OkwVzTdurtLgWsi.png" alt="image.png"></p>
-<h2 id="注册github账号"><a href="#注册github账号" class="headerlink" title="注册github账号"></a>注册github账号</h2><p>注册一个github账号，可以自行百度如何注册，因为账号名字就是以后的网址，所以起的好的一些</p>
-<p>接着点new，建立一个仓库，</p>
-<p><img src="https://s2.loli.net/2021/12/12/ASVpGWXZ6HFaTzB.png" alt="image.png"></p>
-<p>仓库名= 用户名.github.io,公共，底下无所谓</p>
-<p><img src="https://s2.loli.net/2021/12/12/OqJh6Z5tHnVzfx3.png" alt="image.png"></p>
-<p>在任何一个文件夹内右键，点击GIit Bash Here</p>
-<p>输入：ssh-keygen -t rsa -C “邮件地址”</p>
-<p>注意这里粘贴不是ctrl+v，可以右键粘贴，之后连续敲四次回车，间隔一点时间。</p>
-<p>成功之后大概是这样：</p>
-<p><img src="https://s2.loli.net/2021/12/12/MtlkbuqE9BrvFpD.png" alt="image.png"></p>
-<p>C:\ Users \ Administrator \ .ssh 在这个路径下找到.ssh,找不到就在c盘搜一下。</p>
-<p>用记事本打开id_rsa.pub，复制全部内容。</p>
-<p>打开github网站，点击右上角自己的头像旁边的小箭头，点击seting，之后如下</p>
-<p><img src="https://s2.loli.net/2021/12/12/ArjYKODFPVh2exb.png" alt="image.png"></p>
-<p>名称随便输一个，在下面粘贴刚才.ssh找到的内容。</p>
-<p>在GIit Bash Here窗口中测试ssh是否绑定成功，输入：ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a></p>
-<p>输入yes</p>
-<p>出现hi  。。。就成功了。</p>
-<h2 id="生成本地博客"><a href="#生成本地博客" class="headerlink" title="生成本地博客"></a>生成本地博客</h2><p>在电脑的任意一个自己喜欢的位置创建自己的bolg文件夹。</p>
-<p>进入这个文件夹，在里面右键打开GIit Bash Here，安装hexo。输入：hexo init<br>出现 start blogging with Hexo!就代表成功了</p>
-<p>接着要记住下面这两条命令，后面很常用。</p>
-<p>hexo g #生成网站静态文件到默认设置的 public 文件夹。<br>hexo s#启动本地服务器，用于预览主题。默认地址： <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a></p>
-<p>依次输入它们，接着就可以通过这个上面的网址访问本地的博客。</p>
-<h2 id="发布博客到互联网"><a href="#发布博客到互联网" class="headerlink" title="发布博客到互联网"></a>发布博客到互联网</h2><p>在github找到自己的仓库打开，在左上角，依次点击复制你的SSH。</p>
-<p><img src="https://s2.loli.net/2021/12/12/sezBMXH63wDpOPG.png" alt="image.png"></p>
-<p>在自己的博客文件夹中找到_config.yml文件，打开。拉到最后找到deploy。删掉原来的deploy后面的东西输入下面的代码：</p>
-<p>deploy:<br>  type: git<br>  repo: 这里是你刚刚复制的东西。<br>  branch: main</p>
-<p><strong>注意：后有一个空格，且一定要是英文符号</strong></p>
-<p>依然在自己的博客文件夹GIit Bash Here窗口安装hexo-deployer-git自动部署发布工具，输入：npm install hexo-deployer-git –save</p>
-<p>之后绑定你的邮箱和账号，输入：git config user.name “username” 和 git config user.email “email”</p>
-<p>用户名和邮箱都是注册github提到的。</p>
-<h1 id="最后一步"><a href="#最后一步" class="headerlink" title="最后一步"></a>最后一步</h1><p>hexo -g </p>
-<p>hexo -d</p>
-<p>将你的仓库名复制粘贴到浏览器就可以啦！别忘了留下你的网站哦~</p>
+<p><strong>编写处理的代码</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (cin &gt;&gt; item1 &gt;&gt; item2) &#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="comment">//执行添加两个Sales_item对象的代码	</span></span><br><span class="line">		<span class="comment">//如果添加失败，代码抛出一个runtime_error异常</span></span><br><span class="line">		&#125; <span class="built_in"><span class="keyword">catch</span></span> (runtime_error err) &#123;</span><br><span class="line">			<span class="comment">//提醒用户两个ISBN必须一致，询问是否重新输入</span></span><br><span class="line">			cout &lt;&lt; err.<span class="built_in">what</span> () </span><br><span class="line">				 &lt;&lt; <span class="string">&quot;\nTry Again? Enter y or n&quot;</span> &lt;&lt; endl;</span><br><span class="line">			<span class="keyword">char</span> c ;</span><br><span class="line">			cin &gt;&gt; c;</span><br><span class="line">        	<span class="keyword">if</span>(!cin || c== <span class="string">&#x27;n&#x27;</span>) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>那么如果输入书籍不同，则会输出两句话：</p>
+<p>Data must refer to same ISBN</p>
+<p>Try Again? Enter y or n</p>
+<p><strong>函数在寻找处理代码的过程中退出</strong>（*****）<br>在复杂系统中，程序在遇到抛出异常的代码前，其执行路径可能已经经过了多个try语句块。例如，一个try语句块可能调用了包含另一个try语句块的函数，新的try语句块可能调用了包含又一个try语句块的新函数，以此类推。</p>
+<p>寻找处理代码的过程与函数调用链刚好相反。当异常被抛出时，首先搜索抛出该异常的函数。如果没找到匹配的 catch子句，终止该函数，并在调用该函数的函数中继续寻找。如果还是没有找到匹配的 catch子句，这个新的函数也被终止，继续搜索调用它的函数。以此类推，沿着程序的执行路径逐层回退，直到找到适当类型的catch子句为止。</p>
+<p>如果最终还是没能找到任何匹配的 catch子句，程序转到名为terminate的标准库函数。该函数的行为与系统有关，一般情况下，执行该函数将导致程序非正常退出。</p>
+<p>处理复杂异常超出了本书的范围。</p>
+<hr>
+<h3 id="标准异常（-）"><a href="#标准异常（-）" class="headerlink" title="标准异常（*）"></a>标准异常（*）</h3><p>表5.1:<stdexcept>定义的异常类</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">exception</td>
+<td align="center">最常见的问题</td>
+</tr>
+<tr>
+<td align="center">runtime_error</td>
+<td align="center">只有在运行时才能检测出的问题</td>
+</tr>
+<tr>
+<td align="center">range_error</td>
+<td align="center">运行时错误:生成的结果超出了有意义的值域范围</td>
+</tr>
+<tr>
+<td align="center">overflow_error</td>
+<td align="center">运行时错误:计算上溢</td>
+</tr>
+<tr>
+<td align="center">underflow_error</td>
+<td align="center">运行时错误:计算下溢</td>
+</tr>
+<tr>
+<td align="center">logic_error</td>
+<td align="center">程序逻辑错误</td>
+</tr>
+<tr>
+<td align="center">domain_error</td>
+<td align="center">逻辑错误:参数对应的结果值不存在</td>
+</tr>
+<tr>
+<td align="center">invalid_argument</td>
+<td align="center">逻辑错误:无效参数</td>
+</tr>
+<tr>
+<td align="center">length_error</td>
+<td align="center">逻辑错误:试图创建一个超出该类型最大长度的对象</td>
+</tr>
+<tr>
+<td align="center">out_of_range</td>
+<td align="center">逻辑错误:使用一个超出有效范围的值</td>
+</tr>
+</tbody></table>
+<p>我们只能以默认初始化的方式初始化 exception,bad_alloc和 bad _cast对象，不允许为这些对象提供初始值。</p>
+<p>其他异常类型的行为则恰好相反:应该使用string对象或者C风格字符串初始化这些类型的对象，但是不允许使用默认初始化的方式。当创建此类对象时，必须提供初始值，该初始值含有错误相关的信息。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第六章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-14 20:44:23" itemprop="dateModified" datetime="2021-12-14T20:44:23+08:00">2021-12-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第六章" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数基础"><a href="#函数基础" class="headerlink" title="函数基础"></a>函数基础</h2><p>包括返回类型、函数名字、0到多个形参组成的列表及函数体。</p>
+<p>调用运算符来执行函数。函数的调用完成两项工作:一是用实参初始化函数对应的形参，二是将控制权转移给被调用函数。此时，主调函数(calling function)的执行被暂时中断，被调函数（called function)开始执行。</p>
+<p><strong>形参和实参</strong></p>
+<p>形参和实参数量类型顺序必须一一对应。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -925,7 +1183,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
