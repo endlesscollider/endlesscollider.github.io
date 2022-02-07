@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -190,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/01/06/%E7%AC%AC%E5%8D%81%E7%AB%A0/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -204,7 +204,111 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/06/%E7%AC%AC%E5%8D%81%E7%AB%A0/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">C++ Primer文本查询程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-07 00:00:00 / 修改时间：23:10:36" itemprop="dateCreated datePublished" datetime="2022-02-07T00:00:00+08:00">2022-02-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer文本查询程序" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​        此为C++ Primer中第十二章中的一个文本查询程序，我想通过自己的分析来很假透彻的理解整个程序的设计，于是将此节单独作为一章重点去看：</p>
+<h1 id="文本查询程序"><a href="#文本查询程序" class="headerlink" title="文本查询程序"></a>文本查询程序</h1><h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><ul>
+<li>当程序读取输入文件时，它必须记住单词出现的每一行。因此，程序需要逐行读取输入文件，并将每一行分解为独立的单词</li>
+<li>当程序生成输出时，<ul>
+<li>它必须能提取每个单词所关联的行号</li>
+<li>行号必须按升序出现且无重复</li>
+<li>它必须能打印给定行号中的文本。</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>当输入element时，得到的是：</p>
+<p><img src="https://s2.loli.net/2022/02/07/7ANskrKFnG3qV1o.png" alt="image.png"></p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>​        首先看这里我认为最重要一个对应关系，单词→行号。每一个单词都有n行与之对应，那么容易想到的方法是用容器将每个单词的行号记录下来，由于每个行号只出现一次且需要升序排列，所以最优解就是使用set容器，接着如何实现通过行号找到那一行文字呢？我们可以想到使用<code>vector&lt;string&gt;</code>按行号保存文本。此外使用一个map可以将单词与它对应的set容器绑定起来，就可以实现，单词对应行号，行号对应文本。</p>
+<p>​        还有一个问题是：如何建立起这个map和set，我们定义一个函数，命名为istringstream，思路大致是从vector<string>读取每个元素（每行文本），访问每个单词前首先判断map中没有这个单词，如果有：就将对应的set中加入这一次遍历的下标（即行号），如果没有：就创建一个set，并将单词与set加入map中。</p>
+<h3 id="大致的类"><a href="#大致的类" class="headerlink" title="大致的类"></a>大致的类</h3><p>​        我们需要将这些结构与操作串联起来，从定义一个保存输入文件的类开始，将类命名为TextQuery，它包含一个vector和一个map。我们用这个类来构造vector和map，并且执行查询操作。</p>
+<p>​        之后如果我们查到了到底要返回什么呢，返回那么一大串的东西最好的方法就是定义另一个类，这个类内应该有一个打印操作。我们将它命名为QueryResult。</p>
+<h3 id="类之间的数据共享"><a href="#类之间的数据共享" class="headerlink" title="类之间的数据共享"></a>类之间的数据共享</h3><p>​        再仔细看一下这个QueryResult类，由于我们必须要返回文本，所以要用到提到过的保存整个文本的vector，然而它是第一类的成员，我们拷贝一份貌似没有必要，因为我们只需要调用其中很小的一部分，这样会造成大量的浪费，那么使用一个类内的迭代器（或指针）可以嘛？答案也是不行，因为如果第一个类再第二个类之前销毁，那么打印操作就会访问一个不存在的对象中的数据。最好的办法就是使用我们”最牛逼“的shared_ptr来反映数据结构中的共享关系。</p>
+<h3 id="设计类之前先使用类"><a href="#设计类之前先使用类" class="headerlink" title="设计类之前先使用类"></a>设计类之前先使用类</h3><p>​        当我们设计一个类时，在真正实现成员之前先编写程序使用这个类，是一种非常有用的方法。通过这种方法，可以看到类是否具有我们所需要的操作。例如，下面的程序使用了TextQuery和 QueryResult类。这个函数接受一个指向要处理的文件的ifstream，并与用户交互，打印给定单词的查询结果</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runQueries</span><span class="params">(ifstream &amp;infile)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//infile是一个ifstream，指向我们要处理的文件</span></span><br><span class="line">	<span class="function">TextQuery <span class="title">tq</span><span class="params">(infile)</span></span>; 	<span class="comment">//保存文件并建立查询map</span></span><br><span class="line">	<span class="comment">//与用户交互:提示用户输入要查询的单词，完成查询并打印结果</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;enter word to look for, or q to quit: &quot;</span>;</span><br><span class="line">		string s;</span><br><span class="line">		<span class="comment">//若遇到文件尾或用户输入了&#x27;q&#x27;时循环终止</span></span><br><span class="line">		<span class="keyword">if</span>(!(cin &gt;&gt; s) || s == <span class="string">&quot;q&quot;</span>) <span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//指向查询并打印结果</span></span><br><span class="line">		<span class="built_in">print</span>(cout, tq.<span class="built_in">query</span>(s)) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="类的定义"><a href="#类的定义" class="headerlink" title="类的定义"></a>类的定义</h2><h3 id="TextQuery框架"><a href="#TextQuery框架" class="headerlink" title="TextQuery框架"></a>TextQuery框架</h3><p>​        首先是TextQuery，用用户提供的一个istream读取文件，类中应该还有query操作，接受string，返回QueryResult表示string出现的行。我们创建一个头文件命名为textquery，在其中输入：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEXTQUERY_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEXTQUERY_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::shared_ptr;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryResult</span>;</span><span class="comment">// 为了定义函数query的返回类型，这个定义是必需的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TextQuery</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//简化行下标</span></span><br><span class="line">	<span class="keyword">using</span> line_no = vector&lt;string&gt;::size_type;</span><br><span class="line">	<span class="comment">//通过用户提供的文本的构造函数</span></span><br><span class="line">	<span class="built_in">TextQuery</span>(std::ifstream&amp;);</span><br><span class="line">	<span class="comment">//返回查询结果的函数，由于只是查询所以应该加上const</span></span><br><span class="line">	<span class="function">QueryResult <span class="title">query</span><span class="params">(<span class="keyword">const</span> string&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//输入的文件</span></span><br><span class="line">	shared_ptr&lt;vector&lt;string&gt;&gt; file;</span><br><span class="line">	<span class="comment">//每个单词到它所在的行号的集合的映射</span></span><br><span class="line">	std::map&lt;string, shared_ptr&lt;std::set&lt;line_no&gt;&gt;&gt; wm;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​        至于这里为什么出现这么多的std，而不是直接引入整个命名空间：在头文件这样做是非常危险的，由于C++头文件通常与源文件分开存放，对于不知道这个头文件里有什么的用户来说，使用这个头文件就有可能会导致很多的命名冲突。这里建议在任何文件中都不要这样做。</p>
+<h3 id="QueryResult框架"><a href="#QueryResult框架" class="headerlink" title="QueryResult框架"></a>QueryResult框架</h3><p>​        QueryResult类有三个数据成员：一个string，保存查询单词：一个shared_ptr，指向保存输入文件的vector；一个shared ptr，指向保存单词出现行号的set。它唯一的一个成员函数是一个构造函数，初始化这三个数据成员。在刚才的类之后，紧接着写入以下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryResult</span> &#123;</span></span><br><span class="line">    <span class="comment">//将ostream声明为友元函数，之后用来打印结果</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> std::ostream&amp; <span class="title">print</span><span class="params">(std::ostream&amp;, <span class="keyword">const</span> QueryResult&amp;)</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//构造函数</span></span><br><span class="line">	<span class="built_in">QueryResult</span>(string s,</span><br><span class="line">		shared_ptr&lt;set&lt;TextQuery::line_no&gt;&gt;p,</span><br><span class="line">		shared_ptr&lt;vector&lt;string&gt;&gt; f) :</span><br><span class="line">		<span class="built_in">sought</span>(s), <span class="built_in">lines</span>(p), <span class="built_in">file</span>(f) &#123;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	string sought; 							<span class="comment">// 查询单词</span></span><br><span class="line">	shared_ptr&lt;set&lt;TextQuery::line_no&gt;&gt; lines;<span class="comment">//出现的行号</span></span><br><span class="line">	shared_ptr&lt;vector&lt;string&gt;&gt; file;		 <span class="comment">//输入文件</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里为什么不在TextQuery类之前那里写呢？因为这个类中我们用到了TextQuery中的line_no，这两个类其实是你中有我，我中有你的关系，所以我们在开头需要一个声明，在之后去定义他。</p>
+<h3 id="TextQuery构造函数"><a href="#TextQuery构造函数" class="headerlink" title="TextQuery构造函数"></a>TextQuery构造函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取输入文件并建立单词到行号的映射</span></span><br><span class="line">TextQuery::<span class="built_in">TextQuery</span>(ifstream &amp;is): <span class="built_in">file</span> (<span class="keyword">new</span> vector&lt;string&gt;)</span><br><span class="line">&#123;</span><br><span class="line">	string text;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">getline</span>(is, text))	&#123;		<span class="comment">//对文件中每一行</span></span><br><span class="line">		file-&gt;<span class="built_in">push_back</span>(text);			<span class="comment">//保存此行文本</span></span><br><span class="line">		<span class="keyword">int</span> n = file-&gt;<span class="built_in">size</span>() - l;		<span class="comment">//当前行号</span></span><br><span class="line">		<span class="function">istringstream <span class="title">line</span><span class="params">(text)</span></span>;		<span class="comment">//将行文本分解为单词</span></span><br><span class="line">		string word;</span><br><span class="line">		<span class="keyword">while</span> (line &gt;&gt; word) &#123;			<span class="comment">//对行中每个单词</span></span><br><span class="line">			<span class="comment">//如果单词不在 wm 中，以之为下标在wm中添加一项</span></span><br><span class="line">			<span class="keyword">auto</span> &amp;lines = wm [ word];	<span class="comment">// lines是一个shared _ptr</span></span><br><span class="line">			<span class="keyword">if</span> (!lines)				   <span class="comment">//在我们第一次遇到这个单词时，此指针为空</span></span><br><span class="line">				lines.<span class="built_in">reset</span>(<span class="keyword">new</span> set&lt;line_no&gt;); <span class="comment">//分配一个新的set</span></span><br><span class="line">            lines-&gt;<span class="built_in">insert</span>(n);			<span class="comment">//将此行号插入set中</span></span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/01/23/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/23/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第十二章</a>
         </h2>
 
         <div class="post-meta">
@@ -214,18 +318,504 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-06 20:24:37" itemprop="dateCreated datePublished" datetime="2022-01-06T20:24:37+08:00">2022-01-06</time>
+              <time title="创建时间：2022-01-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-23T00:00:00+08:00">2022-01-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-10 20:09:59" itemprop="dateModified" datetime="2022-01-10T20:09:59+08:00">2022-01-10</time>
+                <time title="修改时间：2022-02-07 23:11:54" itemprop="dateModified" datetime="2022-02-07T23:11:54+08:00">2022-02-07</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
 
           
-            <span id="/2022/01/06/%E7%AC%AC%E5%8D%81%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/01/23/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第十二章" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="动态内存"><a href="#动态内存" class="headerlink" title="动态内存"></a>动态内存</h1><p>我们的程序到目前为止只使用过静态内存或栈内存。静态内存用来保存局部static对象（就是局部对象加上static）、类static数据成员以及定义在任何函数之外的变量。栈内存用来保存定义在函数内的非static对象。分配在静态或栈内存中的对象由编译器自动创建和销毁。对于栈对象，在其定义的程序块运行时才存在: static 对象在使用之前分配，在程序结束时销毁。</p>
+<p>除了静态内存和栈内存，每个程序还拥有一个内存池。这部分内存被称作自由空间( free store)或堆(heap)。程序用堆来存储动态分配(dynamically allocate)的对象一即，那些在程序运行时分配的对象。动态对象的生存期由程序来控制，也就是说，当动态对象不再使用时，我们的代码必须显式地销毁它们。</p>
+<h2 id="动态内存与智能指针"><a href="#动态内存与智能指针" class="headerlink" title="动态内存与智能指针"></a>动态内存与智能指针</h2><p>在C++中，动态内存的管理是通过一对运算符来完成的: <strong>new</strong>，在动态内存中为对象分配空间并返回一个指向该对象的指针，我们可以选择对对象进行初始化; <strong>delete</strong>, 接受一个动态对象的指针，销毁该对象，并释放与之关联的内存。</p>
+<p>新标准提供了两个智能指针类型类管理动态对象。他们行为类似常规指针，却可以自动的释放锁指向的对象，这两种指针的区别在于管理底层指针的方式：</p>
+<p><strong>shared_ ptr</strong>允许多个指针指向同-一个对象; <strong>unique_ ptr</strong>则“独占”所指向的对象。标准库还定义了一个名为<strong>weak_ ptr</strong>的伴随类，它是一种弱引用，指向shared_ ptr所管理的对象。这三种类型都定义在memory头文件中。</p>
+<h3 id="shared-ptr类"><a href="#shared-ptr类" class="headerlink" title="shared_ptr类"></a>shared_ptr类</h3><p>创建时我们也需要提供指向的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt; p1;				<span class="comment">// shared_ _ptr, 可以指向string</span></span><br><span class="line">shared_ptr&lt;list&lt;<span class="keyword">int</span>&gt;&gt; p2;			<span class="comment">// shared_ ptr， 可以指向int的list</span></span><br></pre></td></tr></table></figure>
+
+<p>默认初始化的指针中保存着一个空指针，</p>
+<p>智能之后着呢使用方式与普通指针类似，解引用返回指向的对象，在if使用，是检测它是否为空：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果p1不为空，检查它是否指向一个空string</span></span><br><span class="line"><span class="keyword">if</span> (p1 &amp;&amp; pl-&gt;<span class="built_in">empty</span>())</span><br><span class="line">	*p1 = <span class="string">&quot;hi&quot;</span>; 			<span class="comment">//如果p1指向一个空string,解引用p1,将一个新值赋予string</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/01/27/QGMjaLHzpiNKeFV.png" alt="image.png"></p>
+<p><img src="https://s2.loli.net/2022/01/27/UYdeStwyJBpqVKG.png" alt="image.png"></p>
+<h4 id="make-shared函数"><a href="#make-shared函数" class="headerlink" title="make_shared函数"></a>make_shared函数</h4><p>他是最安全的分配和使用动态内存的方法，函数在动态内存中分配一个对象并初始化它，返回指向此对象的shared_ptr，一样要给出创建对象类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指向一个值为42的int的shared_ ptr</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p3 = make_shared&lt;<span class="keyword">int</span>&gt; (<span class="number">42</span>) ;</span><br><span class="line"><span class="comment">// p4指向一个值为&quot;999999999&quot;的string</span></span><br><span class="line">shared_ptr&lt;string&gt; p4 = make_shared&lt;string&gt;(<span class="number">10</span>， <span class="string">&#x27;9&#x27;</span>) ;</span><br><span class="line"><span class="comment">// p5指向一个值初始化的(参见3.3.1节，第88页)int,即，值为0</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p5 = make_shared&lt;<span class="keyword">int</span>&gt;() ;</span><br></pre></td></tr></table></figure>
+
+<p>通常使用auto来指向它</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// p6指向一个动态分配的空vector&lt;string&gt;</span></span><br><span class="line"><span class="keyword">auto</span> p6 = make_shared&lt;vector&lt;string&gt;&gt;() ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="shared-ptr拷贝和赋值"><a href="#shared-ptr拷贝和赋值" class="headerlink" title="shared_ptr拷贝和赋值"></a>shared_ptr拷贝和赋值</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = make shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>); <span class="comment">// p指向的对象只有p一个引用者</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">q</span><span class="params">(p)</span></span>; <span class="comment">// p和q指向相同对象，此对象有两个引用者</span></span><br></pre></td></tr></table></figure>
+
+<p>每一个shared_ptr都会有一个关联的计数器，为引用计数。拷贝一个shared_ptr、作为参数传递给函数或者作为返回值就会递增，给shared_ptr赋予新值或者它被销毁计数器会递减。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> r = make_ shared&lt;<span class="keyword">int</span>&gt;(<span class="number">42</span>); <span class="comment">// r指向的int只有一个引用者</span></span><br><span class="line">r = q;	<span class="comment">//给r赋值，令它指向另一个地址</span></span><br><span class="line">		<span class="comment">//递增q指向的对象的引用计数</span></span><br><span class="line">		<span class="comment">//递减r原来指向的对象的引用计数</span></span><br><span class="line">		<span class="comment">// r原来指向的对象已没有引用者，会自动释放</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="shared-ptr销毁管理对象"><a href="#shared-ptr销毁管理对象" class="headerlink" title="shared_ptr销毁管理对象"></a>shared_ptr销毁管理对象</h4><p>当指向一个对象的最后一个智能指针被销毁，指针的析构函数会递减指向对象的析构函数的引用计数，计数为0，指针的析构函数会销毁对象，释放内存。</p>
+<p>且动态对象不再被使用时，shared_ptr类会自动的释放对象，特性使得动态内存的使用变得容易，例如在函数创建智能指针在离开作用域后会自动的释放掉</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// factory 返回一个shared_ ptr, 指向一个动态分配的对象</span></span><br><span class="line"><span class="function">shared_ptr&lt;Foo&gt; <span class="title">factory</span><span class="params">(T arg)</span></span></span><br><span class="line"><span class="function">	<span class="comment">//恰当地处理arg</span></span></span><br><span class="line"><span class="function">	<span class="comment">// shared_ ptr负责释放内存</span></span></span><br><span class="line"><span class="function">	<span class="keyword">return</span> make_shared&lt;Foo&gt; <span class="params">(arg)</span> </span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">use_factory</span><span class="params">(T arg)</span></span></span><br><span class="line"><span class="function">	shared_ptr&lt;Foo&gt; P </span>= <span class="built_in">factory</span>(arg) ;</span><br><span class="line">	<span class="comment">//使用p</span></span><br><span class="line">&#125; 	<span class="comment">// p离开了作用城，它指向的内存会被自动释放掉</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用了动态生存期的资源的类"><a href="#使用了动态生存期的资源的类" class="headerlink" title="使用了动态生存期的资源的类"></a>使用了动态生存期的资源的类</h4><p>程序使用动态内存出于以下三种原因之一:</p>
+<ol>
+<li>程序不知道自己需要使用多少对象</li>
+<li>程序不知道所需对象的准确类型</li>
+<li>程序需要在多个对象间共享数据</li>
+</ol>
+<p>目前使用的类分配资源都与对应对象生存期一致。例如每个vector拥有自己的元素，当拷贝一个vector时，原vector和副本vector是相互分离的。</p>
+<p>如果我们希望有一个类，当它进行拷贝时，不是拷贝其中成员，而是不同对象之间共享相同的元素。所以当两个对象共享底层数据，当其中一个被销毁，我们不能单方面的销毁底层数据：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Blob&lt;string&gt; bl; <span class="comment">// 空Blob</span></span><br><span class="line">&#123; 	<span class="comment">//新作用域</span></span><br><span class="line">	Blob&lt;string&gt; b2 = &#123;<span class="string">&quot;a&quot;</span>, <span class="string">&quot;an&quot;</span>, <span class="string">&quot;the&quot;</span>&#125;;</span><br><span class="line">	bl = b2;<span class="comment">//bl和b2共享相同的元素</span></span><br><span class="line">&#125; 	<span class="comment">// b2被销毁了，但b2中的元素不能销毁</span></span><br><span class="line">	<span class="comment">// bl指向最初由b2创建的元素</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="定义StrBlob"><a href="#定义StrBlob" class="headerlink" title="定义StrBlob"></a>定义StrBlob</h4><p>这里想要实现一个StrBlob类管理string元素，如果我们在类内直接使用一个vector来保存元素，那么当多个对象中的一个被销毁时就会把底层vector销毁，所以这里使用vector保存在动态内存中。</p>
+<p>为了实现数据共享，我们为StrBlob设置一个shared_ptr来管理动态内存分配的vector。该指针可以记录有多少个StrBlob共享相同的vector。</p>
+<p>还需要提供一些操作，当访问一个不存在的元素，会抛出异常，且有一个默认构造和单一构造：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrB1ob</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> std::vector&lt;std::string&gt;::size_type size_type;</span><br><span class="line">	<span class="built_in">StrBlob</span>() ;</span><br><span class="line">	<span class="built_in">StrBlob</span>(std::initializer_list&lt;std::string&gt; il) ;</span><br><span class="line">	<span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;<span class="built_in">size</span>(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> data-&gt;<span class="built_in">empty</span>() ; &#125;</span><br><span class="line">	<span class="comment">//添加和删除元素</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">push_back</span> <span class="params">(<span class="keyword">const</span> std: :string &amp;t)</span> </span>&#123;data-&gt;<span class="function">push_ <span class="title">back</span><span class="params">(t)</span></span>; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span> </span>;</span><br><span class="line">	<span class="comment">//元素访问</span></span><br><span class="line">	<span class="function">std::string&amp; <span class="title">front</span> <span class="params">()</span> </span>;</span><br><span class="line">	<span class="function">std::string&amp; <span class="title">back</span><span class="params">()</span> </span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	std::shared_ptr&lt;std::vector&lt;std::string&gt;&gt; data;</span><br><span class="line">	<span class="comment">//如果data[i]不合法，抛出一个异常</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">check</span><span class="params">(size_type i, <span class="keyword">const</span> std::string &amp;msg)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="StrBlob构造函数"><a href="#StrBlob构造函数" class="headerlink" title="StrBlob构造函数"></a>StrBlob构造函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">StrBlob::<span class="built_in">StrB1ob</span> (): <span class="built_in">data</span> (make_shared&lt;vector&lt;string&gt;&gt;()) &#123; &#125;</span><br><span class="line">StrBlob::<span class="built_in">StrBlob</span> (initializer_list&lt;string&gt; il) :</span><br><span class="line"><span class="built_in">data</span> (make_shared&lt;vector&lt;string&gt;&gt;(il)) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="元素访问成员函数"><a href="#元素访问成员函数" class="headerlink" title="元素访问成员函数"></a>元素访问成员函数</h4><p>由于操作访问函数需要先检查存不存在，所以定义一个私有的工具函数check：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrBlob::check</span><span class="params">(size_type i, <span class="keyword">const</span> string &amp;msg)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	<span class="title">if</span> <span class="params">(i &gt;= data-&gt;size())</span>	</span></span><br><span class="line"><span class="function">	<span class="keyword">throw</span> <span class="title">out_of_range</span><span class="params">(msg)</span> </span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他操作首先调用check，如成功则继续下一步：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string&amp; <span class="title">StrBlob::front</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//如果vector为空，check 会抛出一个异常</span></span><br><span class="line">	<span class="built_in">check</span>(<span class="number">0</span>，<span class="string">&quot;front on empty StrB1ob&quot;</span>) ;</span><br><span class="line">	<span class="keyword">return</span> data-&gt;<span class="built_in">front</span> () ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">string&amp; <span class="title">StrBlob::back</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">check</span>(<span class="number">0</span>，<span class="string">&quot;back on empty StrB1ob&quot;</span>) ;</span><br><span class="line">	<span class="keyword">return</span> data-&gt;<span class="built_in">back</span>() ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StrBlob::pop_back</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">check</span>(<span class="number">0</span>, <span class="string">&quot;pop_back on empty StrBlob&quot;</span>) ;</span><br><span class="line">	data-&gt;<span class="built_in">pop_back</span>() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后还应对front和back的const版本进行重载：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> string&amp; <span class="title">StrBlob::front</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//如果vector为空，check 会抛出一个异常</span></span><br><span class="line">	<span class="built_in">check</span>(<span class="number">0</span>，<span class="string">&quot;front on empty StrB1ob&quot;</span>) ;</span><br><span class="line">	<span class="keyword">return</span> data-&gt;<span class="built_in">front</span> () ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">const</span> string&amp; <span class="title">StrBlob::back</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">check</span>(<span class="number">0</span>，<span class="string">&quot;back on empty StrB1ob&quot;</span>) ;</span><br><span class="line">	<span class="keyword">return</span> data-&gt;<span class="built_in">back</span>() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="StrBlob的拷贝、赋值和销毁"><a href="#StrBlob的拷贝、赋值和销毁" class="headerlink" title="StrBlob的拷贝、赋值和销毁"></a>StrBlob的拷贝、赋值和销毁</h4><p>该类型对象被拷贝’赋值或者销毁时，执行相应操作的是shared_ptr成员而不是vector，直到最后一个指向vector的指针对象被销毁。</p>
+<h3 id="直接管理内存"><a href="#直接管理内存" class="headerlink" title="直接管理内存"></a>直接管理内存</h3><p>还可以使用new和delete来分配内存，但非常容出错。</p>
+<h4 id="使用new动态分配内存和初始化对象"><a href="#使用new动态分配内存和初始化对象" class="headerlink" title="使用new动态分配内存和初始化对象"></a>使用new动态分配内存和初始化对象</h4><p>new分配的内存是无名的，返回一个指向该对象的指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">int</span>; 			<span class="comment">// pi指向一个动态分配的、未初始化的无名对象</span></span><br><span class="line"><span class="comment">// 默认情况下，动态分配内存是默认初始化的，意味着内置类型或组合类型的值是未定义的。</span></span><br><span class="line">string *ps = <span class="keyword">new</span> string; 	<span class="comment">//初始化为空string</span></span><br><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">int</span>;			<span class="comment">// pi指向一个未初始化的int</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以使用列表初始化，或值初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">1024</span>);			<span class="comment">// pi指向的对象的值为1024</span></span><br><span class="line">string *ps = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="number">10</span>， <span class="string">&#x27;9&#x27;</span>);	<span class="comment">// *ps 为&quot;999999999&quot;</span></span><br><span class="line"><span class="comment">// vector 有10个元素，值依次从0到9</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; *pv = <span class="keyword">new</span> vector&lt;<span class="keyword">int</span>&gt;&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;;</span><br><span class="line">string *ps1 = <span class="keyword">new</span> string;			<span class="comment">//默认初始化为空string</span></span><br><span class="line">string *ps = <span class="keyword">new</span> <span class="built_in">string</span>() ;			<span class="comment">//值初始化为空string</span></span><br><span class="line"><span class="keyword">int</span> *pil = <span class="keyword">new</span> <span class="keyword">int</span>;					<span class="comment">//默认初始化; *pi1 的值未定义</span></span><br><span class="line"><span class="keyword">int</span> *pi2 = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>();					<span class="comment">//值初始化为0; *pi2为0</span></span><br></pre></td></tr></table></figure>
+
+<p>建议对动态分配的对象进行初始化操作。</p>
+<p>如果提供了一个括号包围的初始化器，可以使用auto自动接管动态内存，但括号内必须仅有单一初始化器才可以使用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p1 = <span class="keyword">new</span> <span class="built_in"><span class="keyword">auto</span></span> (obj) ;				<span class="comment">// p指向一个与obj类型相同的对象</span></span><br><span class="line"><span class="comment">//该对象用obj进行初始化</span></span><br><span class="line"><span class="keyword">auto</span> p2 = <span class="keyword">new</span> <span class="keyword">auto</span>&#123;a,b,c&#125; ;				<span class="comment">// 错误:括号中只能有单个初始化器</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="动态分配const对象"><a href="#动态分配const对象" class="headerlink" title="动态分配const对象"></a>动态分配const对象</h4><p>一个动态内存的const对象必须进行初始化，对于一个定义了默认构造函数的类类型，其const动态对象可以隐式初始化，而其他类型的对象就必须显示初始化。new返回的也是一个const指针。</p>
+<h4 id="内存耗尽"><a href="#内存耗尽" class="headerlink" title="内存耗尽"></a>内存耗尽</h4><p>当程序用光了所有可用内存，new就会失败，会抛出一个bad_alloc的异常，可以改变new的方式来阻止异常：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果分配失败，new返回一个空指针</span></span><br><span class="line"><span class="keyword">int</span> *p1 = <span class="keyword">new</span> <span class="keyword">int</span>; <span class="comment">//如果分配失败，new抛出std::bad_alloc</span></span><br><span class="line"><span class="keyword">int</span> *p2 = <span class="built_in"><span class="keyword">new</span></span> (nothrow) <span class="keyword">int</span>; <span class="comment">//如果分配失败，new返回一个空指针</span></span><br></pre></td></tr></table></figure>
+
+<p>这种new为<strong>定位new</strong>，这种形式允许我们传递额外参数，nothow就是告诉它不能抛出异常。以上类型都在头文件new中。</p>
+<h4 id="释放动态内存"><a href="#释放动态内存" class="headerlink" title="释放动态内存"></a>释放动态内存</h4><p>我们使用delete来释放内存：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> p; <span class="comment">// p必须指向一个动态分配的对象或是一个空指针</span></span><br></pre></td></tr></table></figure>
+
+<p>但传递给delete的指针必须是指向动态分配的内存或空指针，其他行为是未定义的。</p>
+<p>const对象的值不能被改变，但是本身可以销毁，同样delete指向它的指针。</p>
+<h4 id="动态对象的生存期直到被释放时为止"><a href="#动态对象的生存期直到被释放时为止" class="headerlink" title="动态对象的生存期直到被释放时为止"></a>动态对象的生存期直到被释放时为止</h4><p>如果不使用智能指针，那么必须显示的释放它。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// factory 返回一个指针，指向一个动态分配的对象</span></span><br><span class="line"><span class="function">Foo* <span class="title">factory</span><span class="params">(T arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//视情况处理arg</span></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Foo</span>(arg);	 <span class="comment">// 调用者负责释放此内存</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">use_factory</span><span class="params">(T arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Foo *p = <span class="built_in">factory</span>(arg) ;	<span class="comment">//使用p但不delete它</span></span><br><span class="line">&#125;<span class="comment">//p离开了它的作用域，但它所指向的内存没有被释放!</span></span><br></pre></td></tr></table></figure>
+
+<p>所以必须在use_factory中delete掉这个p，或者return出去让外部释放。</p>
+<p><em>坚持使用智能指针，避免所有这些问题。</em></p>
+<h4 id="delete之后重置指针"><a href="#delete之后重置指针" class="headerlink" title="delete之后重置指针"></a>delete之后重置指针</h4><p>delete指针之后，指针值就无效了，虽然指针已经无效，但有些仍保存着地址，为<strong>空悬指针</strong>：即指向一块曾经保存数据对象但现在已经无效的内存指针。</p>
+<p>它和未初始化指针很像，解决办法是，在指针即将离开其作用域之前释放它所关联的内存，这样没有机会继续使用，也可以在delete之后给其赋值为nullptr。</p>
+<h3 id="shared-ptr和new结合使用"><a href="#shared-ptr和new结合使用" class="headerlink" title="shared_ptr和new结合使用"></a>shared_ptr和new结合使用</h3><p>我们可以用new返回的指针来初始化智能指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">double</span>&gt; p1; 			<span class="comment">//shared_ ptr可以指向一个double</span></span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span> <span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>; 	<span class="comment">//p2指向一个值为42的int</span></span><br></pre></td></tr></table></figure>
+
+<p>接受参数的智能指针是explicit的，因此我们不能将一个内置指针隐式转换为智能指针，必须使用直接初始化形式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; p1 = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span> (<span class="number">1024</span>);		<span class="comment">// 错误:必须使用直接初始化形式</span></span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span> <span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">1024</span>))</span></span>;			<span class="comment">// 正确:使用了直接初始化形式</span></span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span> <span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(p) ; <span class="comment">// 错误:隐式转换为shared ptr&lt;int&gt;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">shared_ ptr&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> shared_ ptr&lt;<span class="keyword">int</span>&gt; (<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(p)) ;<span class="comment">//正确:显式地用int*创建shared_ ptr&lt;int&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="不可混用普通与智能指针"><a href="#不可混用普通与智能指针" class="headerlink" title="不可混用普通与智能指针"></a>不可混用普通与智能指针</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">x</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span> (<span class="number">1024</span>))</span> </span>;</span><br><span class="line"><span class="comment">//危险: x是一个普通指针，不是一个智能指针</span></span><br><span class="line"><span class="built_in">process</span>(x); <span class="comment">//错误:不能将int*转换为一个shared_ ptr&lt;int&gt;</span></span><br><span class="line"><span class="built_in">process</span>(shared_ptr&lt;<span class="keyword">int</span>&gt;(x)); <span class="comment">// 合法的，但内存会被释放!</span></span><br><span class="line"><span class="keyword">int</span> j = *x;<span class="comment">//未定义的:x是一个空悬指针!</span></span><br></pre></td></tr></table></figure>
+
+<p>将临时的shared_ptr传递给函数，在调用结束后就会被销毁，则x变为空悬指针。</p>
+<p>当将一个shared_ptr绑定到一个 普通指针时，我们就将内存的管理责任交给了这个shared_ptr.-旦这样做了 ，我们就不应该再使用内置指针来访问shared__ptr所指向的内存了。</p>
+<h4 id="也不要使用get初始化另一个智能指针或者为智能指针赋值"><a href="#也不要使用get初始化另一个智能指针或者为智能指针赋值" class="headerlink" title="也不要使用get初始化另一个智能指针或者为智能指针赋值"></a>也不要使用get初始化另一个智能指针或者为智能指针赋值</h4><p>智能指针定义了名为get的函数，返回一个内置指针，指向智能指针管理的对象。此函数是为了这样一种情况二设计的：是为了不能使用智能指针的代码使用，但此指针不能delete。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>; <span class="comment">//引用计数为1</span></span><br><span class="line"><span class="keyword">int</span> *q = p.<span class="built_in">get</span>(); <span class="comment">//正确:但使用q时要注意，不要让它管理的指针被释放</span></span><br><span class="line">&#123; <span class="comment">//新程序块</span></span><br><span class="line"><span class="comment">//未定义:两个独立的shared_ptr指向相同的内存</span></span><br><span class="line">shared_ptr&lt;<span class="keyword">int</span>&gt; (q) ;</span><br><span class="line">&#125; <span class="comment">//程序块结束，q被销毁，它指向的内存被释放</span></span><br><span class="line"><span class="keyword">int</span> foo = *p; <span class="comment">//未定义: p指向的内存已经被释放了</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="其他shared-ptr操作"><a href="#其他shared-ptr操作" class="headerlink" title="其他shared_ptr操作"></a>其他shared_ptr操作</h4><p>使用reset将一个新指针赋予它：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">1024</span>) ;		<span class="comment">//错误:不能将一个指针赋予shared_ ptr</span></span><br><span class="line">p.<span class="built_in">reset</span>(<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span> (<span class="number">1024</span>)) ;	<span class="comment">//正确: p指向一个新对象</span></span><br></pre></td></tr></table></figure>
+
+<p>通常与unique一起使用，控制多个shared_ptr共享的对象，检查自己是当前对象仅有的用户，如果不是，在改变之前要做一次新的拷贝：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!p.<span class="built_in">unique</span>())</span><br><span class="line">	p.<span class="built_in">reset</span> (<span class="keyword">new</span> <span class="built_in">string</span>(*p)); <span class="comment">// 我们不是唯一用户;分配新的拷贝</span></span><br><span class="line">*p += newVal; <span class="comment">//现在我们知道自己是唯一的用户，可以改变对象的值</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="智能指针和异常"><a href="#智能指针和异常" class="headerlink" title="智能指针和异常"></a>智能指针和异常</h3><p>在函数中使用智能指针，即使函数发生了异常，局部对象也会被销毁，而如果使用new，则在delete之前出现异常不会自动释放。</p>
+<h4 id="智能指针指针和哑类"><a href="#智能指针指针和哑类" class="headerlink" title="智能指针指针和哑类"></a>智能指针指针和哑类</h4><p>有一些为C和C++两种语言设计的类，通常要求用户显示的释放所使用的任何资源。我们可以使用管理动态内存类似的技术管理不具有良好定义的析构函数，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">destination</span>;</span>						<span class="comment">//表示我们正在连接什么</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">connection</span>;</span>						<span class="comment">//使用连接所需的信息</span></span><br><span class="line"><span class="function">connection <span class="title">connect</span> <span class="params">(destination*)</span> </span>;		<span class="comment">//打开连接</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">disconnect</span><span class="params">(connection)</span> </span>;			<span class="comment">//关闭给定的连接</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(destination &amp;d <span class="comment">/*其他参数*/</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//获得一个连接;记住使用完后要关闭它</span></span><br><span class="line">	connection C = <span class="built_in">connect</span>(&amp;d) ;</span><br><span class="line">	<span class="comment">//使用连接</span></span><br><span class="line">	<span class="comment">//如果我们在f退出前忘记调用disconnect,就无法关闭c了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果connection没有析构函数，就会造成内存泄漏，可以使用shared_ptr保证connection被正确关闭。</p>
+<h4 id="使用自己的释放操作"><a href="#使用自己的释放操作" class="headerlink" title="使用自己的释放操作"></a>使用自己的释放操作</h4><p>首先定义一个函数来代替delete，这个<strong>删除器</strong>函数必须能够完成对shared_ptr保存的指针进行释放的操作。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">end_connection</span> <span class="params">(connection *p)</span> </span>&#123; <span class="built_in">disconnect</span>(*p); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span> <span class="params">(destination &amp;d <span class="comment">/*其他参数*/</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	connection C = <span class="built_in">connect</span> (&amp;d) ;</span><br><span class="line">	<span class="function">shared_ptr&lt;connection&gt; <span class="title">P</span><span class="params">(&amp;C, end_connection)</span> </span>;</span><br><span class="line">	<span class="comment">//使用连接</span></span><br><span class="line">	<span class="comment">//当f退出时(即使是由于异常而退出), connection会被正确关闭</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当p被销毁时，他会使用end_connection来代替delste，从而确保链接关闭。</p>
+<p>智能指针可以提供对动态分配的内存安全而又方便的管理，但这建立在正确使用的<br>前提下。为了正确使用智能指针，我们必须坚持一些基本规范:</p>
+<ul>
+<li>不使用相同的内置指针值初始化(或reset)多个智能指针。</li>
+<li>不delete get()返回的指针。</li>
+<li>不使用get()初始化或reset另一个智能指针。</li>
+<li>如果你使用get()返回的指针，记住当最后一个对应的智能指针销毁后，你的指针就变为无效了。</li>
+<li>如果你使用智能指针管理的资源不是new分配的内存，记住传递给它一个删除器。</li>
+</ul>
+<h3 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h3><p>一个unique_ptr“拥有”它所指的对象，且只能有一个unique_ptr指向给定对象，指针被销毁时对象也会被销毁。定义它时，没有make_shared类似的函数，需要绑定一个new返回的指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unique_ ptr &lt;<span class="keyword">double</span>&gt; p1; <span class="comment">//可以指向一个double的unique_ ptr</span></span><br><span class="line"><span class="function">unique_ ptr&lt;<span class="keyword">int</span>&gt; <span class="title">p2</span> <span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">42</span>))</span></span>; <span class="comment">// p2指向一个值为42的int</span></span><br></pre></td></tr></table></figure>
+
+<p>且不支持拷贝或赋值操作</p>
+<p><img src="https://s2.loli.net/2022/02/04/UGd3SAoe1xhXtra.png" alt="image.png"></p>
+<p>但可以通过调用release或reset将指针转移所有权：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将所有权从p1 (指向string Stegosaurus)转移给p2</span></span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">p2</span><span class="params">(p1.release())</span></span>; <span class="comment">// release 将p1置为空</span></span><br><span class="line"><span class="function">unique_ptr&lt;string&gt; <span class="title">p3</span><span class="params">(<span class="keyword">new</span> string (<span class="string">&quot;Trex&quot;</span>))</span></span>;</span><br><span class="line"><span class="comment">//将所有权从p3转移给p2</span></span><br><span class="line">p2.<span class="built_in">reset</span> (p3.<span class="built_in">release</span>()); <span class="comment">// reset 释放了p2原来指向的内存</span></span><br></pre></td></tr></table></figure>
+
+<p>release成员返回unique_ptr当前保存的指针并置空，并且切断了它和原指针的联系，如果不移交给智能指针，一定要delete。</p>
+<p>reset成员接受可选指针，然后重新指向给定指针。</p>
+<h4 id="函数中的unique-ptr"><a href="#函数中的unique-ptr" class="headerlink" title="函数中的unique_ptr"></a>函数中的unique_ptr</h4><p>我们可以拷贝或赋值一个精要呗销毁的unique_ptr，如函数返回它。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line"><span class="comment">//正确:从int*创建一个unique_ ptr&lt;int&gt;</span></span><br><span class="line"><span class="keyword">return</span> unique_ ptr&lt;<span class="keyword">int</span>&gt; (<span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(p) ) ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//还可以返回一个局部对象的拷贝:</span></span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">clone</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">ret</span> <span class="params">(<span class="keyword">new</span> <span class="keyword">int</span> (p) )</span> </span>;</span><br><span class="line"><span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一种特殊的拷贝，将在之后介绍它。</p>
+<h4 id="传递删除器"><a href="#传递删除器" class="headerlink" title="传递删除器"></a>传递删除器</h4><p>与shared_ptr类似，可以重载删除器，一样需要提供删除器类型，在创建或reset时提供指定类型的可调用的删除器。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// P指向一个类型为objT的对象，并使用一个类型为delT的对象释放objT对象</span></span><br><span class="line"><span class="comment">//它会调用一个名为fcn的delT类型对象</span></span><br><span class="line"><span class="function">unique_ptr&lt;objT, delT&gt; <span class="title">P</span> <span class="params">(<span class="keyword">new</span> objT, fcn)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+<p>用unique_ptr代替shared_ptr：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(destination &amp;d <span class="comment">/*其他需要的参数*/</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	connection c = <span class="built_in">connect</span> (&amp;d); <span class="comment">//打开连接</span></span><br><span class="line">	<span class="comment">//当p被销毁时，连接将会关闭</span></span><br><span class="line">	<span class="function">unique_ptr&lt;connection, <span class="title">decltype</span><span class="params">(end_connection)</span>*&gt; <span class="title">P</span><span class="params">(&amp;C， end_connection)</span> </span>;</span><br><span class="line">	<span class="comment">//使用连接</span></span><br><span class="line">	<span class="comment">//当f退出时(即使是由于异常而退出), connection会被正确关闭</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在本例中我们使用了decltype来指明函数指针类型。由于decltype (end_ connection) 返回一个函数类型，所以我们必须添加一个*来指出我们正在使用该类型的一个指针。</p>
+<h3 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h3><p>它是一种不控制所指向对象生存期的智能指针，它指向由一个shared（后面都简写）管理的对象将weak绑定到shared不会增加shared的引用计数，计数归0，即使有weak对象也会被释放。weak名字意为这种指针“弱”共享对象。</p>
+<p><img src="https://s2.loli.net/2022/02/04/H8pSNcUh6Z9yQzO.png" alt="image.png"></p>
+<p>创建weak时需要用shared初始化它：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> P = make_shared&lt;<span class="keyword">int</span>&gt; (<span class="number">42</span>) ;</span><br><span class="line"><span class="function">weak_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">wp</span><span class="params">(p)</span></span>; <span class="comment">// wp弱共享p; p的引用计数未改变</span></span><br></pre></td></tr></table></figure>
+
+<p>因为weak若共享特性，它指向的对象可能不存在，所以在访问时必须调用lock判断，它返回一个指向共享对象的shared：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (shared_ptr&lt;<span class="keyword">int</span>&gt; np = wp.<span class="built_in">lock</span>()) &#123; <span class="comment">//如果np不为空则条件成立</span></span><br><span class="line"><span class="comment">//在if中，np与p共享对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="核查指针类"><a href="#核查指针类" class="headerlink" title="核查指针类"></a>核查指针类</h4><p>如果将StrBolb类定义一个伴随指针，保存一个weak_ptr，指向StrBolob的data成员，使用weak不会影响StrBlob指向vector的生存期，但可以阻止用户访问不存在的vector。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对于访问一个不存在元素的尝试，StrBlobPtr抛出一个异常</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrBlobPtr</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">StrBlobPtr</span>():<span class="built_in">curr</span> (<span class="number">0</span>) &#123; &#125;</span><br><span class="line">	<span class="built_in">StrBlobPtr</span>(StrB1ob &amp;a， <span class="keyword">size_t</span> sz = <span class="number">0</span>) :</span><br><span class="line">	<span class="built_in">wptr</span>(a.data)，<span class="built_in">curr</span>(sz) &#123; &#125;</span><br><span class="line">	<span class="function">std::string&amp; <span class="title">deref</span> <span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="function">StrBlobPtr&amp; <span class="title">incr</span><span class="params">()</span></span>; <span class="comment">// 前缀递增</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//若检查成功，check返回一个指向vector的shared_ptr</span></span><br><span class="line">	std::shared_ptr&lt;std::vector&lt;std::string&gt;&gt;</span><br><span class="line">	<span class="built_in">check</span>(std::<span class="keyword">size_t</span>，<span class="keyword">const</span> std::string&amp;) <span class="keyword">const</span> ;</span><br><span class="line">	<span class="comment">//保存一个weak_ptr,意味着底层vector可能会被销毁</span></span><br><span class="line">	std::weak_ptr&lt;std::vector&lt;std::string&gt;&gt; wptr;</span><br><span class="line">	std::<span class="keyword">size_t</span> curr; <span class="comment">// 在数组中的当前位置</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>此类需要注意不能将StrBlobPtr绑定到一个const StrBlob对象是因为构造函数只接受非const对象的引用</p>
+<p>check函数也与之前不同需要检查指向的vector是否还存在：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;std: :vector&lt;std: :string&gt;&gt;</span><br><span class="line">StrBlobPtr::<span class="built_in">check</span>(std::<span class="keyword">size_t</span> i, <span class="keyword">const</span> std::string &amp;msg) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">auto</span> ret = wptr.<span class="built_in">lock</span>(); <span class="comment">// vector还存在吗?</span></span><br><span class="line">	<span class="keyword">if</span> (!ret)</span><br><span class="line">		<span class="keyword">throw</span> std::<span class="built_in">runtime_error</span> (<span class="string">&quot;unbound StrBlobPtr&quot;</span>) ;</span><br><span class="line">	<span class="keyword">if</span> (i &gt;= ret-&gt;<span class="built_in">size</span>())</span><br><span class="line">		<span class="keyword">throw</span> std::<span class="built_in">out_of_range</span> (msg) ;</span><br><span class="line">	<span class="keyword">return</span> ret; <span class="comment">// 否则，返回指向vector的shared_ptr</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="指针操作"><a href="#指针操作" class="headerlink" title="指针操作"></a>指针操作</h4><p>现在我们将定义deref和incr的函数来解引用和递增StrBlobPtr</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string&amp; <span class="title">StrBlobPtr::deref</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> p = <span class="built_in">check</span>(curr, <span class="string">&quot;dereference past end&quot;</span>) ;</span><br><span class="line">	<span class="keyword">return</span> (*p)[curr]; <span class="comment">// (*p) 是对象所指向的vector</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//前缀递增:返回递增后的对象的引用</span></span><br><span class="line"><span class="function">StrBlobPtr&amp; <span class="title">StrBlobPtr::incr</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 如果curr已经指向容器的尾后位置，就不能递增它</span></span><br><span class="line">	<span class="built_in">check</span>(curr, <span class="string">&quot; increment past end of StrBlobPtr&quot;</span>) ;</span><br><span class="line">	++curr; <span class="comment">//推进当前位置</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此外为了访问data成员需要声明StrBlob的friend</span></span><br><span class="line"><span class="comment">//对于StrBlob 中的友元声明来说， 此前置声明是必要的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrBlobPtr</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrBlob</span> &#123;</span></span><br><span class="line">	<span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">StrBlobPtr</span>;</span></span><br><span class="line">	<span class="comment">//其他成员与12.1.1节(第405页)中声明相同</span></span><br><span class="line">	<span class="comment">//返回指向首元素和尾后元素的StrBlobPtr</span></span><br><span class="line">	<span class="function">StrBlobPtr <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">StrBlobPtr</span>(*<span class="keyword">this</span>) ; &#125;</span><br><span class="line">	<span class="function">StrBlobPtr <span class="title">end</span> <span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">auto</span> ret = <span class="built_in">StrBlobPtr</span>(*<span class="keyword">this</span>， data-&gt;<span class="built_in">size</span>()); <span class="keyword">return</span> ret;&#125;</span><br><span class="line">    <span class="comment">//这里就是</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态数组"><a href="#动态数组" class="headerlink" title="动态数组"></a>动态数组</h2><p>如果需要可变数量的对象时，可以使用在StraBlob中采取的方法。</p>
+<h3 id="new和数组"><a href="#new和数组" class="headerlink" title="new和数组"></a>new和数组</h3><p>定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用get_size确定分配多少个int</span></span><br><span class="line"><span class="keyword">int</span> *pia = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="built_in">get_size</span>()]; <span class="comment">// pia指向第一个int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//也可以用一个表示数组类型的类型别名分配：</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>];	<span class="comment">// arrT表示42个int的数组类型</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;		<span class="comment">//分配一个42个int的数组; p指向第一个int</span></span><br></pre></td></tr></table></figure>
+
+<p>最后的代码等于<code>int *P new int[42];</code></p>
+<p>在分配后得到元素类型的指针，所以不能使用begin或end，不可以用范围for来处理动态数组的元素</p>
+<p><strong>要记住我们所说的动态数组并不是数组类型，这是很重要的。</strong></p>
+<h4 id="初始化动态分配的数组"><a href="#初始化动态分配的数组" class="headerlink" title="初始化动态分配的数组"></a>初始化动态分配的数组</h4><p>可以使用默认初始化或者值初始化（跟一对空括号）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pia = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];				<span class="comment">// 10 个未初始化的int</span></span><br><span class="line"><span class="keyword">int</span> *pia2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]() ;		<span class="comment">// 10个值初始化为0的int</span></span><br><span class="line">string *psa = <span class="keyword">new</span> string[<span class="number">10</span>] ;		<span class="comment">// 10个空string .</span></span><br><span class="line">string *psa2 = <span class="keyword">new</span> string[<span class="number">10</span>](); 	<span class="comment">// 10 个空string</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以提供初始化器：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//10个int分别用列表中对应的初始化器初始化</span></span><br><span class="line"><span class="keyword">int</span> *pia3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>, <span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;;</span><br><span class="line"><span class="comment">//10个string,前4个用给定的初始化器初始化，剩余的进行值初始化</span></span><br><span class="line">string *psa3 = <span class="keyword">new</span> string[<span class="number">10</span>]&#123;<span class="string">&quot;a&quot;</span>， <span class="string">&quot;an&quot;</span>, <span class="string">&quot;the&quot;</span>, <span class="built_in">string</span>(<span class="number">3</span>,<span class="string">&#x27;x&#x27;</span>) &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>与内置初始化一样，初始化器会初始化开始部分的元素，剩余执行值初始化。</p>
+<p>我们不可以在括号内给出初始化器，且不能用auto分配数组。</p>
+<h4 id="动态分配空数组"><a href="#动态分配空数组" class="headerlink" title="动态分配空数组"></a>动态分配空数组</h4><p>可以用任意表达式唉确定分配相对数目</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> n = <span class="built_in">get_size</span>(); 	<span class="comment">//get_size 返回需要的元素的数目</span></span><br><span class="line"><span class="keyword">int</span>* P = <span class="keyword">new</span> <span class="keyword">int</span>[n];		<span class="comment">//分配数组保存元素</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span>* q = p; q != p + n; ++q) .</span><br><span class="line">	<span class="comment">/*处理数组*/</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//即使为0，也能够正常运作</span></span><br><span class="line"><span class="keyword">char</span> arr[<span class="number">0</span>] ;			<span class="comment">//错误:不能定义长度为0的数组.</span></span><br><span class="line"><span class="keyword">char</span> *cp = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">0</span>]; <span class="comment">// 正确:但cp不能解引用</span></span><br></pre></td></tr></table></figure>
+
+<p>cp可以就像尾后迭代器一样使用</p>
+<h4 id="释放动态数组"><a href="#释放动态数组" class="headerlink" title="释放动态数组"></a>释放动态数组</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> P;		<span class="comment">// p必须指向一个动态分配的对象或为空</span></span><br><span class="line"><span class="keyword">delete</span> [] pa; 	<span class="comment">//pa必须指向一个动态分配的数组或为空</span></span><br></pre></td></tr></table></figure>
+
+<p>释放元素是按逆序销毁，且方括号是必须的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">42</span>] ;		<span class="comment">// arrT是42个int的数组的类型别名</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> arrT;			<span class="comment">//分配一个42个int的数组; p指向第一个元素</span></span><br><span class="line"><span class="keyword">delete</span> [] p;				<span class="comment">//方括号是必需的，因为我们当初分配的是一个数组</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="智能指针和动态数组"><a href="#智能指针和动态数组" class="headerlink" title="智能指针和动态数组"></a>智能指针和动态数组</h4><p>标准库提供了一个可以管理new分配的数组的unique版本。但必须在对象后跟一对空方括号</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//up指向一个包含10个未初始化int的数组</span></span><br><span class="line"><span class="function">unique_ptr&lt;<span class="keyword">int</span>[]&gt; <span class="title">up</span> <span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>])</span> </span>;</span><br><span class="line">up.<span class="built_in">release</span>(); <span class="comment">//自动用delete[]销毁其指针</span></span><br></pre></td></tr></table></figure>
+
+<p>当一个unique指向一个数组时，我们可以使用下标运算来访问数组中的元素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>;i != <span class="number">10</span>; ++i)</span><br><span class="line">	up[i] = i; <span class="comment">//为每个元素赋予一个新值</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/02/04/Swc3g5LlOX2bQsx.png" alt="image.png"></p>
+<p>与unique不同的是shared不支持管理动态数组。如果希望使用shared管理动态数组需要自定义删除器：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为了使用shared_ptr，必须提供一个删除器</span></span><br><span class="line"><span class="function">shared_ptr&lt;<span class="keyword">int</span>&gt; <span class="title">sp</span><span class="params">(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]， [](<span class="keyword">int</span> *p) &#123; <span class="keyword">delete</span>[] P; &#125;)</span> </span>;</span><br><span class="line">sp.<span class="built_in">reset</span>(); <span class="comment">//使用我们提供的lambda释放数组，它使用delete []</span></span><br></pre></td></tr></table></figure>
+
+<p>这里直接传递一个lambda表达式作为删除器。如果不提供删除器，则后果与delete不加[]一样。此外他也不支持下标运算：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shared_ ptr未定义下标运算符，并且不支持指针的算术运算</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>;i != <span class="number">10</span>; ++i)</span><br><span class="line">	* (sp.<span class="built_in">get</span>() + i) = i; <span class="comment">//使用get获取一个内置指针</span></span><br></pre></td></tr></table></figure>
+
+<p>所以只能使用get获取内置指针来访问数组元素</p>
+<h3 id="allocator类"><a href="#allocator类" class="headerlink" title="allocator类"></a>allocator类</h3><p>new有一些缺陷：因为它将内存分配与对象构造组合在一起，所以会导致不必要的浪费：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">string *<span class="keyword">const</span> P = <span class="keyword">new</span> string[n]; <span class="comment">// 构造n个空string</span></span><br><span class="line">string s;</span><br><span class="line">string *q = P;		<span class="comment">// q指向第一个string</span></span><br><span class="line"><span class="keyword">while</span>(cin &gt;&gt; s &amp;&amp; q != P + n)</span><br><span class="line">	*q++ = s;			<span class="comment">//赋予*q一个新值</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">size_t</span> size = q - P;		<span class="comment">//记住我们读取了多少个string</span></span><br><span class="line"><span class="comment">//使用数组</span></span><br><span class="line"><span class="keyword">delete</span>[] p; <span class="comment">// P指向一个数组;记得用delete[]来释放</span></span><br></pre></td></tr></table></figure>
+
+<p>这里创建了n个string，但可能并不需要这么多，所以造成了浪费。</p>
+<h4 id="新的方法allocalltor"><a href="#新的方法allocalltor" class="headerlink" title="新的方法allocalltor"></a>新的方法allocalltor</h4><p>它定义在头文件memory中，帮助我们将内存分配和对象构造分开。分配时需要给出类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allocator&lt;string&gt; alloc;				<span class="comment">//可以分配string的allocator对象</span></span><br><span class="line"><span class="keyword">auto</span> <span class="keyword">const</span> P = alloc.<span class="built_in">allocate</span> (n) ;		<span class="comment">// 分配n个未初始化的string</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/02/04/CaKVzphwGWYIXc4.png" alt="image.png"></p>
+<h4 id="分配未构造的内存"><a href="#分配未构造的内存" class="headerlink" title="分配未构造的内存"></a>分配未构造的内存</h4><p>使用alloc.construct构造对象，额外的参数用于调用对象的构造函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> q = p; 						<span class="comment">//q指向最后构造的元素之后的位置</span></span><br><span class="line">alloc.<span class="built_in">construct</span>(q++);				<span class="comment">//*q为空字符串</span></span><br><span class="line">alloc.<span class="built_in">construct</span>(q++，<span class="number">10</span>, <span class="string">&#x27;c&#x27;</span>);		<span class="comment">//*q为cccccccccc  </span></span><br><span class="line">alloc.<span class="built_in">construct</span>(q++, <span class="string">&quot;hi&quot;</span>);			 <span class="comment">//*q为hi !</span></span><br></pre></td></tr></table></figure>
+
+<p>在没有构造的情况下访问内存试错误的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; *p &lt;&lt;endl; <span class="comment">//正确:使用string的输出运算符</span></span><br><span class="line">cout &lt;&lt; *q &lt;&lt;endl; <span class="comment">//灾难:q指向未构造的内存!</span></span><br></pre></td></tr></table></figure>
+
+<p>当用完对象后，必须对每个构造元素调用destroy来销毁它们。接受一个指针对指向对象执行析构：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (q != p)</span><br><span class="line">	alloc.<span class="built_in">destroy</span>(--q);<span class="comment">//释放我们真正构造的string</span></span><br></pre></td></tr></table></figure>
+
+<p>销毁元素后可以重新使用内存，也可以归还系统</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alloc.<span class="built_in">deallocate</span>(p, n) ;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，第二个大小参数必须与调用allocate时一样。</p>
+<h4 id="拷贝和填充未初始化内存"><a href="#拷贝和填充未初始化内存" class="headerlink" title="拷贝和填充未初始化内存"></a>拷贝和填充未初始化内存</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分配比vi中元素所占用空间大一倍的动态内存</span></span><br><span class="line"><span class="keyword">auto</span> p = alloc.<span class="built_in">allocate</span>(vi.<span class="built_in">size</span> () * <span class="number">2</span>);</span><br><span class="line"><span class="comment">//通过拷贝vi中的元素来构造从p开始的元素</span></span><br><span class="line"><span class="keyword">auto</span> q = <span class="built_in">uninitialized_copy</span> (vi.<span class="built_in">begin</span>(), vi.<span class="built_in">end</span>(), p);</span><br><span class="line"><span class="comment">//将剩余元素初始化为42</span></span><br><span class="line"><span class="built_in">uninitialized_fill_n</span>(g, vi.<span class="built_in">size</span>() , <span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用标准库：文本查询程序"><a href="#使用标准库：文本查询程序" class="headerlink" title="使用标准库：文本查询程序"></a>使用标准库：文本查询程序</h2><p>此部分将单独作为一章。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第十一章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-10 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-10T00:00:00+08:00">2022-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-07 23:11:24" itemprop="dateModified" datetime="2022-02-07T23:11:24+08:00">2022-02-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第十一章" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h1><h2 id="使用关联容器"><a href="#使用关联容器" class="headerlink" title="使用关联容器"></a>使用关联容器</h2><p>关联容器</p>
+<p><img src="https://i.bmp.ovh/imgs/2022/01/f8ba18e3b76e063e.png"></p>
+<h2 id="使用关联容器-1"><a href="#使用关联容器-1" class="headerlink" title="使用关联容器"></a>使用关联容器</h2><h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计每个单词在输入中出现的次数</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span> &gt; word_count; <span class="comment">// string到size_t 的空map</span></span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word)</span><br><span class="line">	++word_count[word] ;				<span class="comment">//提取word的计数器并将其加1</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;w : word_ count) <span class="comment">// 对map中的每个元素</span></span><br><span class="line">	<span class="comment">//打印结果</span></span><br><span class="line">	cout &lt;&lt; w.first &lt;&lt; <span class="string">&quot; occurs”&lt;&lt; w.second &lt;&lt; ((w.second&gt;1)?”times&quot;</span>:”time<span class="string">&quot;) &lt;&lt; endl;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计输入中每个单词出现的次数</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span> &gt; word_count; 	<span class="comment">// string 到size_ t的空map .</span></span><br><span class="line">set&lt;string&gt; exclude = &#123; <span class="string">&quot;The&quot;</span>, <span class="string">&quot;But&quot;</span>, <span class="string">&quot;And&quot;</span>， <span class="string">&quot;Or&quot;</span>， <span class="string">&quot;An&quot;</span>, <span class="string">&quot;A&quot;</span>,</span><br><span class="line">						<span class="string">&quot;the&quot;</span>，<span class="string">&quot;but&quot;</span>, <span class="string">&quot;and&quot;</span>， <span class="string">&quot;or&quot;</span>， <span class="string">&quot;an&quot;</span>， <span class="string">&quot;a&quot;</span>&#125;;</span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word)</span><br><span class="line">	<span class="comment">//只统计不在exclude中的单词</span></span><br><span class="line">	<span class="keyword">if</span> (exclude. <span class="built_in">find</span> (word) == exclude.<span class="built_in">end</span>() )</span><br><span class="line">	++word_ count [word]; 			<span class="comment">// 获取并递增word的计数器</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关联容器概述"><a href="#关联容器概述" class="headerlink" title="关联容器概述"></a>关联容器概述</h2><h3 id="定义关联容器"><a href="#定义关联容器" class="headerlink" title="定义关联容器"></a>定义关联容器</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map&lt;string，size_ t&gt; word_ count; <span class="comment">//空容器</span></span><br><span class="line"><span class="comment">//列表初始化</span></span><br><span class="line">set&lt;string&gt; exclude = &#123; <span class="string">&quot;the&quot;</span>, <span class="string">&quot;but&quot;</span>, <span class="string">&quot;and&quot;</span>, <span class="string">&quot;or&quot;</span>, <span class="string">&quot;an&quot;</span>, <span class="string">&quot;a&quot;</span>,</span><br><span class="line">						<span class="string">&quot;The&quot;</span>, <span class="string">&quot;But&quot;</span>， <span class="string">&quot;And&quot;</span>， <span class="string">&quot;Or&quot;</span>, <span class="string">&quot;An&quot;</span>， <span class="string">&quot;A&quot;</span>&#125;;</span><br><span class="line"><span class="comment">//三个元素; authors将姓映射为名</span></span><br><span class="line">map&lt;string，string&gt; authors = &#123; &#123;<span class="string">&quot;Joyce&quot;</span>, <span class="string">&quot;James&quot;</span>&#125;,</span><br><span class="line">								&#123; <span class="string">&quot;Austen&quot;</span>, <span class="string">&quot;Jane&quot;</span>&#125;,</span><br><span class="line">								&#123;<span class="string">&quot;Dickens&quot;</span>, <span class="string">&quot;Charles&quot;</span>&#125; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化multimap或multiset"><a href="#初始化multimap或multiset" class="headerlink" title="初始化multimap或multiset"></a>初始化multimap或multiset</h4><p>multi容器允许多个元素具有相同的关键字：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个有20个元素的vector,保存0到9每个整数的两个拷贝</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="keyword">int</span>&gt;::size_type i = <span class="number">0</span>; i != <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	ivec.<span class="function">push_ <span class="title">back</span><span class="params">(i)</span> </span>;</span><br><span class="line">	ivec.<span class="function">push_ <span class="title">back</span><span class="params">(i)</span></span>; 		<span class="comment">// 每个数重复保存一次</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// iset包含来自ivec的不重复的元素; miset包含所有20个元素</span></span><br><span class="line"><span class="function">set&lt;<span class="keyword">int</span>&gt; <span class="title">iset</span> <span class="params">(ivec. cbegin()，ivec.cend())</span> </span>;</span><br><span class="line"><span class="function">multiset&lt;<span class="keyword">int</span>&gt; <span class="title">miset</span> <span class="params">(ivec.cbegin()，ivec.cend())</span> </span>;</span><br><span class="line">cout &lt;&lt; ivec.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">//打印出20</span></span><br><span class="line">cout &lt;&lt; iset.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">//打印出10</span></span><br><span class="line">cout &lt;&lt; miset.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">// 打印出 20</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关键字类型的要求"><a href="#关键字类型的要求" class="headerlink" title="关键字类型的要求"></a>关键字类型的要求</h3><p>对于有序容器中的关键字类型必须定义比较元素的方法。</p>
+<h4 id="使用关键字类型比较函数"><a href="#使用关键字类型比较函数" class="headerlink" title="使用关键字类型比较函数"></a>使用关键字类型比较函数</h4><p>可以指定一个比较函数来进行比较，需要在容器定义时紧跟着关键字类型给出。</p>
+<p>当使用Sales_data类时因为没有&lt;运算符，所以我们需要自己定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compareIsbn</span> <span class="params">(<span class="keyword">const</span> Sales_data &amp;<span class="number">1</span>hs， <span class="keyword">const</span> Sales_data &amp;rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> lhs.<span class="built_in">isbn</span>() &lt; rhs.<span class="built_in">isbn</span>() ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//然后定义容器时传入该函数,需要提供想要使用的操作的指针：</span></span><br><span class="line"><span class="comment">//bookstore中多条记录可以有相同的ISBN</span></span><br><span class="line"><span class="comment">// bookstore中的元素以ISBN的顺序进行排列</span></span><br><span class="line"><span class="function">multiset&lt;Sales_data, <span class="title">dec1type</span><span class="params">(compareIsbn)</span>*&gt;</span></span><br><span class="line"><span class="function">	<span class="title">bookstore</span> <span class="params">(compareIsbn)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用decltype指出自定义操作的类型，必须加上*指出给定的函数指针。</p>
+<h3 id="pair类型"><a href="#pair类型" class="headerlink" title="pair类型"></a>pair类型</h3><p>在头文件utility中，一个pair保存两个数据成员：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;string, string&gt; anon;				<span class="comment">//保存两个string</span></span><br><span class="line">pair&lt;string, size_ t&gt; word_ count;		<span class="comment">//保存一个string和一个size_ t</span></span><br><span class="line">pair&lt;string, vector&lt;<span class="keyword">int</span>&gt;&gt; line;			<span class="comment">//保存string和vector&lt;int&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以使用列表初始化</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;string, string&gt; author&#123;<span class="string">&quot;James&quot;</span>, <span class="string">&quot;Joyce&quot;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>成员均为public使用first和second进行访问</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印结果</span></span><br><span class="line">cout &lt;&lt; w.first &lt;&lt; <span class="string">&quot;occurs&quot;</span> &lt;&lt; w.second&lt;&lt; ( (w.second &gt; <span class="number">1</span>)? ”time s: ”time<span class="string">&quot; ) &lt;&lt; endl ;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.bmp.ovh/imgs/2022/01/7b5d5c1283d78be6.png"></p>
+<h4 id="返回pair的函数"><a href="#返回pair的函数" class="headerlink" title="返回pair的函数"></a>返回pair的函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pair&lt;string，<span class="keyword">int</span>&gt; <span class="title">process</span> <span class="params">(vector&lt;string&gt; &amp;V)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//处理v</span></span><br><span class="line">	<span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">		<span class="keyword">return</span> &#123;v. <span class="built_in">back</span>(), v.<span class="built_in">back</span>().<span class="built_in">size</span>()&#125;; <span class="comment">// 列表初始化</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> pair&lt;string， <span class="keyword">int</span>&gt;();			 <span class="comment">//隐式构造返回值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>else中返回的是一个空pair</p>
+<p>早期版本中不可以列表初始化返回则必须显示构造或使用make_pair来生成：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">	<span class="keyword">return</span> pair&lt;string，<span class="keyword">int</span>&gt; (v.<span class="built_in">back</span>()，v.<span class="built_in">back</span>().<span class="built_in">size</span>());</span><br><span class="line"><span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">	<span class="keyword">return</span> make_ <span class="built_in">pair</span> (V.<span class="built_in">back</span>()，v.<span class="built_in">back</span>().<span class="built_in">size</span>());</span><br></pre></td></tr></table></figure>
+
+<h2 id="关联容器的操作"><a href="#关联容器的操作" class="headerlink" title="关联容器的操作"></a>关联容器的操作</h2><p><img src="https://i.bmp.ovh/imgs/2022/01/9a7c9a3c2375955d.png"></p>
+<h3 id="关联容器迭代器"><a href="#关联容器迭代器" class="headerlink" title="关联容器迭代器"></a>关联容器迭代器</h3><p>解引用关联容器得到迭代器得到一个value_type，对于map得到一个pair，first成员中保存的是const关键字，它是不可以更改的，second保存值。而set中value_type与value_type是一样的。</p>
+<h4 id="遍历关联容器"><a href="#遍历关联容器" class="headerlink" title="遍历关联容器"></a>遍历关联容器</h4><p>使用迭代器遍历容器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获得一个指向首元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> map_it = word_count.<span class="built_in">cbegin</span>() ;</span><br><span class="line"><span class="comment">//比较当前迭代器和尾后迭代器.</span></span><br><span class="line"><span class="keyword">while</span> (map_it != word_count.<span class="built_in">cend</span>() ) &#123;</span><br><span class="line">	<span class="comment">//解引用迭代器，打印关键字-值对</span></span><br><span class="line">	cout &lt;&lt; map_it-&gt;first &lt;&lt; ”occurs” &lt;&lt; map_it-&gt;second &lt;&lt; <span class="string">&quot; times&quot;</span> &lt;&lt; endl;</span><br><span class="line">	++map_it; <span class="comment">// 递增迭代器，移动到下一个元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的函数为升序排列。</p>
+<h4 id="关联容器和算法"><a href="#关联容器和算法" class="headerlink" title="关联容器和算法"></a>关联容器和算法</h4><p>通常不对关联容器使用泛型算法，关键字的const特性意味着不可以重排或修改元素，set中的元素时const的，所以只可以使用只读的算法，推荐使用容器内部的find，它会比泛型算法快得多，泛型find使用的是顺序搜索。</p>
+<h3 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h3><p>使用insert添加一个元素或元素范围，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//set容器</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; ivec = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>&#125;;				<span class="comment">// ivec有8个元素</span></span><br><span class="line">set&lt;<span class="keyword">int</span>&gt; set2										<span class="comment">//空集合</span></span><br><span class="line">set2.<span class="built_in">insert</span>(ivec.<span class="built_in">cbegin</span>()，ivec.<span class="built_in">cend</span>());				<span class="comment">//set2有4个元素</span></span><br><span class="line">set2.<span class="built_in">insert</span>(&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>&#125;);						<span class="comment">// set2现在有8个元素</span></span><br><span class="line"><span class="comment">//insert可以接受一对迭代器，也可以接受一个初始化列表。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//map容器</span></span><br><span class="line"><span class="comment">//向word_count插入word的4种方法</span></span><br><span class="line">word_count.<span class="built_in">insert</span> (&#123;word, <span class="number">1</span>&#125;) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (<span class="built_in">make_pair</span>(word, <span class="number">1</span>)) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (pair&lt;string, <span class="keyword">size_t</span>&gt;(word, <span class="number">1</span>)) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (map&lt;string，<span class="keyword">size_t</span>&gt;::<span class="built_in">value_type</span> (word, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.bmp.ovh/imgs/2022/01/a8fe3a59d436ac0b.png"></p>
+<h4 id="检测insert返回值"><a href="#检测insert返回值" class="headerlink" title="检测insert返回值"></a>检测insert返回值</h4><p>insert返回值依赖容器类型和参数，对于map和set，添加单一元素返回的是一个pair，first指向给定的关键字元素，second是bool值，指出插入成功还是失败（已存在）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计每个单词在输入中出现次数的一种更烦琐的方法</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span>&gt; word_count; <span class="comment">// 从string到size_t的空map.</span></span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word) &#123;</span><br><span class="line">	<span class="comment">//插入一个元素，关键字等于word, 值为1;</span></span><br><span class="line">	<span class="comment">//若word已在word_ count中，insert什么也不做</span></span><br><span class="line">	<span class="keyword">auto</span> ret = word_count.<span class="built_in">insert</span> (&#123;word, <span class="number">1</span>&#125;) ;</span><br><span class="line">	<span class="keyword">if</span> (!ret.second)				<span class="comment">// word已在word_ count中</span></span><br><span class="line">		++ret.first-&gt;second; 		<span class="comment">//递增计数器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="展开递增语句"><a href="#展开递增语句" class="headerlink" title="展开递增语句"></a>展开递增语句</h4><p><code>++ret.first-&gt;second;</code>这句话就代表增加插入的那个元素中的second++。</p>
+<h4 id="multi容器添加元素"><a href="#multi容器添加元素" class="headerlink" title="multi容器添加元素"></a>multi容器添加元素</h4><p>这种容器可以包含多个相同的关键字</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mul timap&lt;string, string&gt; authors;</span><br><span class="line"><span class="comment">//插入第一个元素，关键字为Barth， John</span></span><br><span class="line">authors.<span class="built_in">insert</span> (&#123;<span class="string">&quot;Barth，John&quot;</span>, <span class="string">&quot;Sot-Weed Factor&quot;</span>&#125;);</span><br><span class="line"><span class="comment">//正确:添加第二个元素，关键字也是Barth， John</span></span><br><span class="line">authors.<span class="built_in">insert</span>(&#123;<span class="string">&quot;Barth, John&quot;</span>, <span class="string">&quot;Lost in the Funhouse&quot;</span>&#125;) ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h3><p><img src="https://s2.loli.net/2022/01/22/QuvPl6JZYehS3fg.png" alt="image.png"></p>
+<p>erase可以接受一个迭代器或者是一对迭代器来删除一个或一个范围的元素。还可以接受一个key_type，删除所匹配的关键字元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除一个关键字，返回删除的元素数量</span></span><br><span class="line"><span class="keyword">if</span> (word_count.<span class="built_in">erase</span> (removal_word) )</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ok:”&lt;&lt; removal_word &lt;&lt; ”removed\n&quot;</span>;</span><br><span class="line"><span class="keyword">else</span> cout &lt;&lt; <span class="string">&quot;oops: ”&lt;&lt; removal_ word &lt;&lt; ”not found! \n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果是multi容器，可能删除多个元素</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> cnt = authors.<span class="built_in">erase</span> (<span class="string">&quot;Barth，John&quot;</span>) ;</span><br></pre></td></tr></table></figure>
+
+<p>上面authors中添加了两个相同的元素，则cnt等于2。</p>
+<h3 id="map的下标操作"><a href="#map的下标操作" class="headerlink" title="map的下标操作"></a>map的下标操作</h3><p>map和unordered_map具有下标运算和at函数，set中不可以使用。</p>
+<p>map通过下标运算，接受一个索引（即关键字）获取与之关联的值，但不同的是，如果没有此关键字，会创建一个关键字，并将对应的值初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">map &lt;string， <span class="keyword">size_t</span>&gt; word_count; / / empty map</span><br><span class="line"><span class="comment">//插入一个关键字为Anna的元素，关联值进行值初始化;然后将1赋予它</span></span><br><span class="line">word_count [<span class="string">&quot;Anna&quot;</span>] = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在word_ _count中搜索关键字为Anna的元素，未找到。</li>
+<li><em>将一个新的关键字-值对插入到word</em> _count中。关键字是-一个const string，保存Anna。值进行值初始化，在本例中意味着值为0。</li>
+<li>提取出新插入的元素，并将值1赋予它。</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/01/22/7R2B1iaJbqvftP4.png" alt="image.png"></p>
+<h4 id="使用下标操作的返回值"><a href="#使用下标操作的返回值" class="headerlink" title="使用下标操作的返回值"></a>使用下标操作的返回值</h4><p>通常解引用的一个迭代器的类型与下标运算返回的类型是一样的，但map不同，会得到有个mappped_type对象，且为左值。</p>
+<h3 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h3><p>count可以统计元素个数，对于不允许重复元素存在的容器，推荐使用find。</p>
+<h4 id="map使用find代替下标操作"><a href="#map使用find代替下标操作" class="headerlink" title="map使用find代替下标操作"></a>map使用find代替下标操作</h4><p>map容器的下标操作如果关键字不存在，则会插入这个新的关键字，所以在只是想知道有没有这个关键字时可以用find代替。</p>
+<h4 id="multi容器查找元素"><a href="#multi容器查找元素" class="headerlink" title="multi容器查找元素"></a>multi容器查找元素</h4><p><strong>方法一：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string search_ <span class="title">item</span><span class="params">(<span class="string">&quot;Alain de Botton&quot;</span>)</span> </span>;		<span class="comment">//要查找的作者</span></span><br><span class="line"><span class="keyword">auto</span> entries = authors. <span class="built_in">count</span> (search_ item) ;	<span class="comment">//元素的数量</span></span><br><span class="line"><span class="keyword">auto</span> iter = authors. <span class="built_in">find</span> (search_ item) ;		<span class="comment">//此作者的第一本书</span></span><br><span class="line"><span class="comment">//用一个循环查找此作者的所有著作</span></span><br><span class="line"><span class="keyword">while</span> (entries) &#123;</span><br><span class="line">	cout &lt;&lt; iter-&gt;second &lt;&lt; endl ;				<span class="comment">//打印每个题目</span></span><br><span class="line">	++iter;										<span class="comment">//前进到下一本书</span></span><br><span class="line">	--entries;									<span class="comment">//记录已经打印了多少本书</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法二</strong></p>
+<p>lower_bound和up_bound分别返回匹配的第一个位置和最后一个位置的后一个位置。不存在则返回可插入位置</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authors 和search_ item 的定义，与前面的程序一样</span></span><br><span class="line"><span class="comment">//beg和end表示对应此作者的元素的范围.</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> beg = authors. <span class="built_in">lower_bound</span> (search_item) ,</span><br><span class="line">		  end = authors.<span class="built_in">upper_bound</span> (search_item) ;</span><br><span class="line">		  beg != end; ++beg)</span><br><span class="line">	cout &lt;&lt; beg-&gt;second &lt;&lt; endl; <span class="comment">//打印每个题目</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>方法三</strong></p>
+<p>equal_range函数接受关键字，返回pair。若关键字存在则第一个指向第一个与之匹配的位置，第二个是最后一个与之匹配位置的后一个位置。若不存在则返回可插入位置。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authors 和search_item的定义， 与前面的程序一样</span></span><br><span class="line"><span class="comment">// pos保存迭代器对，表示与关键字匹配的元素范围</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> pos = authors.<span class="built_in">equal_range</span> (search_item) ;</span><br><span class="line">	 pos.first != pos.second; ++pos.first)</span><br><span class="line">	cout &lt;&lt; pos.first-&gt;second &lt;&lt; endl; <span class="comment">//打印每个题目</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="单词转换map（跳）"><a href="#单词转换map（跳）" class="headerlink" title="单词转换map（跳）"></a>单词转换map（跳）</h3><h2 id="无序容器"><a href="#无序容器" class="headerlink" title="无序容器"></a>无序容器</h2><h4 id="使用无序容器"><a href="#使用无序容器" class="headerlink" title="使用无序容器"></a>使用无序容器</h4><p>unordered_map或者unordered_set，他们都有与前面类似的操作，通常可以用一个无序容器替换对应的有序容器，但顺序会与有序容器不同。</p>
+<h4 id="管理桶"><a href="#管理桶" class="headerlink" title="管理桶"></a>管理桶</h4><p>无序容器在储存上为一组桶，无序容器使用一个哈希函数将所有元素映射到桶中，容器将具有一个特定的哈希值的所有元素保存在相同的桶中，访问时先按照哈希值找到对应的桶，再在桶中找对应的元素。因此容器性能依赖哈希函数的质量和桶的数量和大小。</p>
+<p>最理想的情况应该是哈希函数将所有元素尽可能的均匀的分配到每个桶中。</p>
+<p><img src="https://s2.loli.net/2022/01/27/eTFbRU5lHPOVKfp.png" alt="image.png"></p>
+<h4 id="无序容器对关键字类型的要求"><a href="#无序容器对关键字类型的要求" class="headerlink" title="无序容器对关键字类型的要求"></a>无序容器对关键字类型的要求</h4><p>默认情况下，无序容器使用关键字类型的==运算符来比较元素，还使用一个hash<key_ type> 类型的对象来生成每个元素的哈希值。例如当我们想要将一个int值使用哈希函数，就是hash<int>,</p>
+<p>但是我们不能直接定义关键字类型为自定义类类型的无序容器。可以不直接使用哈希模板而是使用自己的hash版本。例如Sale_data用作关键字，我们需要提供函数来代替==运算符和哈希计算函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">hasher</span><span class="params">(<span class="keyword">const</span> Sales_ data &amp;sd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> hash&lt;string&gt;() (sd. <span class="built_in">isbn</span>()) ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">eqOp</span><span class="params">(<span class="keyword">const</span> Sales_data &amp;lhs， <span class="keyword">const</span> Sales_data &amp;rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> lhs.<span class="built_in">isbn</span>() == rhs.<span class="built_in">isbn</span>() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> SD_multiset = unordered multiset&lt;Sales_data,</span><br><span class="line">					<span class="keyword">decltype</span>(hasher)*, <span class="keyword">decltype</span>(eqOp)*&gt;;</span><br><span class="line"><span class="comment">//参数是桶大小、哈希函数指针和相等性判断运算符指针</span></span><br><span class="line"><span class="function">SD_multiset <span class="title">bookstore</span><span class="params">(<span class="number">42</span>, hasher, eqOp)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果类内具有==运算符，可以只重载哈希函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用FooHash生成哈希值; Foo必须有==运算符</span></span><br><span class="line"><span class="function">unordered_set&lt;Foo, <span class="title">decltype</span> <span class="params">(FooHash)</span>*&gt; <span class="title">fooSet</span> <span class="params">(<span class="number">10</span>，FooHash)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/17/%E7%AC%AC%E5%8D%81%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/17/%E7%AC%AC%E5%8D%81%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第十章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-17 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-17T00:00:00+08:00">2021-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-07 23:12:18" itemprop="dateModified" datetime="2022-02-07T23:12:18+08:00">2022-02-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/17/%E7%AC%AC%E5%8D%81%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第十章" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -443,7 +1033,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/01/05/%E7%AC%AC%E4%B9%9D%E7%AB%A0/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -457,7 +1047,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/05/%E7%AC%AC%E4%B9%9D%E7%AB%A0/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -467,18 +1057,91 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-05 18:14:16" itemprop="dateCreated datePublished" datetime="2022-01-05T18:14:16+08:00">2022-01-05</time>
+              <time title="创建时间：2021-12-15 17:15:19" itemprop="dateCreated datePublished" datetime="2021-12-15T17:15:19+08:00">2021-12-15</time>
+            </span>
+
+          
+            <span id="/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/13/%E7%AC%AC%E4%B9%9D%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/13/%E7%AC%AC%E4%B9%9D%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第九章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-13 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-13T00:00:00+08:00">2021-12-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-06 20:21:04" itemprop="dateModified" datetime="2022-01-06T20:21:04+08:00">2022-01-06</time>
+                <time title="修改时间：2022-02-07 23:12:43" itemprop="dateModified" datetime="2022-02-07T23:12:43+08:00">2022-02-07</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
 
           
-            <span id="/2022/01/05/%E7%AC%AC%E4%B9%9D%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2021/12/13/%E7%AC%AC%E4%B9%9D%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第九章" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -724,70 +1387,6 @@
 <p><img src="https://s2.loli.net/2022/01/06/XtO2ciYCGe3zTFd.png" alt="image.png"></p>
 <p>priority_queue 允许我们为队列中的元素建立优先级。新加入的元素会排在所有优先级比它低的已有元素之前。饭店按照客人预定时间而不是到来时间的早晚来为他们安排座位，就是一个优先队列的例子。默认情况下，标准库在元素类型上使用&lt;运算符来确定相对优先级。后面会学习如何重载这个默认设置。</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-15 17:15:19" itemprop="dateCreated datePublished" datetime="2021-12-15T17:15:19+08:00">2021-12-15</time>
-            </span>
-
-          
-            <span id="/2021/12/15/%E6%96%B0%E5%BB%BA%20Markdown/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -1404,401 +2003,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第八章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-03 14:57:08" itemprop="dateModified" datetime="2022-01-03T14:57:08+08:00">2022-01-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第八章" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="IO库"><a href="#IO库" class="headerlink" title="IO库"></a>IO库</h1><p>以往用到的IO库设施：</p>
-<ul>
-<li><p>istream(输入流)类型，提供输入操作。</p>
-</li>
-<li><p>ostre am(输出流)类型，提供输出操作。</p>
-</li>
-<li><p>cin, 一个istream对象，从标准输入读取数据。</p>
-</li>
-<li><p>cout，一个ostream对象，向标准输出写入数据。</p>
-</li>
-<li><p>cerr，一个ostream对象，通常用于输出程序错误消息，写入到标准错误。</p>
-</li>
-<li><p><code>&gt;&gt;</code>运算符，用来从一个istream对象读取输入数据。</p>
-</li>
-<li><p><code>&lt;&lt;</code>运算符，用来向一个ostream对象写入输出数据。</p>
-</li>
-<li><p>getline函数，从一个给定的istream读取一行数据，存入一个给定的string对象中。</p>
-</li>
-</ul>
-<h2 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h2><table>
-<thead>
-<tr>
-<th>头文件</th>
-<th align="left">类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>iostream</td>
-<td align="left">istream, wistream从流读取数据<br/>ostream, wost ream向流写入数据<br/>iostream，wiostream读写流</td>
-</tr>
-<tr>
-<td>fstream</td>
-<td align="left">ifstream, wifstream 从文件读取数据<br/>ofstream, wofstream 向文件写入数据<br/>fstream，wfstream读写文件</td>
-</tr>
-<tr>
-<td>sstream</td>
-<td align="left">istringstream, wistringstream 从string读取数据.<br/>ostringstream, wostringstream 向string写入数据<br/>stringstream, wstringstream 读写string</td>
-</tr>
-</tbody></table>
-<p>为了支持使用宽字符的语言，标准库定义了一组类型和对象来操纵wchar_t 类型的数据。宽字符版本的类型和函数的名字以一个w开始。例如，wcin、wcout和wcerr是分别对应cin、cout和cerr的宽字符版对象。宽字符版本的类型和对象与其对应的普通char版本的类型定义在同一个头文件中。例如，头文件fstream定义了ifstream 和wifstream类型。</p>
-<h4 id="IO类型间的关系"><a href="#IO类型间的关系" class="headerlink" title="IO类型间的关系"></a>IO类型间的关系</h4><p>设备类型和字符大小不会影响我们执行的IO操作，例如使用&gt;&gt;读取数据，我们不需要管是从控制台还是磁盘文件、还是string读取，同样也不需要管字符存入的是char还是wchar_t。这一点实际上是通过类的继承机制实现的。类型ifstream和istringstream都继承自istream. 因此，我们可以像使用istream对象-样来使用ifstream和istringstream对象。</p>
-<h3 id="IO对象无拷贝或赋值"><a href="#IO对象无拷贝或赋值" class="headerlink" title="IO对象无拷贝或赋值"></a>IO对象无拷贝或赋值</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ofstream out1， out2;</span><br><span class="line">out1 = out2;								<span class="comment">//错误:不能对流对象賦值</span></span><br><span class="line"><span class="function">ofstream <span class="title">print</span> <span class="params">(ofstream)</span> </span>;					<span class="comment">//错误:不能初始化ofstream参数</span></span><br><span class="line">out2 = <span class="built_in">print</span> (out2) ;						<span class="comment">//错误:不能拷贝流对象</span></span><br></pre></td></tr></table></figure>
-
-<p>由于不能拷贝IO对象，因此我们也不能将形参或返回类型设置为流类型。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是const的。</p>
-<h3 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h3><p>一个流发生错误，后续的IO操作都会失败，所以因通过代码检查它是否处于良好状态：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(cin &gt;&gt; word)&#123;</span><br><span class="line">	<span class="comment">//如果能够进来，代表流状态良好</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="查询流的状态"><a href="#查询流的状态" class="headerlink" title="查询流的状态"></a>查询流的状态</h4><p>上面的操作只知道有没有错误，但不知道是什么错误，所以IO库定义了一个与机器无关的iostate类型：</p>
-<table>
-<thead>
-<tr>
-<th>代码</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>badbit</td>
-<td>系统级错误，如不可恢复的读写错误。</td>
-</tr>
-<tr>
-<td>failbit</td>
-<td>期望读取的数值却读出一个字符等错误，这种问题可以修正，且流还可以使用。<br>到达文件结束位置会被置位。</td>
-</tr>
-<tr>
-<td>eofbit</td>
-<td>到达文件结束位置，其会被置位。</td>
-</tr>
-<tr>
-<td>goodbit</td>
-<td>值为0表示流未发生错误，如果上面任何一个被置位，则检测流状态的条件会失败</td>
-</tr>
-</tbody></table>
-<p>标准库还定义了一组函数来查询这些标志位的状态。操作 good在所有错误位均未置位的情况下返回true，而 bad、fail和 eof则在对应错误位被置位时返回true。此外，在 badbit被置位时，fail也会返回true。这意味着，使用good或fail是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于!fail()。而eof和 bad操作只能表示特定的错误。</p>
-<h4 id="管理条件状态"><a href="#管理条件状态" class="headerlink" title="管理条件状态"></a>管理条件状态</h4><p>流对象的rdstate成员返回一个iostate值，对应流的当前状态。setstate操作将给定条件位置位，表示发生了对应错误。clear成员是一个重载的成员(参见6.4节,第206页):它有一个不接受参数的版本，而另一个版本接受一个iostate类型的参数。<br>clear不接受参数的版本清除(复位)所有错误标志位。执行clear()后,调用good会返回true。我们可以这样使用这些成员:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//记住cin的当前状态</span></span><br><span class="line"><span class="keyword">auto</span> old_state = cin.<span class="built_in">rdstate</span>();			<span class="comment">//记住cin的当前状态</span></span><br><span class="line">cin.<span class="built_in">clear</span>();							<span class="comment">//使cin有效</span></span><br><span class="line"><span class="built_in">process_input</span> (cin) ;					<span class="comment">//使用cin</span></span><br><span class="line">cin.<span class="built_in">setstate</span>(old_state) ;				<span class="comment">//将cin置为原有状态</span></span><br></pre></td></tr></table></figure>
-
-<p>带参数的clear版本接受一个iostate值，表示流的新状态。为了复位单一的条件状态位，我们首先用rdstate读出当前条件状态，然后用位操作将所需位复位来生成新的状态。例如，下面的代码将failbit和 badbit复位，但保持eofbit不变://复位failbit和badbit，保持其他标志位不变cin.clear(cin.rdstate () &amp; ~cin.failbit &amp; ~cin.badbit);</p>
-<h3 id="管理输出缓冲"><a href="#管理输出缓冲" class="headerlink" title="管理输出缓冲"></a>管理输出缓冲</h3><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。例如，如果执行下面的代码</p>
-<p><code>os &lt;&lt; &quot;please enter a value: &quot;;</code></p>
-<p>文本串可能立即打印出来，但也有可能被操作系统保存在缓冲区中，随后再打印。有了缓冲机制，操作系统就可以将程序的多个输出操作组合成单一的系统级写操作。由于设备的写操作可能很耗时，允许操作系统将多个输出操作组合为单一的设备写操作可以带来很大的性能提升。</p>
-<p>导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多;</p>
-<ul>
-<li>程序正常结束，作为main函数的return操作的一部分，缓冲刷新被执行。</li>
-<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
-<li>我们可以使用操纵符如 endl（参见1.2节，第6页）来显式刷新缓冲区。</li>
-<li>在每个输出操作之后，我们可以用操纵符unitbuf设置流的内部状态，来清空缓冲区。默认情况下，对cerr是设置unitbuf的，因此写到cerr的内容都是立即刷新的。</li>
-<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，默认情况下，cin和 cerr都关联到cout。因此，读cin或写cerr都会导致cout的缓冲区被刷新。</li>
-</ul>
-<h4 id="刷新输出缓冲区"><a href="#刷新输出缓冲区" class="headerlink" title="刷新输出缓冲区"></a>刷新输出缓冲区</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt;<span class="string">&quot;hi! &quot;</span> &lt;&lt;endl;			<span class="comment">//输出hi和一个换行，然后刷新缓冲区</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hi ! &quot;</span> &lt;&lt; flush;		<span class="comment">//输出hi，然后刷新缓冲区，不附加任何额外字符</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hi ! &quot;</span> &lt;&lt;ends;			<span class="comment">//输出hi和一个空字符，然后刷新缓冲区</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="unitbuf操纵符"><a href="#unitbuf操纵符" class="headerlink" title="unitbuf操纵符"></a>unitbuf操纵符</h4><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用unitbuf操纵符。它告诉流在接下来的每次写操作之后都进行一次 flush 操作。而nounitbuf操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; unitbuf;					<span class="comment">//所有输出操作后都会立即刷新缓冲区	</span></span><br><span class="line"><span class="comment">//任何输出都立即刷新，无缓冲</span></span><br><span class="line">cout &lt;&lt;nounitbuf ;					<span class="comment">//回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
-
-<p><em>如果程序异常终止,输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。<br>当调试一个已经崩溃的程序时,需要确认那些你认为已经输出的数据确实已经刷新了。否则，可能将大量时间浪费在追踪代码为什么没有执行上，而实际上代码已经执行了，只是程序崩溃后缓冲区没有被刷新，输出数据被挂起没有打印而已。</em></p>
-<h4 id="关联输入和输出流"><a href="#关联输入和输出流" class="headerlink" title="关联输入和输出流"></a>关联输入和输出流</h4><p>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。标准库将cout和 cin关联在一起，因此下面语句导致cout的缓冲区被刷新。<br><code>cin &gt;&gt; ival;</code><br>tie可以将自己和一个输出流绑定起来，并且返回与自己关联的对象：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cin.<span class="built_in">tie</span> ( &amp;cout) ;						<span class="comment">//仅仅是用来展示:标准库将cin和cout关联在一起</span></span><br><span class="line"><span class="comment">// old_tie指向当前关联到cin的流（如果有的话)</span></span><br><span class="line">ostream *old_tie = cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>); 	<span class="comment">//cin 不再与其他流关联</span></span><br><span class="line"><span class="comment">//将cin 与cerr关联;这不是一个好主意，因为cin应该关联到cout</span></span><br><span class="line">cin.<span class="built_in">tie</span> ( &amp;cerr);						<span class="comment">//读取cin会刷新cerr而不是cout</span></span><br><span class="line">cin.<span class="built_in">tie</span>(old_tie) ;						<span class="comment">//重建cin和 cout间的正常关联</span></span><br></pre></td></tr></table></figure>
-
-<p>在这段代码中，为了将一个给定的流关联到一个新的输出流，我们将新流的指针传递给了tie。为了彻底解开流的关联，我们传递了一个空指针。每个流同时最多关联到一个流，但多个流可以同时关联到同一个ostream。</p>
-<h2 id="文件输入输出"><a href="#文件输入输出" class="headerlink" title="文件输入输出"></a>文件输入输出</h2><p>头文件 fstream定义了三个类型来支持文件IO:ifstream从一个给定文件读取数据，ofstream向一个给定文件写入数据，以及fstream可以读写给定文件。</p>
-<p>fstream中定义的类型还增加了一些新的成员管理与流关联的文件</p>
-<table>
-<thead>
-<tr>
-<th align="left">代码</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">fstream fstrm;</td>
-<td>创建一个未绑定的文件流。fstream是头文件fstream 中定义的一个类型</td>
-</tr>
-<tr>
-<td align="left">fstream fstrm (s);</td>
-<td>创建一个fstream，并打开名为s的文件。s可以是string类型，或者是<br>一个指向C风格字符串的指针。这些构造函数都是explicit的。默认的<br>文件模式mode依赖于fstream的类型</td>
-</tr>
-<tr>
-<td align="left">fstream fstrm <br>(s,mode) ;</td>
-<td>与前一个构造函数类似，但按指定mode打开文件</td>
-</tr>
-<tr>
-<td align="left">fstrm.open (s)</td>
-<td>打开名为s 的文件，并将文件与 fstrm绑定。s可以是一个string或一个指向<br>C风格字符串的指针。默认的文件mode依赖于fstream的类型。返回void</td>
-</tr>
-<tr>
-<td align="left">fstrm.close ()</td>
-<td>关闭与fstrm绑定的文件。返回void</td>
-</tr>
-<tr>
-<td align="left">fstrm.is_open ()</td>
-<td>返回一个bool值,指出与fstrm关联的文件是否成功打开且尚未关闭</td>
-</tr>
-</tbody></table>
-<h3 id="使用文件流对象"><a href="#使用文件流对象" class="headerlink" title="使用文件流对象"></a>使用文件流对象</h3><p>向读写一个文件时，需要先定义一个文件流对象，如果提供了一个文件名，则会自动调用open：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">in</span> <span class="params">(ifile)</span></span>;						<span class="comment">//构造一个ifstream并打开给定文件</span></span><br><span class="line">ofstream out;								<span class="comment">//输出文件流未关联到任何文件</span></span><br></pre></td></tr></table></figure>
-
-<p>输入流in，初始化为从文件读取数据，输出流out，未关联。</p>
-<h4 id="用fstream代替iostream-amp"><a href="#用fstream代替iostream-amp" class="headerlink" title="用fstream代替iostream&amp;"></a>用fstream代替iostream&amp;</h4><p>根据在要求使用基类对象的地方，我们可以使用继承类型的对象来替代。所以在调用一个具有iostream的参数时，可以用fstream来调用。</p>
-<h4 id="成员函数open和close"><a href="#成员函数open和close" class="headerlink" title="成员函数open和close"></a>成员函数open和close</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第四章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-09 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-09T00:00:00+08:00">2021-12-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-12 15:00:25" itemprop="dateModified" datetime="2021-12-12T15:00:25+08:00">2021-12-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第四章" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><strong>一元运算符</strong>作用于一个运算对象，二元运算符作用于两个运算对象，三元对运算对象没有限制。</p>
-<p>C++语言定义了运算符作用于内置类型和复合类型的运算对象时所执行的操作。当运算符作用于类类型的运算对象时，用户可以自行定义其含义。因为这种自定义的过程事实上是为已存在的运算符赋予了另外一层含义，所以称之为**重载运算符（ overloadedoperator)**。IO库的&gt;&gt;和&lt;&lt;运算符以及string对象、vector对象和迭代器使用的运算</p>
-<p><strong>左值和右值</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/08/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/08/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第三章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-08 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-08T00:00:00+08:00">2021-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-10 19:13:00" itemprop="dateModified" datetime="2022-01-10T19:13:00+08:00">2022-01-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/12/08/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第三章" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><p>​        第2章介绍的内置类型是由C++语言直接定义的。这些类型，比如数字和字符，体现了大多数计算机硬件本身具备的能力。标准库定义了另外一组具有更高级性质的类型，它们尚未直接实现到计算机硬件中。<br>​        本章将介绍两种最重要的标准库类型: string 和 vector。string表示可变长的字符序列，vector存放的是某种给定类型对象的可变长序列。本章还将介绍内置数组类型，和其他内置类型一样，<strong>数组的实现与硬件密切相关</strong>。因此相较于标准库类型string和 vector，数组在灵活性上稍显不足。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/08/C++%20Primer%20%E7%AC%AC%E4%B8%89%E7%AB%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1870,7 +2074,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

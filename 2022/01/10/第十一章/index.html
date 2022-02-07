@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关联容器使用关联容器关联容器  使用关联容器map12345678&#x2F;&#x2F;统计每个单词在输入中出现的次数map&lt;string，size_t &gt; word_count; &#x2F;&#x2F; string到size_t 的空mapstring word;while (cin &gt;&gt; word)	++word_count[word] ;				&#x2F;&#x2F;提取word的计数器并将其加1for (const">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer 第十一章">
+<meta property="og:url" content="http://mackrui.com/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/index.html">
+<meta property="og:site_name" content="祥瑞客栈">
+<meta property="og:description" content="关联容器使用关联容器关联容器  使用关联容器map12345678&#x2F;&#x2F;统计每个单词在输入中出现的次数map&lt;string，size_t &gt; word_count; &#x2F;&#x2F; string到size_t 的空mapstring word;while (cin &gt;&gt; word)	++word_count[word] ;				&#x2F;&#x2F;提取word的计数器并将其加1for (const">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2022/01/f8ba18e3b76e063e.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2022/01/7b5d5c1283d78be6.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2022/01/9a7c9a3c2375955d.png">
+<meta property="og:image" content="https://i.bmp.ovh/imgs/2022/01/a8fe3a59d436ac0b.png">
+<meta property="og:image" content="https://s2.loli.net/2022/01/22/QuvPl6JZYehS3fg.png">
+<meta property="og:image" content="https://s2.loli.net/2022/01/22/7R2B1iaJbqvftP4.png">
+<meta property="og:image" content="https://s2.loli.net/2022/01/27/eTFbRU5lHPOVKfp.png">
+<meta property="article:published_time" content="2022-01-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-07T15:11:24.638Z">
+<meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="书籍">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.bmp.ovh/imgs/2022/01/f8ba18e3b76e063e.png">
+
+<link rel="canonical" href="http://mackrui.com/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++ Primer 第十一章 | 祥瑞客栈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">祥瑞客栈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录点滴的成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer 第十一章
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-10 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-10T00:00:00+08:00">2022-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-07 23:11:24" itemprop="dateModified" datetime="2022-02-07T23:11:24+08:00">2022-02-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/10/%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0/" class="post-meta-item leancloud_visitors" data-flag-title="C++ Primer 第十一章" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关联容器"><a href="#关联容器" class="headerlink" title="关联容器"></a>关联容器</h1><h2 id="使用关联容器"><a href="#使用关联容器" class="headerlink" title="使用关联容器"></a>使用关联容器</h2><p>关联容器</p>
+<p><img src="https://i.bmp.ovh/imgs/2022/01/f8ba18e3b76e063e.png"></p>
+<h2 id="使用关联容器-1"><a href="#使用关联容器-1" class="headerlink" title="使用关联容器"></a>使用关联容器</h2><h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计每个单词在输入中出现的次数</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span> &gt; word_count; <span class="comment">// string到size_t 的空map</span></span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word)</span><br><span class="line">	++word_count[word] ;				<span class="comment">//提取word的计数器并将其加1</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;w : word_ count) <span class="comment">// 对map中的每个元素</span></span><br><span class="line">	<span class="comment">//打印结果</span></span><br><span class="line">	cout &lt;&lt; w.first &lt;&lt; <span class="string">&quot; occurs”&lt;&lt; w.second &lt;&lt; ((w.second&gt;1)?”times&quot;</span>:”time<span class="string">&quot;) &lt;&lt; endl;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计输入中每个单词出现的次数</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span> &gt; word_count; 	<span class="comment">// string 到size_ t的空map .</span></span><br><span class="line">set&lt;string&gt; exclude = &#123; <span class="string">&quot;The&quot;</span>, <span class="string">&quot;But&quot;</span>, <span class="string">&quot;And&quot;</span>， <span class="string">&quot;Or&quot;</span>， <span class="string">&quot;An&quot;</span>, <span class="string">&quot;A&quot;</span>,</span><br><span class="line">						<span class="string">&quot;the&quot;</span>，<span class="string">&quot;but&quot;</span>, <span class="string">&quot;and&quot;</span>， <span class="string">&quot;or&quot;</span>， <span class="string">&quot;an&quot;</span>， <span class="string">&quot;a&quot;</span>&#125;;</span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word)</span><br><span class="line">	<span class="comment">//只统计不在exclude中的单词</span></span><br><span class="line">	<span class="keyword">if</span> (exclude. <span class="built_in">find</span> (word) == exclude.<span class="built_in">end</span>() )</span><br><span class="line">	++word_ count [word]; 			<span class="comment">// 获取并递增word的计数器</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关联容器概述"><a href="#关联容器概述" class="headerlink" title="关联容器概述"></a>关联容器概述</h2><h3 id="定义关联容器"><a href="#定义关联容器" class="headerlink" title="定义关联容器"></a>定义关联容器</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">map&lt;string，size_ t&gt; word_ count; <span class="comment">//空容器</span></span><br><span class="line"><span class="comment">//列表初始化</span></span><br><span class="line">set&lt;string&gt; exclude = &#123; <span class="string">&quot;the&quot;</span>, <span class="string">&quot;but&quot;</span>, <span class="string">&quot;and&quot;</span>, <span class="string">&quot;or&quot;</span>, <span class="string">&quot;an&quot;</span>, <span class="string">&quot;a&quot;</span>,</span><br><span class="line">						<span class="string">&quot;The&quot;</span>, <span class="string">&quot;But&quot;</span>， <span class="string">&quot;And&quot;</span>， <span class="string">&quot;Or&quot;</span>, <span class="string">&quot;An&quot;</span>， <span class="string">&quot;A&quot;</span>&#125;;</span><br><span class="line"><span class="comment">//三个元素; authors将姓映射为名</span></span><br><span class="line">map&lt;string，string&gt; authors = &#123; &#123;<span class="string">&quot;Joyce&quot;</span>, <span class="string">&quot;James&quot;</span>&#125;,</span><br><span class="line">								&#123; <span class="string">&quot;Austen&quot;</span>, <span class="string">&quot;Jane&quot;</span>&#125;,</span><br><span class="line">								&#123;<span class="string">&quot;Dickens&quot;</span>, <span class="string">&quot;Charles&quot;</span>&#125; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化multimap或multiset"><a href="#初始化multimap或multiset" class="headerlink" title="初始化multimap或multiset"></a>初始化multimap或multiset</h4><p>multi容器允许多个元素具有相同的关键字：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个有20个元素的vector,保存0到9每个整数的两个拷贝</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="keyword">for</span> (vector&lt;<span class="keyword">int</span>&gt;::size_type i = <span class="number">0</span>; i != <span class="number">10</span>; ++i) &#123;</span><br><span class="line">	ivec.<span class="function">push_ <span class="title">back</span><span class="params">(i)</span> </span>;</span><br><span class="line">	ivec.<span class="function">push_ <span class="title">back</span><span class="params">(i)</span></span>; 		<span class="comment">// 每个数重复保存一次</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// iset包含来自ivec的不重复的元素; miset包含所有20个元素</span></span><br><span class="line"><span class="function">set&lt;<span class="keyword">int</span>&gt; <span class="title">iset</span> <span class="params">(ivec. cbegin()，ivec.cend())</span> </span>;</span><br><span class="line"><span class="function">multiset&lt;<span class="keyword">int</span>&gt; <span class="title">miset</span> <span class="params">(ivec.cbegin()，ivec.cend())</span> </span>;</span><br><span class="line">cout &lt;&lt; ivec.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">//打印出20</span></span><br><span class="line">cout &lt;&lt; iset.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">//打印出10</span></span><br><span class="line">cout &lt;&lt; miset.<span class="built_in">size</span>() &lt;&lt; endl;	<span class="comment">// 打印出 20</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关键字类型的要求"><a href="#关键字类型的要求" class="headerlink" title="关键字类型的要求"></a>关键字类型的要求</h3><p>对于有序容器中的关键字类型必须定义比较元素的方法。</p>
+<h4 id="使用关键字类型比较函数"><a href="#使用关键字类型比较函数" class="headerlink" title="使用关键字类型比较函数"></a>使用关键字类型比较函数</h4><p>可以指定一个比较函数来进行比较，需要在容器定义时紧跟着关键字类型给出。</p>
+<p>当使用Sales_data类时因为没有&lt;运算符，所以我们需要自己定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compareIsbn</span> <span class="params">(<span class="keyword">const</span> Sales_data &amp;<span class="number">1</span>hs， <span class="keyword">const</span> Sales_data &amp;rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> lhs.<span class="built_in">isbn</span>() &lt; rhs.<span class="built_in">isbn</span>() ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//然后定义容器时传入该函数,需要提供想要使用的操作的指针：</span></span><br><span class="line"><span class="comment">//bookstore中多条记录可以有相同的ISBN</span></span><br><span class="line"><span class="comment">// bookstore中的元素以ISBN的顺序进行排列</span></span><br><span class="line"><span class="function">multiset&lt;Sales_data, <span class="title">dec1type</span><span class="params">(compareIsbn)</span>*&gt;</span></span><br><span class="line"><span class="function">	<span class="title">bookstore</span> <span class="params">(compareIsbn)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用decltype指出自定义操作的类型，必须加上*指出给定的函数指针。</p>
+<h3 id="pair类型"><a href="#pair类型" class="headerlink" title="pair类型"></a>pair类型</h3><p>在头文件utility中，一个pair保存两个数据成员：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;string, string&gt; anon;				<span class="comment">//保存两个string</span></span><br><span class="line">pair&lt;string, size_ t&gt; word_ count;		<span class="comment">//保存一个string和一个size_ t</span></span><br><span class="line">pair&lt;string, vector&lt;<span class="keyword">int</span>&gt;&gt; line;			<span class="comment">//保存string和vector&lt;int&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以使用列表初始化</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;string, string&gt; author&#123;<span class="string">&quot;James&quot;</span>, <span class="string">&quot;Joyce&quot;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>成员均为public使用first和second进行访问</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印结果</span></span><br><span class="line">cout &lt;&lt; w.first &lt;&lt; <span class="string">&quot;occurs&quot;</span> &lt;&lt; w.second&lt;&lt; ( (w.second &gt; <span class="number">1</span>)? ”time s: ”time<span class="string">&quot; ) &lt;&lt; endl ;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.bmp.ovh/imgs/2022/01/7b5d5c1283d78be6.png"></p>
+<h4 id="返回pair的函数"><a href="#返回pair的函数" class="headerlink" title="返回pair的函数"></a>返回pair的函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pair&lt;string，<span class="keyword">int</span>&gt; <span class="title">process</span> <span class="params">(vector&lt;string&gt; &amp;V)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//处理v</span></span><br><span class="line">	<span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">		<span class="keyword">return</span> &#123;v. <span class="built_in">back</span>(), v.<span class="built_in">back</span>().<span class="built_in">size</span>()&#125;; <span class="comment">// 列表初始化</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> pair&lt;string， <span class="keyword">int</span>&gt;();			 <span class="comment">//隐式构造返回值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>else中返回的是一个空pair</p>
+<p>早期版本中不可以列表初始化返回则必须显示构造或使用make_pair来生成：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">	<span class="keyword">return</span> pair&lt;string，<span class="keyword">int</span>&gt; (v.<span class="built_in">back</span>()，v.<span class="built_in">back</span>().<span class="built_in">size</span>());</span><br><span class="line"><span class="keyword">if</span> (!v.<span class="built_in">empty</span>())</span><br><span class="line">	<span class="keyword">return</span> make_ <span class="built_in">pair</span> (V.<span class="built_in">back</span>()，v.<span class="built_in">back</span>().<span class="built_in">size</span>());</span><br></pre></td></tr></table></figure>
+
+<h2 id="关联容器的操作"><a href="#关联容器的操作" class="headerlink" title="关联容器的操作"></a>关联容器的操作</h2><p><img src="https://i.bmp.ovh/imgs/2022/01/9a7c9a3c2375955d.png"></p>
+<h3 id="关联容器迭代器"><a href="#关联容器迭代器" class="headerlink" title="关联容器迭代器"></a>关联容器迭代器</h3><p>解引用关联容器得到迭代器得到一个value_type，对于map得到一个pair，first成员中保存的是const关键字，它是不可以更改的，second保存值。而set中value_type与value_type是一样的。</p>
+<h4 id="遍历关联容器"><a href="#遍历关联容器" class="headerlink" title="遍历关联容器"></a>遍历关联容器</h4><p>使用迭代器遍历容器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获得一个指向首元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> map_it = word_count.<span class="built_in">cbegin</span>() ;</span><br><span class="line"><span class="comment">//比较当前迭代器和尾后迭代器.</span></span><br><span class="line"><span class="keyword">while</span> (map_it != word_count.<span class="built_in">cend</span>() ) &#123;</span><br><span class="line">	<span class="comment">//解引用迭代器，打印关键字-值对</span></span><br><span class="line">	cout &lt;&lt; map_it-&gt;first &lt;&lt; ”occurs” &lt;&lt; map_it-&gt;second &lt;&lt; <span class="string">&quot; times&quot;</span> &lt;&lt; endl;</span><br><span class="line">	++map_it; <span class="comment">// 递增迭代器，移动到下一个元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印出来的函数为升序排列。</p>
+<h4 id="关联容器和算法"><a href="#关联容器和算法" class="headerlink" title="关联容器和算法"></a>关联容器和算法</h4><p>通常不对关联容器使用泛型算法，关键字的const特性意味着不可以重排或修改元素，set中的元素时const的，所以只可以使用只读的算法，推荐使用容器内部的find，它会比泛型算法快得多，泛型find使用的是顺序搜索。</p>
+<h3 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h3><p>使用insert添加一个元素或元素范围，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//set容器</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; ivec = &#123;<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>&#125;;				<span class="comment">// ivec有8个元素</span></span><br><span class="line">set&lt;<span class="keyword">int</span>&gt; set2										<span class="comment">//空集合</span></span><br><span class="line">set2.<span class="built_in">insert</span>(ivec.<span class="built_in">cbegin</span>()，ivec.<span class="built_in">cend</span>());				<span class="comment">//set2有4个元素</span></span><br><span class="line">set2.<span class="built_in">insert</span>(&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>&#125;);						<span class="comment">// set2现在有8个元素</span></span><br><span class="line"><span class="comment">//insert可以接受一对迭代器，也可以接受一个初始化列表。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//map容器</span></span><br><span class="line"><span class="comment">//向word_count插入word的4种方法</span></span><br><span class="line">word_count.<span class="built_in">insert</span> (&#123;word, <span class="number">1</span>&#125;) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (<span class="built_in">make_pair</span>(word, <span class="number">1</span>)) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (pair&lt;string, <span class="keyword">size_t</span>&gt;(word, <span class="number">1</span>)) ;</span><br><span class="line">word_count.<span class="built_in">insert</span> (map&lt;string，<span class="keyword">size_t</span>&gt;::<span class="built_in">value_type</span> (word, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.bmp.ovh/imgs/2022/01/a8fe3a59d436ac0b.png"></p>
+<h4 id="检测insert返回值"><a href="#检测insert返回值" class="headerlink" title="检测insert返回值"></a>检测insert返回值</h4><p>insert返回值依赖容器类型和参数，对于map和set，添加单一元素返回的是一个pair，first指向给定的关键字元素，second是bool值，指出插入成功还是失败（已存在）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计每个单词在输入中出现次数的一种更烦琐的方法</span></span><br><span class="line">map&lt;string，<span class="keyword">size_t</span>&gt; word_count; <span class="comment">// 从string到size_t的空map.</span></span><br><span class="line">string word;</span><br><span class="line"><span class="keyword">while</span> (cin &gt;&gt; word) &#123;</span><br><span class="line">	<span class="comment">//插入一个元素，关键字等于word, 值为1;</span></span><br><span class="line">	<span class="comment">//若word已在word_ count中，insert什么也不做</span></span><br><span class="line">	<span class="keyword">auto</span> ret = word_count.<span class="built_in">insert</span> (&#123;word, <span class="number">1</span>&#125;) ;</span><br><span class="line">	<span class="keyword">if</span> (!ret.second)				<span class="comment">// word已在word_ count中</span></span><br><span class="line">		++ret.first-&gt;second; 		<span class="comment">//递增计数器</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="展开递增语句"><a href="#展开递增语句" class="headerlink" title="展开递增语句"></a>展开递增语句</h4><p><code>++ret.first-&gt;second;</code>这句话就代表增加插入的那个元素中的second++。</p>
+<h4 id="multi容器添加元素"><a href="#multi容器添加元素" class="headerlink" title="multi容器添加元素"></a>multi容器添加元素</h4><p>这种容器可以包含多个相同的关键字</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mul timap&lt;string, string&gt; authors;</span><br><span class="line"><span class="comment">//插入第一个元素，关键字为Barth， John</span></span><br><span class="line">authors.<span class="built_in">insert</span> (&#123;<span class="string">&quot;Barth，John&quot;</span>, <span class="string">&quot;Sot-Weed Factor&quot;</span>&#125;);</span><br><span class="line"><span class="comment">//正确:添加第二个元素，关键字也是Barth， John</span></span><br><span class="line">authors.<span class="built_in">insert</span>(&#123;<span class="string">&quot;Barth, John&quot;</span>, <span class="string">&quot;Lost in the Funhouse&quot;</span>&#125;) ;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h3><p><img src="https://s2.loli.net/2022/01/22/QuvPl6JZYehS3fg.png" alt="image.png"></p>
+<p>erase可以接受一个迭代器或者是一对迭代器来删除一个或一个范围的元素。还可以接受一个key_type，删除所匹配的关键字元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//删除一个关键字，返回删除的元素数量</span></span><br><span class="line"><span class="keyword">if</span> (word_count.<span class="built_in">erase</span> (removal_word) )</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ok:”&lt;&lt; removal_word &lt;&lt; ”removed\n&quot;</span>;</span><br><span class="line"><span class="keyword">else</span> cout &lt;&lt; <span class="string">&quot;oops: ”&lt;&lt; removal_ word &lt;&lt; ”not found! \n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果是multi容器，可能删除多个元素</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> cnt = authors.<span class="built_in">erase</span> (<span class="string">&quot;Barth，John&quot;</span>) ;</span><br></pre></td></tr></table></figure>
+
+<p>上面authors中添加了两个相同的元素，则cnt等于2。</p>
+<h3 id="map的下标操作"><a href="#map的下标操作" class="headerlink" title="map的下标操作"></a>map的下标操作</h3><p>map和unordered_map具有下标运算和at函数，set中不可以使用。</p>
+<p>map通过下标运算，接受一个索引（即关键字）获取与之关联的值，但不同的是，如果没有此关键字，会创建一个关键字，并将对应的值初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">map &lt;string， <span class="keyword">size_t</span>&gt; word_count; / / empty map</span><br><span class="line"><span class="comment">//插入一个关键字为Anna的元素，关联值进行值初始化;然后将1赋予它</span></span><br><span class="line">word_count [<span class="string">&quot;Anna&quot;</span>] = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在word_ _count中搜索关键字为Anna的元素，未找到。</li>
+<li><em>将一个新的关键字-值对插入到word</em> _count中。关键字是-一个const string，保存Anna。值进行值初始化，在本例中意味着值为0。</li>
+<li>提取出新插入的元素，并将值1赋予它。</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/01/22/7R2B1iaJbqvftP4.png" alt="image.png"></p>
+<h4 id="使用下标操作的返回值"><a href="#使用下标操作的返回值" class="headerlink" title="使用下标操作的返回值"></a>使用下标操作的返回值</h4><p>通常解引用的一个迭代器的类型与下标运算返回的类型是一样的，但map不同，会得到有个mappped_type对象，且为左值。</p>
+<h3 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h3><p>count可以统计元素个数，对于不允许重复元素存在的容器，推荐使用find。</p>
+<h4 id="map使用find代替下标操作"><a href="#map使用find代替下标操作" class="headerlink" title="map使用find代替下标操作"></a>map使用find代替下标操作</h4><p>map容器的下标操作如果关键字不存在，则会插入这个新的关键字，所以在只是想知道有没有这个关键字时可以用find代替。</p>
+<h4 id="multi容器查找元素"><a href="#multi容器查找元素" class="headerlink" title="multi容器查找元素"></a>multi容器查找元素</h4><p><strong>方法一：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string search_ <span class="title">item</span><span class="params">(<span class="string">&quot;Alain de Botton&quot;</span>)</span> </span>;		<span class="comment">//要查找的作者</span></span><br><span class="line"><span class="keyword">auto</span> entries = authors. <span class="built_in">count</span> (search_ item) ;	<span class="comment">//元素的数量</span></span><br><span class="line"><span class="keyword">auto</span> iter = authors. <span class="built_in">find</span> (search_ item) ;		<span class="comment">//此作者的第一本书</span></span><br><span class="line"><span class="comment">//用一个循环查找此作者的所有著作</span></span><br><span class="line"><span class="keyword">while</span> (entries) &#123;</span><br><span class="line">	cout &lt;&lt; iter-&gt;second &lt;&lt; endl ;				<span class="comment">//打印每个题目</span></span><br><span class="line">	++iter;										<span class="comment">//前进到下一本书</span></span><br><span class="line">	--entries;									<span class="comment">//记录已经打印了多少本书</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法二</strong></p>
+<p>lower_bound和up_bound分别返回匹配的第一个位置和最后一个位置的后一个位置。不存在则返回可插入位置</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authors 和search_ item 的定义，与前面的程序一样</span></span><br><span class="line"><span class="comment">//beg和end表示对应此作者的元素的范围.</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> beg = authors. <span class="built_in">lower_bound</span> (search_item) ,</span><br><span class="line">		  end = authors.<span class="built_in">upper_bound</span> (search_item) ;</span><br><span class="line">		  beg != end; ++beg)</span><br><span class="line">	cout &lt;&lt; beg-&gt;second &lt;&lt; endl; <span class="comment">//打印每个题目</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>方法三</strong></p>
+<p>equal_range函数接受关键字，返回pair。若关键字存在则第一个指向第一个与之匹配的位置，第二个是最后一个与之匹配位置的后一个位置。若不存在则返回可插入位置。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// authors 和search_item的定义， 与前面的程序一样</span></span><br><span class="line"><span class="comment">// pos保存迭代器对，表示与关键字匹配的元素范围</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> pos = authors.<span class="built_in">equal_range</span> (search_item) ;</span><br><span class="line">	 pos.first != pos.second; ++pos.first)</span><br><span class="line">	cout &lt;&lt; pos.first-&gt;second &lt;&lt; endl; <span class="comment">//打印每个题目</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="单词转换map（跳）"><a href="#单词转换map（跳）" class="headerlink" title="单词转换map（跳）"></a>单词转换map（跳）</h3><h2 id="无序容器"><a href="#无序容器" class="headerlink" title="无序容器"></a>无序容器</h2><h4 id="使用无序容器"><a href="#使用无序容器" class="headerlink" title="使用无序容器"></a>使用无序容器</h4><p>unordered_map或者unordered_set，他们都有与前面类似的操作，通常可以用一个无序容器替换对应的有序容器，但顺序会与有序容器不同。</p>
+<h4 id="管理桶"><a href="#管理桶" class="headerlink" title="管理桶"></a>管理桶</h4><p>无序容器在储存上为一组桶，无序容器使用一个哈希函数将所有元素映射到桶中，容器将具有一个特定的哈希值的所有元素保存在相同的桶中，访问时先按照哈希值找到对应的桶，再在桶中找对应的元素。因此容器性能依赖哈希函数的质量和桶的数量和大小。</p>
+<p>最理想的情况应该是哈希函数将所有元素尽可能的均匀的分配到每个桶中。</p>
+<p><img src="https://s2.loli.net/2022/01/27/eTFbRU5lHPOVKfp.png" alt="image.png"></p>
+<h4 id="无序容器对关键字类型的要求"><a href="#无序容器对关键字类型的要求" class="headerlink" title="无序容器对关键字类型的要求"></a>无序容器对关键字类型的要求</h4><p>默认情况下，无序容器使用关键字类型的==运算符来比较元素，还使用一个hash<key_ type> 类型的对象来生成每个元素的哈希值。例如当我们想要将一个int值使用哈希函数，就是hash<int>,</p>
+<p>但是我们不能直接定义关键字类型为自定义类类型的无序容器。可以不直接使用哈希模板而是使用自己的hash版本。例如Sale_data用作关键字，我们需要提供函数来代替==运算符和哈希计算函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">hasher</span><span class="params">(<span class="keyword">const</span> Sales_ data &amp;sd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> hash&lt;string&gt;() (sd. <span class="built_in">isbn</span>()) ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">eqOp</span><span class="params">(<span class="keyword">const</span> Sales_data &amp;lhs， <span class="keyword">const</span> Sales_data &amp;rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> lhs.<span class="built_in">isbn</span>() == rhs.<span class="built_in">isbn</span>() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> SD_multiset = unordered multiset&lt;Sales_data,</span><br><span class="line">					<span class="keyword">decltype</span>(hasher)*, <span class="keyword">decltype</span>(eqOp)*&gt;;</span><br><span class="line"><span class="comment">//参数是桶大小、哈希函数指针和相等性判断运算符指针</span></span><br><span class="line"><span class="function">SD_multiset <span class="title">bookstore</span><span class="params">(<span class="number">42</span>, hasher, eqOp)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果类内具有==运算符，可以只重载哈希函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用FooHash生成哈希值; Foo必须有==运算符</span></span><br><span class="line"><span class="function">unordered_set&lt;Foo, <span class="title">decltype</span> <span class="params">(FooHash)</span>*&gt; <span class="title">fooSet</span> <span class="params">(<span class="number">10</span>，FooHash)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E4%B9%A6%E7%B1%8D/" rel="tag"># 书籍</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/17/%E7%AC%AC%E5%8D%81%E7%AB%A0/" rel="prev" title="C++ Primer 第十章">
+      <i class="fa fa-chevron-left"></i> C++ Primer 第十章
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/23/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0/" rel="next" title="C++ Primer 第十二章">
+      C++ Primer 第十二章 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">关联容器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">使用关联容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8-1"><span class="nav-number">1.2.</span> <span class="nav-text">使用关联容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#map"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">set</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8%E6%A6%82%E8%BF%B0"><span class="nav-number">1.3.</span> <span class="nav-text">关联容器概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">定义关联容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96multimap%E6%88%96multiset"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">初始化multimap或multiset</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A6%81%E6%B1%82"><span class="nav-number">1.3.2.</span> <span class="nav-text">关键字类型的要求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B3%E9%94%AE%E5%AD%97%E7%B1%BB%E5%9E%8B%E6%AF%94%E8%BE%83%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">使用关键字类型比较函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pair%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">pair类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%94%E5%9B%9Epair%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">返回pair的函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.</span> <span class="nav-text">关联容器的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">关联容器迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">遍历关联容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8%E5%92%8C%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">关联容器和算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.2.</span> <span class="nav-text">添加元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%B5%8Binsert%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">检测insert返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%95%E5%BC%80%E9%80%92%E5%A2%9E%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">展开递增语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multi%E5%AE%B9%E5%99%A8%E6%B7%BB%E5%8A%A0%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">multi容器添加元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.3.</span> <span class="nav-text">删除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#map%E7%9A%84%E4%B8%8B%E6%A0%87%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.4.</span> <span class="nav-text">map的下标操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%8B%E6%A0%87%E6%93%8D%E4%BD%9C%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">使用下标操作的返回值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.5.</span> <span class="nav-text">访问元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#map%E4%BD%BF%E7%94%A8find%E4%BB%A3%E6%9B%BF%E4%B8%8B%E6%A0%87%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">map使用find代替下标操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multi%E5%AE%B9%E5%99%A8%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">multi容器查找元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E8%BD%AC%E6%8D%A2map%EF%BC%88%E8%B7%B3%EF%BC%89"><span class="nav-number">1.4.6.</span> <span class="nav-text">单词转换map（跳）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">无序容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">使用无序容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%A1%B6"><span class="nav-number">1.5.0.2.</span> <span class="nav-text">管理桶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%BA%8F%E5%AE%B9%E5%99%A8%E5%AF%B9%E5%85%B3%E9%94%AE%E5%AD%97%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A6%81%E6%B1%82"><span class="nav-number">1.5.0.3.</span> <span class="nav-text">无序容器对关键字类型的要求</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Collider"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Collider</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/endlesscollider" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;endlesscollider" rel="noopener" target="_blank"><i class="GitHub fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1652737065@qq.com" title="E-Mail → mailto:1652737065@qq.com" rel="noopener" target="_blank"><i class="E-Mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Collider</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz","app_key":"6k9HROMoqf6vzPadEMksx26r","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+
+  
+  
+    <script src="/js/cursor/cherry.js"></script>
+  
+
+</body>
+</html>
