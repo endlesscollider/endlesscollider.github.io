@@ -21,20 +21,22 @@
   </script>
 
   <meta name="description" content="拷贝控制示例这一章将概述两个类的设计，在邮件的处理应用中，两个类命民为Message和Folder，每个Message对象可以出现在多个Folder中。但所有的message共享一个副本，这样在其中一个中改动Message，其他地方都可以看到改动。为了记录Message位于哪些Folder。每一Message又都会保存一个Folder的指针set，每一个Folder又都保存一个它所包含的Messa">
-<meta property="og:type" content="article">
-<meta property="og:title" content="祥瑞客栈">
-<meta property="og:url" content="http://mackrui.com/2022/02/10/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="拷贝控制示例">
+<meta property="og:url" content="http://mackrui.com/draft/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B.html">
 <meta property="og:site_name" content="祥瑞客栈">
 <meta property="og:description" content="拷贝控制示例这一章将概述两个类的设计，在邮件的处理应用中，两个类命民为Message和Folder，每个Message对象可以出现在多个Folder中。但所有的message共享一个副本，这样在其中一个中改动Message，其他地方都可以看到改动。为了记录Message位于哪些Folder。每一Message又都会保存一个Folder的指针set，每一个Folder又都保存一个它所包含的Messa">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2022/02/10/aBR9vmShckZ5bdj.png">
-<meta property="article:published_time" content="2022-02-10T01:55:45.849Z">
-<meta property="article:modified_time" content="2022-02-10T12:47:36.043Z">
+<meta property="article:published_time" content="2022-02-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-04T15:12:43.374Z">
 <meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="书籍">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2022/02/10/aBR9vmShckZ5bdj.png">
 
-<link rel="canonical" href="http://mackrui.com/2022/02/10/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/">
+<link rel="canonical" href="http://mackrui.com/draft/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B">
 
 
 <script id="page-configurations">
@@ -42,12 +44,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title> | 祥瑞客栈</title>
+  <title>拷贝控制示例 | 祥瑞客栈
+</title>
   
 
 
@@ -138,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">21</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -189,67 +192,33 @@
       <div class="main-inner">
         <div class="content-wrap">
           
+  
+  
 
-          <div class="content post posts-expand">
+          <div class="content page posts-expand">
             
 
     
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/02/10/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
+    
+    
+    <div class="post-block" lang="zh-CN">
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-        </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+<h1 class="post-title" itemprop="name headline">拷贝控制示例
+</h1>
 
-              <time title="创建时间：2022-02-10 09:55:45 / 修改时间：20:47:36" itemprop="dateCreated datePublished" datetime="2022-02-10T09:55:45+08:00">2022-02-10</time>
-            </span>
+<div class="post-meta">
+  
 
-          
-            <span id="/2022/02/10/%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
+</div>
 
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
-        <h1 id="拷贝控制示例"><a href="#拷贝控制示例" class="headerlink" title="拷贝控制示例"></a>拷贝控制示例</h1><p>这一章将概述两个类的设计，在邮件的处理应用中，两个类命民为Message和Folder，每个Message对象可以出现在多个Folder中。但所有的message共享一个副本，这样在其中一个中改动Message，其他地方都可以看到改动。为了记录Message位于哪些Folder。每一Message又都会保存一个Folder的指针set，每一个Folder又都保存一个它所包含的Message的set指针。</p>
+      
+      
+      <div class="post-body">
+          <h1 id="拷贝控制示例"><a href="#拷贝控制示例" class="headerlink" title="拷贝控制示例"></a>拷贝控制示例</h1><p>这一章将概述两个类的设计，在邮件的处理应用中，两个类命民为Message和Folder，每个Message对象可以出现在多个Folder中。但所有的message共享一个副本，这样在其中一个中改动Message，其他地方都可以看到改动。为了记录Message位于哪些Folder。每一Message又都会保存一个Folder的指针set，每一个Folder又都保存一个它所包含的Message的set指针。</p>
 <p><img src="https://s2.loli.net/2022/02/10/aBR9vmShckZ5bdj.png" alt="image.png"></p>
 <ul>
 <li><p>Message提供save和remove操作，保存到一个Folder和从一个Folder中删除，在创建新的Meesage不需要保存，保存需要用户手动调用save。</p>
@@ -266,35 +235,16 @@
 <h3 id="save和remove成员"><a href="#save和remove成员" class="headerlink" title="save和remove成员"></a>save和remove成员</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Message::save</span> <span class="params">(Folder &amp;f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    folders.<span class="built_in">insert</span>(&amp;f);<span class="comment">//将给定Folder添加到我们的Folder列表中</span></span><br><span class="line">    f.<span class="built_in">addMsg</span>(<span class="keyword">this</span>);<span class="comment">//将本Message添加到f的Message 集合中</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Message::remove</span> <span class="params">(Folder &amp;f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    folders.<span class="built_in">erase</span>(&amp;f);<span class="comment">//将给定Folder从我们的Folder列表中删除</span></span><br><span class="line">    f.<span class="built_in">remMsg</span>(<span class="keyword">this</span>);	<span class="comment">//将本Message从f的Message集合中删除</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="Message类的拷贝控制成员"><a href="#Message类的拷贝控制成员" class="headerlink" title="Message类的拷贝控制成员"></a>Message类的拷贝控制成员</h3>
+      </div>
+      
+      
+      
     </div>
+    
 
     
     
     
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" rel="prev" title="C++ Primer文本查询程序">
-      <i class="fa fa-chevron-left"></i> C++ Primer文本查询程序
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/12/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0/" rel="next" title="C++ Primer 第十五章">
-      C++ Primer 第十五章 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
 
 
           </div>
@@ -366,7 +316,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
