@@ -2618,7 +2618,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（一）</title>
+    <title>生成第一张图片</title>
     <url>/2022/02/19/%E5%85%89%E8%BF%BD1.1/</url>
     <content><![CDATA[<p><strong>前言：</strong>前段时间在学习C++ primer的同时，我还有幸接触到了一本非常有趣的书，它通过我们的vs写出的代码直接模拟光线追踪生成图像。地址：<a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">Ray Tracing in One Weekend</a>。它非常的有趣也具有很高的学习价值，所以我想把学习的过程记录下来，也欢迎大家来一起学习并找出其中的错误，废话不多说，直接开始！</p>
 <h1 id="生成第一张图片"><a href="#生成第一张图片" class="headerlink" title="生成第一张图片"></a>生成第一张图片</h1><h2 id="图片格式"><a href="#图片格式" class="headerlink" title="图片格式"></a>图片格式</h2><p>首先明确我们这里使用的是ppm格式的图片格式，它是通过类似于<code>vector&lt;vector&lt;int&gt;&gt;</code>的方式记录下每个色素的RGB值。</p>
@@ -3874,7 +3874,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（二）</title>
+    <title>点、向量、颜色</title>
     <url>/2022/02/21/%E5%85%89%E8%BF%BD1.2/</url>
     <content><![CDATA[<h1 id="点、向量、颜色"><a href="#点、向量、颜色" class="headerlink" title="点、向量、颜色"></a>点、向量、颜色</h1><p>既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//防止被重复引用，用ifndef去包裹所有代码。</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> VEC3_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VEC3_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//需要一些cmath类里面的数学函数</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//精确引用，只需要开方函数就只引入最小的命名空间</span></span><br><span class="line"><span class="keyword">using</span> std::sqrt;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vec3</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">// 空构造，默认构造一个（0，0，0）向量</span></span><br><span class="line">        <span class="built_in">vec3</span>() : e&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125; &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// 传入三个参数的构造。</span></span><br><span class="line">        <span class="built_in">vec3</span>(<span class="keyword">double</span> e0, <span class="keyword">double</span> e1, <span class="keyword">double</span> e2) : e&#123;e0, e1, e2&#125; &#123;&#125;</span><br><span class="line">		</span><br><span class="line">    	<span class="comment">//定义x，y，z分量。这样就可以用 向量.x() 直接拿取x分量。</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">x</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">0</span>]; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">y</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">1</span>]; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">z</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">2</span>]; &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//下面进行运算符重载。</span></span><br><span class="line">    </span><br><span class="line">    	<span class="comment">//单目 &#x27;-&#x27; 运算符 ，会对三维向量的每一维取反。</span></span><br><span class="line">        vec3 <span class="keyword">operator</span>-() <span class="keyword">const</span> &#123; <span class="keyword">return</span> <span class="built_in">vec3</span>(-e[<span class="number">0</span>], -e[<span class="number">1</span>], -e[<span class="number">2</span>]); &#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// &#x27;[]&#x27; 运算符的const版本，返回右值。</span></span><br><span class="line">    	<span class="keyword">double</span> <span class="keyword">operator</span>[](<span class="keyword">int</span> i) <span class="keyword">const</span> &#123; <span class="keyword">return</span> e[i]; &#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// &#x27;[]&#x27; 运算符普通版本，返回左值</span></span><br><span class="line">        <span class="keyword">double</span>&amp; <span class="keyword">operator</span>[](<span class="keyword">int</span> i) &#123; <span class="keyword">return</span> e[i]; &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">// &#x27;+=&#x27;运算符，const保护参数不被修改，返回引用允许操作符嵌套。</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> vec3 &amp;v) &#123;</span><br><span class="line">            e[<span class="number">0</span>] += v.e[<span class="number">0</span>];</span><br><span class="line">            e[<span class="number">1</span>] += v.e[<span class="number">1</span>];</span><br><span class="line">            e[<span class="number">2</span>] += v.e[<span class="number">2</span>];</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">    	<span class="comment">// &#x27;*=&#x27;运算符</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>*=(<span class="keyword">const</span> <span class="keyword">double</span> t) &#123;</span><br><span class="line">            e[<span class="number">0</span>] *= t;</span><br><span class="line">            e[<span class="number">1</span>] *= t;</span><br><span class="line">            e[<span class="number">2</span>] *= t;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">// &#x27;/=&#x27;运算符，直接使用*=去定义&#x27;/=&#x27;。</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>/=(<span class="keyword">const</span> <span class="keyword">double</span> t) &#123;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span> *= <span class="number">1</span>/t;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">//模相关。</span></span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 模的平方。</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">length_squared</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> e[<span class="number">0</span>]*e[<span class="number">0</span>] + e[<span class="number">1</span>]*e[<span class="number">1</span>] + e[<span class="number">2</span>]*e[<span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    	</span><br><span class="line">    	<span class="comment">// 模</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">sqrt</span>(<span class="built_in">length_squared</span>());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">// 向量中的数组也直接暴露出去了，这里是float也没问题，看你的喜好。</span></span><br><span class="line">        <span class="keyword">double</span> e[<span class="number">3</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 给vec3类多起几个名字。</span></span><br><span class="line"><span class="keyword">using</span> point3 = vec3;   <span class="comment">// 3D point，在指定三维空间中的点的时候使用这种别名。</span></span><br><span class="line"><span class="keyword">using</span> color = vec3;    <span class="comment">// RGB color，在指定颜色的时候使用这种别名。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
@@ -3900,7 +3900,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（三）</title>
+    <title>光线、相机与天空</title>
     <url>/2022/02/23/%E5%85%89%E8%BF%BD1.3/</url>
     <content><![CDATA[<h1 id="光线、相机与天空"><a href="#光线、相机与天空" class="headerlink" title="光线、相机与天空"></a>光线、相机与天空</h1><h2 id="光线"><a href="#光线" class="headerlink" title="光线"></a>光线</h2><p>如何将抽象的光线具体的表现出来并不困难，在初中物理的时候我们就使用一个点加上一个射线的方式来表示光线，于是我们可以用这样的公式描述它：<code>P(t)=A+t*b</code></p>
 <p><img src="https://s2.loli.net/2022/03/05/s71P5mzYDjenywC.png" alt="image.png"></p>
@@ -3939,7 +3939,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（四）</title>
+    <title>球</title>
     <url>/2022/02/25/%E5%85%89%E8%BF%BD1.4/</url>
     <content><![CDATA[<h1 id="球"><a href="#球" class="headerlink" title="球"></a>球</h1><h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>接下来总要让一个对象让光线碰撞，这里选择使用最简单的物体：球<br>$$<br>X^2+Y^2+Z^2=R^2<br>$$<br>一个非常标准的球的数学表达式，这个公式表示以原点为球心，半径是R的球。所有坐标是（x,y,z）的点满足上面的表达式<strong>都在球上</strong>。接下来是点在球内和求外的公式：</p>
 <p>$$<br>X^2+Y^2+Z^2&lt;R^2<br>$$</p>
@@ -3993,7 +3993,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（五）</title>
+    <title>物体类</title>
     <url>/2022/02/26/%E5%85%89%E8%BF%BD1.5/</url>
     <content><![CDATA[<h1 id="物体类"><a href="#物体类" class="headerlink" title="物体类"></a>物体类</h1><h2 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h2><p>首先可以简化一些不必要的常数项，聊胜于无的优化：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">hit_sphere</span><span class="params">(<span class="keyword">const</span> point3&amp; center, <span class="keyword">double</span> radius, <span class="keyword">const</span> ray&amp; r)</span> </span>&#123;</span><br><span class="line">    vec3 oc = r.<span class="built_in">origin</span>() - center;</span><br><span class="line">    <span class="keyword">auto</span> a = r.<span class="built_in">direction</span>().<span class="built_in">length_squared</span>();</span><br><span class="line">    <span class="comment">//默认直接把2除掉</span></span><br><span class="line">    <span class="keyword">auto</span> half_b = <span class="built_in">dot</span>(oc, r.<span class="built_in">direction</span>());</span><br><span class="line">    <span class="keyword">auto</span> c = oc.<span class="built_in">length_squared</span>() - radius*radius;</span><br><span class="line">    <span class="comment">//这个discriminant是之前的四分之一。</span></span><br><span class="line">    <span class="keyword">auto</span> discriminant = half_b*half_b - a*c;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (discriminant &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1.0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//分子分母都是简化前的一半。</span></span><br><span class="line">        <span class="built_in"><span class="keyword">return</span></span> (-half_b - <span class="built_in">sqrt</span>(discriminant) ) / a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -4033,7 +4033,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（六）</title>
+    <title>物体列表</title>
     <url>/2022/02/28/%E5%85%89%E8%BF%BD1.6/</url>
     <content><![CDATA[<h1 id="物体列表"><a href="#物体列表" class="headerlink" title="物体列表"></a>物体列表</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HITTABLE_LIST_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HITTABLE_LIST_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//智能指针的头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//智能指针！用它来帮我们管理物体列表，就不用担心内存泄漏问题了！</span></span><br><span class="line"><span class="keyword">using</span> std::shared_ptr;</span><br><span class="line"><span class="keyword">using</span> std::make_shared;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hittable_list</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">hittable_list</span>() &#123;&#125;</span><br><span class="line">    	<span class="comment">//当创建物体列表的时候传入了某一个物体，我们直接调用add函数把这个物体加入列表。</span></span><br><span class="line">    	<span class="built_in">hittable_list</span>(shared_ptr&lt;hittable&gt; object) &#123; <span class="built_in">add</span>(object); &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//clear函数调用列表的clear函数清空列表。</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123; objects.<span class="built_in">clear</span>(); &#125;</span><br><span class="line">    	<span class="comment">//add函数调用push_back把新物体的智能指针加入列表</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(shared_ptr&lt;hittable&gt; object)</span> </span>&#123; objects.<span class="built_in">push_back</span>(object); &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//声明我们需要override父类的hit函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">//物体列表，使用vector去存每个物体的智能指针。</span></span><br><span class="line">        std::vector&lt;shared_ptr&lt;hittable&gt;&gt; objects;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写之后的hit函数。</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">hittable_list::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    hit_record temp_rec;</span><br><span class="line">    <span class="keyword">bool</span> hit_anything = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//最开始，把能接受的最远位置设置成外部传进来的t_max。</span></span><br><span class="line">    <span class="keyword">auto</span> closest_so_far = t_max;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对每个物体做碰撞</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; object : objects) &#123;</span><br><span class="line"> 		<span class="comment">//光线射到了这一堆物体里的某一个。</span></span><br><span class="line">        <span class="keyword">if</span> (object-&gt;<span class="built_in">hit</span>(r, t_min, closest_so_far, temp_rec)) &#123;</span><br><span class="line">            <span class="comment">//光线有射中东西，把最终函数的返回值设定为true。</span></span><br><span class="line">            hit_anything = <span class="literal">true</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//光线虽然已经射中了一个东西了，但不确定射中的这个物体是不是离相机最近的。</span></span><br><span class="line">            <span class="comment">//范围缩小，然后继续遍历物体列表。</span></span><br><span class="line">            closest_so_far = temp_rec.t;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//每次有新的碰撞，就设定它的record为最终record。</span></span><br><span class="line">            <span class="comment">//遍历完成后，就可以找到最近的碰撞点并返回它的rec。</span></span><br><span class="line">            rec = temp_rec;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//返回这根光线是否有碰到物体列表中的任何物体。</span></span><br><span class="line">    <span class="keyword">return</span> hit_anything;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
@@ -4083,7 +4083,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（七）</title>
+    <title>抗锯齿</title>
     <url>/2022/03/01/%E5%85%89%E8%BF%BD1.7/</url>
     <content><![CDATA[<h1 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h1><p>仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">1600</span>;</span><br></pre></td></tr></table></figure>
@@ -4131,7 +4131,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（八）</title>
+    <title>磨砂（上）</title>
     <url>/2022/03/03/%E5%85%89%E8%BF%BD1.8/</url>
     <content><![CDATA[<h1 id="磨砂（上）"><a href="#磨砂（上）" class="headerlink" title="磨砂（上）"></a>磨砂（上）</h1><p>之前我们一直在画一些看起来完全不真实的东西，但从现在开始我们可以来实现更加真实的物体了。</p>
 <h3 id="漫反射原理"><a href="#漫反射原理" class="headerlink" title="漫反射原理"></a>漫反射原理</h3><p>例如土墙、手机壳、木制桌面等等这些表面有很多微小凹凸的材质叫做漫反射材质，它们会吸收一部分光线，并且把剩余的光线朝随机方向反射出去，因为光线被反射到了不同的方向，自然不会出现某一个方向能接收到很亮的光线，也就不会有高光点存在。它们一般会吸收特定颜色的光，比如红色的砖块，它会吸收不是红色的光线，而把红色的光线按照随机方向反弹回去。</p>
@@ -4197,7 +4197,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十）</title>
+    <title>材质类</title>
     <url>/2022/03/13/%E5%85%89%E8%BF%BD1.10/</url>
     <content><![CDATA[<h1 id="材质类"><a href="#材质类" class="headerlink" title="材质类"></a>材质类</h1><p>在上一章由于急于实现功能而污染了表层文件，我们需要将它抽象出来，才能继续制作其他材质。</p>
 <h2 id="抽象材质类"><a href="#抽象材质类" class="headerlink" title="抽象材质类"></a>抽象材质类</h2><p>材质类应该干什么？应该能产生反射光线，并且记录诸如光线衰减信息（上一章中的对半衰减）等，总结一句话，它得通过入射光线，得知反射光线的方向和能量大小。</p>
@@ -4254,7 +4254,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十一）</title>
+    <title>金属</title>
     <url>/2022/03/16/%E5%85%89%E8%BF%BD1.11/</url>
     <content><![CDATA[<h1 id="金属"><a href="#金属" class="headerlink" title="金属"></a>金属</h1><h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
 <p>要如何生成镜面反射的光线呢，在已知入射光线方向和法线方向之后，一个简单的向量运算即可得到反射光线方向。</p>
@@ -4298,7 +4298,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十二）</title>
+    <title>玻璃</title>
     <url>/2022/03/21/%E5%85%89%E8%BF%BD1.12/</url>
     <content><![CDATA[<h1 id="玻璃"><a href="#玻璃" class="headerlink" title="玻璃"></a>玻璃</h1><h2 id="斯涅尔定律"><a href="#斯涅尔定律" class="headerlink" title="斯涅尔定律"></a>斯涅尔定律</h2><p>折射光线会遵循以下的法则进行折射，这个定律叫折射定律，或者是斯涅尔定律（Snell’s law）：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084827719.png" alt="image-20220311084827719"></p>
@@ -4379,7 +4379,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十三）</title>
+    <title>自由相机</title>
     <url>/2022/03/25/%E5%85%89%E8%BF%BD1.13/</url>
     <content><![CDATA[<h1 id="自由相机"><a href="#自由相机" class="headerlink" title="自由相机"></a>自由相机</h1><h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131416140.png" alt="image-20220313131416140"></p>
@@ -4436,7 +4436,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十五）</title>
+    <title>多线程加速</title>
     <url>/2022/04/02/%E5%85%89%E8%BF%BD1.15/</url>
     <content><![CDATA[<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
 <p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
@@ -4503,7 +4503,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（十四）</title>
+    <title>散焦模糊</title>
     <url>/2022/03/28/%E5%85%89%E8%BF%BD1.14/</url>
     <content><![CDATA[<h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png" alt="img"></p>
@@ -4554,7 +4554,7 @@
       </tags>
   </entry>
   <entry>
-    <title>从零实现光追渲染（九）</title>
+    <title>磨砂（下）</title>
     <url>/2022/03/09/%E5%85%89%E8%BF%BD1.9/</url>
     <content><![CDATA[<h1 id="磨砂（下）"><a href="#磨砂（下）" class="headerlink" title="磨砂（下）"></a>磨砂（下）</h1><h2 id="浮点数精度"><a href="#浮点数精度" class="headerlink" title="浮点数精度"></a>浮点数精度</h2><p>看到标题，我们就知道上一章画面太暗的罪魁祸首是谁了吧，生成反射光线的起点是碰撞点，但是因为浮点数并不能精确的等于某个数，比如<code>double d = 0;</code>，实际的项目运行过程中，d不会精确等于0，而是会等于诸如-0.00000083之类的逼近0的小数。</p>
 <p>浮点数精度问题会导致一部分光线的起点在球的内部，这样发射光线，光线会和球的内壁碰撞，然后在球内反复弹射，耗尽自己的一生。</p>

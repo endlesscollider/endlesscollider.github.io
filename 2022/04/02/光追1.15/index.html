@@ -22,7 +22,7 @@
 
   <meta name="description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从零实现光追渲染（十五）">
+<meta property="og:title" content="多线程加速">
 <meta property="og:url" content="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
 <meta property="og:description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766148415-4d46e8c8-b22d-45fb-a2df-c6010d4a258d.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png">
 <meta property="article:published_time" content="2022-04-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T02:16:03.493Z">
+<meta property="article:modified_time" content="2022-04-02T08:36:04.638Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>从零实现光追渲染（十五） | 祥瑞客栈</title>
+  <title>多线程加速 | 祥瑞客栈</title>
   
 
 
@@ -217,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          从零实现光追渲染（十五）
+          多线程加速
         </h1>
 
         <div class="post-meta">
@@ -228,7 +228,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：10:16:03" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
+              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：16:36:04" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,6 +248,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/02/%E5%85%89%E8%BF%BD1.15/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -332,8 +346,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="从零实现光追渲染（十四）">
-      <i class="fa fa-chevron-left"></i> 从零实现光追渲染（十四）
+    <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="散焦模糊">
+      <i class="fa fa-chevron-left"></i> 散焦模糊
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -348,11 +362,24 @@
 
           </div>
           
-    
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-livere">livere</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane livere" id="comment-livere">
+              
   <div class="comments">
     <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
   </div>
   
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -653,6 +680,35 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
     j.async = true;
     e.parentNode.insertBefore(j, e);
   })(document, 'script');
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
 });
 </script>
 

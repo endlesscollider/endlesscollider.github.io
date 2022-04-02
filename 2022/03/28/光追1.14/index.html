@@ -22,7 +22,7 @@
 
   <meta name="description" content="散焦模糊传统相机的局限现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。  如上图所示，inside表示相机内部，outside是相机的外部。 相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从零实现光追渲染（十四）">
+<meta property="og:title" content="散焦模糊">
 <meta property="og:url" content="http://mackrui.com/2022/03/28/%E5%85%89%E8%BF%BD1.14/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
 <meta property="og:description" content="散焦模糊传统相机的局限现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。  如上图所示，inside表示相机内部，outside是相机的外部。 相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643976783038-8526d1b9-95c6-4cef-b5fc-413bf73fd84b.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644241403158-330630b4-149f-456e-9abd-a749828948f6.png">
 <meta property="article:published_time" content="2022-03-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T02:15:24.172Z">
+<meta property="article:modified_time" content="2022-04-02T08:35:55.069Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -53,7 +53,7 @@
   };
 </script>
 
-  <title>从零实现光追渲染（十四） | 祥瑞客栈</title>
+  <title>散焦模糊 | 祥瑞客栈</title>
   
 
 
@@ -216,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          从零实现光追渲染（十四）
+          散焦模糊
         </h1>
 
         <div class="post-meta">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 10:15:24" itemprop="dateModified" datetime="2022-04-02T10:15:24+08:00">2022-04-02</time>
+                <time title="修改时间：2022-04-02 16:35:55" itemprop="dateModified" datetime="2022-04-02T16:35:55+08:00">2022-04-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,6 +253,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -321,12 +335,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" rel="prev" title="从零实现光追渲染（十三）">
-      <i class="fa fa-chevron-left"></i> 从零实现光追渲染（十三）
+    <a href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" rel="prev" title="自由相机">
+      <i class="fa fa-chevron-left"></i> 自由相机
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" rel="next" title="从零实现光追渲染（十五）">
-      从零实现光追渲染（十五） <i class="fa fa-chevron-right"></i>
+    <a href="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" rel="next" title="多线程加速">
+      多线程加速 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -340,11 +354,24 @@
 
           </div>
           
-    
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-livere">livere</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane livere" id="comment-livere">
+              
   <div class="comments">
     <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
   </div>
   
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -645,6 +672,35 @@ NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
     j.async = true;
     e.parentNode.insertBefore(j, e);
   })(document, 'script');
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
 });
 </script>
 

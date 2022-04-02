@@ -215,7 +215,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十五）</span>
+            <span itemprop="name">多线程加速</span>
           </a>
       </div>
 
@@ -235,7 +235,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十四）</span>
+            <span itemprop="name">散焦模糊</span>
           </a>
       </div>
 
@@ -255,7 +255,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十三）</span>
+            <span itemprop="name">自由相机</span>
           </a>
       </div>
 
@@ -275,7 +275,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/21/%E5%85%89%E8%BF%BD1.12/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十二）</span>
+            <span itemprop="name">玻璃</span>
           </a>
       </div>
 
@@ -295,7 +295,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/16/%E5%85%89%E8%BF%BD1.11/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十一）</span>
+            <span itemprop="name">金属</span>
           </a>
       </div>
 
@@ -315,7 +315,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/13/%E5%85%89%E8%BF%BD1.10/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（十）</span>
+            <span itemprop="name">材质类</span>
           </a>
       </div>
 
@@ -335,7 +335,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（九）</span>
+            <span itemprop="name">磨砂（下）</span>
           </a>
       </div>
 
@@ -355,7 +355,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/03/%E5%85%89%E8%BF%BD1.8/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（八）</span>
+            <span itemprop="name">磨砂（上）</span>
           </a>
       </div>
 
@@ -375,7 +375,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/03/01/%E5%85%89%E8%BF%BD1.7/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（七）</span>
+            <span itemprop="name">抗锯齿</span>
           </a>
       </div>
 
@@ -395,7 +395,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/28/%E5%85%89%E8%BF%BD1.6/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（六）</span>
+            <span itemprop="name">物体列表</span>
           </a>
       </div>
 
@@ -704,6 +704,35 @@
 
   
 
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 
   

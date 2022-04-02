@@ -215,7 +215,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/28/%E5%85%89%E8%BF%BD1.6/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（六）</span>
+            <span itemprop="name">物体列表</span>
           </a>
       </div>
 
@@ -235,7 +235,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/26/%E5%85%89%E8%BF%BD1.5/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（五）</span>
+            <span itemprop="name">物体类</span>
           </a>
       </div>
 
@@ -255,7 +255,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/25/%E5%85%89%E8%BF%BD1.4/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（四）</span>
+            <span itemprop="name">球</span>
           </a>
       </div>
 
@@ -275,7 +275,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/23/%E5%85%89%E8%BF%BD1.3/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（三）</span>
+            <span itemprop="name">光线、相机与天空</span>
           </a>
       </div>
 
@@ -295,7 +295,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/21/%E5%85%89%E8%BF%BD1.2/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（二）</span>
+            <span itemprop="name">点、向量、颜色</span>
           </a>
       </div>
 
@@ -315,7 +315,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/2022/02/19/%E5%85%89%E8%BF%BD1.1/" itemprop="url">
-            <span itemprop="name">从零实现光追渲染（一）</span>
+            <span itemprop="name">生成第一张图片</span>
           </a>
       </div>
 
@@ -701,6 +701,35 @@
 
   
 
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 
   
