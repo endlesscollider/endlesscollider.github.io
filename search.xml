@@ -4304,14 +4304,14 @@
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084827719.png" alt="image-20220311084827719"></p>
 <p>公式中，<em>θ</em> 和 <em>θ′</em> 是入射光线和折射光线和法线的夹角，η 和 η′ 则是折射率，它表示入射光线所在的介质和折射光线所在的介质的一种性质，是光在真空中的传播速度与光在该介质中的传播速度之比（空气的折射率为1.00029，近似为1，玻璃是1.3-1.7，钻石则是2.4），如下图所示：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084845727.png" alt="image-20220311084845727"></p>
-<h2 id="折射方向向量"><a href="#折射方向向量" class="headerlink" title="折射方向向量"></a>折射方向向量</h2><p>已知入射向量为$R$，如何求折射后向量$R’$呢？直接求是非常困难的，我们对它做一个分解，把目标向量分解到法线和与法线垂直方向这两个互相垂直的方向上，有</p>
+<h2 id="折射方向向量"><a href="#折射方向向量" class="headerlink" title="折射方向向量"></a>折射方向向量</h2><p>已知入射向量为R，如何求折射后向量R’呢？直接求是非常困难的，我们对它做一个分解，把目标向量分解到法线和与法线垂直方向这两个互相垂直的方向上，有</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/cf310eaeaee8d5ab0d8eccce3dd0ae79.svg" alt="img"></p>
-<p>先求$R’$，它是<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/0d2364c9dbaf5ce70343735c80edcff7.svg" alt="img">中与法线方向垂直的分量。我们清楚的知道它的模是$sinθ′$ ，但我们得找到一个和法线方向垂直的向量<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/9dd4e461268c8034f5c8564e155c67a6.svg" alt="img">(上图中指向正右方)作为它的向量表示，即最终的结果就是sinθ′ * unit_vector(x)。</p>
-<p>我们可以从入射角那里找到一个这样的向量 $x=R+cosθn$，它是一个和同$R’_⊥$向，并且模为sinθ的向量，我们要的向量的模是sinθ′ ，不过没关系，再利用斯涅尔定律转换一下就可以了，解析式如下：</p>
+<p>先求R’，它是R’中与法线方向垂直的分量。我们清楚的知道它的模是sinθ′​ ，但我们得找到一个和法线方向垂直的向量x(上图中指向正右方)作为它的向量表示，即最终的结果就是sinθ′ * unit_vector(x)。</p>
+<p>我们可以从入射角那里找到一个这样的向量 x=R+cosθn$，它是一个和同$R’⊥​向，并且模为sinθ的向量，我们要的向量的模是sinθ′ ，不过没关系，再利用斯涅尔定律转换一下就可以了，解析式如下：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/460fe563abab2e132078781a81476ded.svg" alt="img"></p>
-<p>到这一步还不够，我们已知的东西是入射向量和法线向量，θ不应该出现在最终的解析式里。因为<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/e1e1d3d40573127e9ee0480caf1283d6.svg" alt="img">和法线向量<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/7b8b965ad4bca0e41ab51de7b31363a1.svg" alt="img">都是单位向量，我们可以用一个点乘去消灭这个碍事的cosθ，即：</p>
+<p>到这一步还不够，我们已知的东西是入射向量和法线向量，θ不应该出现在最终的解析式里。因为R和法线向量n都是单位向量，我们可以用一个点乘去消灭这个碍事的cosθ，即：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/a6424b57028276075f706a39b052c960.svg" alt="img"></p>
-<p>知道$R’_⊥$之后，$R’_∥$可以通过一个简单的公式推算得到。首先，是和$R’_∥$和$n$同向的，它的长度是cosθ′ ，通过三角函数中最基础的公式：</p>
+<p>知道R’⊥之后，R’∥可以通过一个简单的公式推算得到。首先，是和R’_∥和n同向的，它的长度是cosθ′ ，通过三角函数中最基础的公式：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/59a26492b77262b3fc8a47499b49dbbf.svg" alt="img"></p>
 <p>我们就可以得到如下最终解析式：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/f2d9195a8023333c2e868c9720e098c9.svg" alt="img"></p>
