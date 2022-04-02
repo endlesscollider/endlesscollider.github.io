@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/2022/03/13/%E5%85%89%E8%BF%BD1.15/</url>
-    <content><![CDATA[<hr>
-<hr>
-<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
+    <title>从零实现光追渲染（十五）</title>
+    <url>/2022/04/02/%E5%85%89%E8%BF%BD1.15/</url>
+    <content><![CDATA[<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
 <p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
 <h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>在计算机中我们常听到进程与线程，<strong>进程</strong>是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。<strong>线程</strong>是一条执行路径，是程序执行时的最小单位，他们之间的关系就好比一个部门和其中的每一个人，当然人越多干活越快，需要的总工资（内存和cpu资源）也越多。一个线程的使用示例代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line"><span class="comment">//t.detach();</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line">t.<span class="built_in">detach</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="建立输出管理类"><a href="#建立输出管理类" class="headerlink" title="建立输出管理类"></a>建立输出管理类</h2><p>单线程代码中，渲染循环是由主线程独自运行完成的。建立多个线程平摊渲染循环中繁杂重复的任务是很容易想到的多线程加速方案。</p>
 <p><strong>可以建立N个线程，让它们同时从不同行开始绘制。</strong>因为最终的ppm文件是有严格的顺序要求，每个线程绘制的像素都不可能都把画好的像素立即的输出到文件里，这里可以在内存上开一个缓冲区用来暂时存放结果，每个线程绘制好的像素先填入其中，等所有线程都绘制完成的时候，再将数组中的内容输出。</p>
@@ -61,13 +59,18 @@
 <p>如果想使用单线程，就再次编辑上述预处理器文本，删除MULTITHREAD命令即可。</p>
 <p>其他编辑器有各自的预处理命令的添加方式，或者你可以通过新建一个.h文件作为配置文件，再把<code>#define MULTITHREAD 1or0</code>输入到配置文件中，来定义并使用宏。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/03/13/%E5%85%89%E8%BF%BD1.14/</url>
-    <content><![CDATA[<hr>
-<hr>
-<h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
+    <title>从零实现光追渲染（十四）</title>
+    <url>/2022/03/28/%E5%85%89%E8%BF%BD1.14/</url>
+    <content><![CDATA[<h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png" alt="img"></p>
 <p>如上图所示，inside表示相机内部，outside是相机的外部。</p>
 <p>相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其他距离下的物体，都会因为光线无法精准落于一点而出现模糊。离完美对焦距离越远，就越模糊。</p>
@@ -107,13 +110,18 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第12节。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/03/13/%E5%85%89%E8%BF%BD1.13/</url>
-    <content><![CDATA[<hr>
-<hr>
-<h1 id="自由相机"><a href="#自由相机" class="headerlink" title="自由相机"></a>自由相机</h1><h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
+    <title>从零实现光追渲染（十三）</title>
+    <url>/2022/03/25/%E5%85%89%E8%BF%BD1.13/</url>
+    <content><![CDATA[<h1 id="自由相机"><a href="#自由相机" class="headerlink" title="自由相机"></a>自由相机</h1><h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131416140.png" alt="image-20220313131416140"></p>
 <p>上图是y = 0的情况下，场景的 XoZ面截面。O为相机位置，也是发射光线的原点，横线为Z = -1 位置上的虚拟视口，在空间中有三个大小一样的球，三个球的球心都在y = 0平面上，中间的那颗球处在虚拟视口的正中心，即它的位置是(0,0,-1)。现在开始往虚拟视口上发射光线，来看看每颗球x轴上的宽度是多大。</p>
 <p>可以清楚的看到，A点虽然在虚拟视口上来看，和球还是有点距离，但是往A点发射光线来确定这一点的颜色的时候，发现它正好处于球的边界上，即在最终渲染的2D图片上，AB才是这颗球与x轴平行的直径，它显然比2D图片上处于中间的球的直径BD要长的多。</p>
@@ -159,10 +167,17 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第11节。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/03/11/%E5%85%89%E8%BF%BD1.12/</url>
+    <title>从零实现光追渲染（十二）</title>
+    <url>/2022/03/21/%E5%85%89%E8%BF%BD1.12/</url>
     <content><![CDATA[<h1 id="玻璃"><a href="#玻璃" class="headerlink" title="玻璃"></a>玻璃</h1><h2 id="斯涅尔定律"><a href="#斯涅尔定律" class="headerlink" title="斯涅尔定律"></a>斯涅尔定律</h2><p>折射光线会遵循以下的法则进行折射，这个定律叫折射定律，或者是斯涅尔定律（Snell’s law）：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084827719.png" alt="image-20220311084827719"></p>
 <p>公式中，<em>θ</em> 和 <em>θ′</em> 是入射光线和折射光线和法线的夹角，η 和 η′ 则是折射率，它表示入射光线所在的介质和折射光线所在的介质的一种性质，是光在真空中的传播速度与光在该介质中的传播速度之比（空气的折射率为1.00029，近似为1，玻璃是1.3-1.7，钻石则是2.4），如下图所示：</p>
@@ -233,13 +248,18 @@
 <p><a href="https://en.wikipedia.org/wiki/Refraction">https://en.wikipedia.org/wiki/Refraction</a></p>
 <p>维基百科中对于折射相关的光学知识。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/03/11/%E5%85%89%E8%BF%BD1.11/</url>
-    <content><![CDATA[<hr>
-<hr>
-<h1 id="金属"><a href="#金属" class="headerlink" title="金属"></a>金属</h1><h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
+    <title>从零实现光追渲染（十一）</title>
+    <url>/2022/03/16/%E5%85%89%E8%BF%BD1.11/</url>
+    <content><![CDATA[<h1 id="金属"><a href="#金属" class="headerlink" title="金属"></a>金属</h1><h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
 <p>要如何生成镜面反射的光线呢，在已知入射光线方向和法线方向之后，一个简单的向量运算即可得到反射光线方向。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311082447549.png" alt="image-20220311082447549">如图是一个平面，光线从上方射到平面上，法线方向朝上，红色的向量即是我们要求的向量。我们可以把入射向量的起点放到碰撞点，这样不难看出向量之间的关系：<strong>V</strong>+ 2<strong>B</strong> 即是反射光线方向。B可以看作是V在N上的投影的逆向量，又N在我们的设计中是单位向量，我们可以在vec3.h中加入如下类外函数：</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">vec3 <span class="title">reflect</span><span class="params">(<span class="keyword">const</span> vec3&amp; v, <span class="keyword">const</span> vec3&amp; n)</span> </span>&#123;</span><br><span class="line">   	<span class="comment">// 即 V - 2 *|B|* N</span></span><br><span class="line">    <span class="keyword">return</span> v - <span class="number">2</span>*<span class="built_in">dot</span>(v,n)*n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -272,10 +292,17 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第9.4节到9.6节。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/03/09/%E5%85%89%E8%BF%BD1.10/</url>
+    <title>从零实现光追渲染（十）</title>
+    <url>/2022/03/13/%E5%85%89%E8%BF%BD1.10/</url>
     <content><![CDATA[<h1 id="材质类"><a href="#材质类" class="headerlink" title="材质类"></a>材质类</h1><p>在上一章由于急于实现功能而污染了表层文件，我们需要将它抽象出来，才能继续制作其他材质。</p>
 <h2 id="抽象材质类"><a href="#抽象材质类" class="headerlink" title="抽象材质类"></a>抽象材质类</h2><p>材质类应该干什么？应该能产生反射光线，并且记录诸如光线衰减信息（上一章中的对半衰减）等，总结一句话，它得通过入射光线，得知反射光线的方向和能量大小。</p>
 <p>创建material.h文件，写入”：</p>
@@ -322,13 +349,18 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第9.1节到9.3节。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
+    <title>从零实现光追渲染（九）</title>
     <url>/2022/03/09/%E5%85%89%E8%BF%BD1.9/</url>
-    <content><![CDATA[<hr>
-<hr>
-<h1 id="磨砂（下）"><a href="#磨砂（下）" class="headerlink" title="磨砂（下）"></a>磨砂（下）</h1><h2 id="浮点数精度"><a href="#浮点数精度" class="headerlink" title="浮点数精度"></a>浮点数精度</h2><p>看到标题，我们就知道上一章画面太暗的罪魁祸首是谁了吧，生成反射光线的起点是碰撞点，但是因为浮点数并不能精确的等于某个数，比如<code>double d = 0;</code>，实际的项目运行过程中，d不会精确等于0，而是会等于诸如-0.00000083之类的逼近0的小数。</p>
+    <content><![CDATA[<h1 id="磨砂（下）"><a href="#磨砂（下）" class="headerlink" title="磨砂（下）"></a>磨砂（下）</h1><h2 id="浮点数精度"><a href="#浮点数精度" class="headerlink" title="浮点数精度"></a>浮点数精度</h2><p>看到标题，我们就知道上一章画面太暗的罪魁祸首是谁了吧，生成反射光线的起点是碰撞点，但是因为浮点数并不能精确的等于某个数，比如<code>double d = 0;</code>，实际的项目运行过程中，d不会精确等于0，而是会等于诸如-0.00000083之类的逼近0的小数。</p>
 <p>浮点数精度问题会导致一部分光线的起点在球的内部，这样发射光线，光线会和球的内壁碰撞，然后在球内反复弹射，耗尽自己的一生。</p>
 <p>虽然可以通过微移光线起点的方式来解决，但是这样会把问题复杂化。别忘了我们在写hit函数的时候，留有限制t的参数t_min和t_max。我们完全可以使用t_min的限制，让光线自动忽略那些和发射点很近的物体。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (world.<span class="built_in">hit</span>(r, <span class="number">0.001</span>, infinity, rec)) &#123;...&#125;</span><br></pre></td></tr></table></figure>
@@ -373,6 +405,13 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第8.3节到8.6节。</p>
 ]]></content>
+      <categories>
+        <category>光线追踪</category>
+      </categories>
+      <tags>
+        <tag>C/C++</tag>
+        <tag>光追渲染器</tag>
+      </tags>
   </entry>
   <entry>
     <title>从零实现光追渲染（八）</title>

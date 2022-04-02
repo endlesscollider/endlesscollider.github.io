@@ -190,7 +190,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -204,7 +204,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.15/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" class="post-title-link" itemprop="url">从零实现光追渲染（十五）</a>
         </h2>
 
         <div class="post-meta">
@@ -215,11 +215,20 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-13 14:03:37 / 修改时间：14:12:16" itemprop="dateCreated datePublished" datetime="2022-03-13T14:03:37+08:00">2022-03-13</time>
+              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：10:16:03" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.15/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十五）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -236,12 +245,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<hr>
-<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
+          <h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
 <p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
 <h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>在计算机中我们常听到进程与线程，<strong>进程</strong>是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。<strong>线程</strong>是一条执行路径，是程序执行时的最小单位，他们之间的关系就好比一个部门和其中的每一个人，当然人越多干活越快，需要的总工资（内存和cpu资源）也越多。一个线程的使用示例代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line"><span class="comment">//t.detach();</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line">t.<span class="built_in">detach</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="建立输出管理类"><a href="#建立输出管理类" class="headerlink" title="建立输出管理类"></a>建立输出管理类</h2><p>单线程代码中，渲染循环是由主线程独自运行完成的。建立多个线程平摊渲染循环中繁杂重复的任务是很容易想到的多线程加速方案。</p>
 <p><strong>可以建立N个线程，让它们同时从不同行开始绘制。</strong>因为最终的ppm文件是有严格的顺序要求，每个线程绘制的像素都不可能都把画好的像素立即的输出到文件里，这里可以在内存上开一个缓冲区用来暂时存放结果，每个线程绘制好的像素先填入其中，等所有线程都绘制完成的时候，再将数组中的内容输出。</p>
@@ -312,7 +319,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.14/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/28/%E5%85%89%E8%BF%BD1.14/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -326,7 +333,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.14/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" class="post-title-link" itemprop="url">从零实现光追渲染（十四）</a>
         </h2>
 
         <div class="post-meta">
@@ -335,13 +342,28 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-13 13:48:31 / 修改时间：14:03:24" itemprop="dateCreated datePublished" datetime="2022-03-13T13:48:31+08:00">2022-03-13</time>
+              <time title="创建时间：2022-03-28 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-28T00:00:00+08:00">2022-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 10:15:24" itemprop="dateModified" datetime="2022-04-02T10:15:24+08:00">2022-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.14/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十四）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -358,9 +380,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<hr>
-<h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
+          <h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png" alt="img"></p>
 <p>如上图所示，inside表示相机内部，outside是相机的外部。</p>
 <p>相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其他距离下的物体，都会因为光线无法精准落于一点而出现模糊。离完美对焦距离越远，就越模糊。</p>
@@ -418,7 +438,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.13/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/25/%E5%85%89%E8%BF%BD1.13/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -432,7 +452,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.13/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" class="post-title-link" itemprop="url">从零实现光追渲染（十三）</a>
         </h2>
 
         <div class="post-meta">
@@ -441,13 +461,28 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-13 13:09:51 / 修改时间：13:48:23" itemprop="dateCreated datePublished" datetime="2022-03-13T13:09:51+08:00">2022-03-13</time>
+              <time title="创建时间：2022-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-25T00:00:00+08:00">2022-03-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 10:15:06" itemprop="dateModified" datetime="2022-04-02T10:15:06+08:00">2022-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.13/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十三）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -464,9 +499,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<hr>
-<h1 id="自由相机"><a href="#自由相机" class="headerlink" title="自由相机"></a>自由相机</h1><h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
+          <h1 id="自由相机"><a href="#自由相机" class="headerlink" title="自由相机"></a>自由相机</h1><h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131416140.png" alt="image-20220313131416140"></p>
 <p>上图是y = 0的情况下，场景的 XoZ面截面。O为相机位置，也是发射光线的原点，横线为Z = -1 位置上的虚拟视口，在空间中有三个大小一样的球，三个球的球心都在y = 0平面上，中间的那颗球处在虚拟视口的正中心，即它的位置是(0,0,-1)。现在开始往虚拟视口上发射光线，来看看每颗球x轴上的宽度是多大。</p>
 <p>可以清楚的看到，A点虽然在虚拟视口上来看，和球还是有点距离，但是往A点发射光线来确定这一点的颜色的时候，发现它正好处于球的边界上，即在最终渲染的2D图片上，AB才是这颗球与x轴平行的直径，它显然比2D图片上处于中间的球的直径BD要长的多。</p>
@@ -530,7 +563,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/11/%E5%85%89%E8%BF%BD1.12/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/21/%E5%85%89%E8%BF%BD1.12/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -544,7 +577,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/11/%E5%85%89%E8%BF%BD1.12/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/21/%E5%85%89%E8%BF%BD1.12/" class="post-title-link" itemprop="url">从零实现光追渲染（十二）</a>
         </h2>
 
         <div class="post-meta">
@@ -554,18 +587,27 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-11 08:41:52" itemprop="dateCreated datePublished" datetime="2022-03-11T08:41:52+08:00">2022-03-11</time>
+              <time title="创建时间：2022-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-21T00:00:00+08:00">2022-03-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-13 13:12:55" itemprop="dateModified" datetime="2022-03-13T13:12:55+08:00">2022-03-13</time>
+                <time title="修改时间：2022-04-02 10:14:50" itemprop="dateModified" datetime="2022-04-02T10:14:50+08:00">2022-04-02</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
 
           
-            <span id="/2022/03/11/%E5%85%89%E8%BF%BD1.12/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/21/%E5%85%89%E8%BF%BD1.12/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十二）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -670,7 +712,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/11/%E5%85%89%E8%BF%BD1.11/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/16/%E5%85%89%E8%BF%BD1.11/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -684,7 +726,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/11/%E5%85%89%E8%BF%BD1.11/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/16/%E5%85%89%E8%BF%BD1.11/" class="post-title-link" itemprop="url">从零实现光追渲染（十一）</a>
         </h2>
 
         <div class="post-meta">
@@ -693,13 +735,28 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-11 08:21:23 / 修改时间：13:37:06" itemprop="dateCreated datePublished" datetime="2022-03-11T08:21:23+08:00">2022-03-11</time>
+              <time title="创建时间：2022-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-16T00:00:00+08:00">2022-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 10:14:30" itemprop="dateModified" datetime="2022-04-02T10:14:30+08:00">2022-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/11/%E5%85%89%E8%BF%BD1.11/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/16/%E5%85%89%E8%BF%BD1.11/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十一）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -716,9 +773,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<hr>
-<h1 id="金属"><a href="#金属" class="headerlink" title="金属"></a>金属</h1><h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
+          <h1 id="金属"><a href="#金属" class="headerlink" title="金属"></a>金属</h1><h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
 <p>要如何生成镜面反射的光线呢，在已知入射光线方向和法线方向之后，一个简单的向量运算即可得到反射光线方向。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311082447549.png" alt="image-20220311082447549">如图是一个平面，光线从上方射到平面上，法线方向朝上，红色的向量即是我们要求的向量。我们可以把入射向量的起点放到碰撞点，这样不难看出向量之间的关系：<strong>V</strong>+ 2<strong>B</strong> 即是反射光线方向。B可以看作是V在N上的投影的逆向量，又N在我们的设计中是单位向量，我们可以在vec3.h中加入如下类外函数：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vec3 <span class="title">reflect</span><span class="params">(<span class="keyword">const</span> vec3&amp; v, <span class="keyword">const</span> vec3&amp; n)</span> </span>&#123;</span><br><span class="line">   	<span class="comment">// 即 V - 2 *|B|* N</span></span><br><span class="line">    <span class="keyword">return</span> v - <span class="number">2</span>*<span class="built_in">dot</span>(v,n)*n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -769,7 +824,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/09/%E5%85%89%E8%BF%BD1.10/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.10/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -783,7 +838,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/09/%E5%85%89%E8%BF%BD1.10/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.10/" class="post-title-link" itemprop="url">从零实现光追渲染（十）</a>
         </h2>
 
         <div class="post-meta">
@@ -793,18 +848,27 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-09 20:53:36" itemprop="dateCreated datePublished" datetime="2022-03-09T20:53:36+08:00">2022-03-09</time>
+              <time title="创建时间：2022-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-13T00:00:00+08:00">2022-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-11 12:44:54" itemprop="dateModified" datetime="2022-03-11T12:44:54+08:00">2022-03-11</time>
+                <time title="修改时间：2022-04-02 10:14:05" itemprop="dateModified" datetime="2022-04-02T10:14:05+08:00">2022-04-02</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
 
           
-            <span id="/2022/03/09/%E5%85%89%E8%BF%BD1.10/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.10/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -899,7 +963,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" class="post-title-link" itemprop="url">从零实现光追渲染（九）</a>
         </h2>
 
         <div class="post-meta">
@@ -908,13 +972,28 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-09 09:04:25 / 修改时间：20:53:25" itemprop="dateCreated datePublished" datetime="2022-03-09T09:04:25+08:00">2022-03-09</time>
+              <time title="创建时间：2022-03-09 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-09T00:00:00+08:00">2022-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 10:14:14" itemprop="dateModified" datetime="2022-04-02T10:14:14+08:00">2022-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（九）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -931,9 +1010,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<hr>
-<h1 id="磨砂（下）"><a href="#磨砂（下）" class="headerlink" title="磨砂（下）"></a>磨砂（下）</h1><h2 id="浮点数精度"><a href="#浮点数精度" class="headerlink" title="浮点数精度"></a>浮点数精度</h2><p>看到标题，我们就知道上一章画面太暗的罪魁祸首是谁了吧，生成反射光线的起点是碰撞点，但是因为浮点数并不能精确的等于某个数，比如<code>double d = 0;</code>，实际的项目运行过程中，d不会精确等于0，而是会等于诸如-0.00000083之类的逼近0的小数。</p>
+          <h1 id="磨砂（下）"><a href="#磨砂（下）" class="headerlink" title="磨砂（下）"></a>磨砂（下）</h1><h2 id="浮点数精度"><a href="#浮点数精度" class="headerlink" title="浮点数精度"></a>浮点数精度</h2><p>看到标题，我们就知道上一章画面太暗的罪魁祸首是谁了吧，生成反射光线的起点是碰撞点，但是因为浮点数并不能精确的等于某个数，比如<code>double d = 0;</code>，实际的项目运行过程中，d不会精确等于0，而是会等于诸如-0.00000083之类的逼近0的小数。</p>
 <p>浮点数精度问题会导致一部分光线的起点在球的内部，这样发射光线，光线会和球的内壁碰撞，然后在球内反复弹射，耗尽自己的一生。</p>
 <p>虽然可以通过微移光线起点的方式来解决，但是这样会把问题复杂化。别忘了我们在写hit函数的时候，留有限制t的参数t_min和t_max。我们完全可以使用t_min的限制，让光线自动忽略那些和发射点很近的物体。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (world.<span class="built_in">hit</span>(r, <span class="number">0.001</span>, infinity, rec)) &#123;...&#125;</span><br></pre></td></tr></table></figure>

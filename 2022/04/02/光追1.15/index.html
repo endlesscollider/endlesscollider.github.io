@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条">
+  <meta name="description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="祥瑞客栈">
-<meta property="og:url" content="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/index.html">
+<meta property="og:title" content="从零实现光追渲染（十五）">
+<meta property="og:url" content="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条">
+<meta property="og:description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644765772450-258fabf2-16b2-4f31-833b-4cade26bc58a.png">
@@ -33,13 +33,15 @@
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766120244-c255d9d5-445b-40b9-a73d-24345c04dee8.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766148415-4d46e8c8-b22d-45fb-a2df-c6010d4a258d.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png">
-<meta property="article:published_time" content="2022-03-13T06:03:37.815Z">
-<meta property="article:modified_time" content="2022-03-13T06:12:16.910Z">
+<meta property="article:published_time" content="2022-04-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-02T02:16:03.493Z">
 <meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="光追渲染器">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png">
 
-<link rel="canonical" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/">
+<link rel="canonical" href="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/">
 
 
 <script id="page-configurations">
@@ -52,7 +54,7 @@
   };
 </script>
 
-  <title> | 祥瑞客栈</title>
+  <title>从零实现光追渲染（十五） | 祥瑞客栈</title>
   
 
 
@@ -202,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -215,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          从零实现光追渲染（十五）
         </h1>
 
         <div class="post-meta">
@@ -226,11 +228,20 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-13 14:03:37 / 修改时间：14:12:16" itemprop="dateCreated datePublished" datetime="2022-03-13T14:03:37+08:00">2022-03-13</time>
+              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：10:16:03" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
             </span>
 
           
-            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.15/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+            <span id="/2022/04/02/%E5%85%89%E8%BF%BD1.15/" class="post-meta-item leancloud_visitors" data-flag-title="从零实现光追渲染（十五）" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -254,12 +265,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<hr>
-<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
+        <h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
 <p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
 <h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>在计算机中我们常听到进程与线程，<strong>进程</strong>是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。<strong>线程</strong>是一条执行路径，是程序执行时的最小单位，他们之间的关系就好比一个部门和其中的每一个人，当然人越多干活越快，需要的总工资（内存和cpu资源）也越多。一个线程的使用示例代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line"><span class="comment">//t.detach();</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line">t.<span class="built_in">detach</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="建立输出管理类"><a href="#建立输出管理类" class="headerlink" title="建立输出管理类"></a>建立输出管理类</h2><p>单线程代码中，渲染循环是由主线程独自运行完成的。建立多个线程平摊渲染循环中繁杂重复的任务是很容易想到的多线程加速方案。</p>
 <p><strong>可以建立N个线程，让它们同时从不同行开始绘制。</strong>因为最终的ppm文件是有严格的顺序要求，每个线程绘制的像素都不可能都把画好的像素立即的输出到文件里，这里可以在内存上开一个缓冲区用来暂时存放结果，每个线程绘制好的像素先填入其中，等所有线程都绘制完成的时候，再将数组中的内容输出。</p>
@@ -319,6 +328,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="tag"># 光追渲染器</a>
+          </div>
 
         
 
@@ -326,8 +339,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="">
-      <i class="fa fa-chevron-left"></i> 
+    <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="从零实现光追渲染（十四）">
+      <i class="fa fa-chevron-left"></i> 从零实现光追渲染（十四）
     </a></div>
       <div class="post-nav-item"></div>
     </div>
