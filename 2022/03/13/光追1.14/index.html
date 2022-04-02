@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="散焦模糊传统相机的局限现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。  如上图所示，inside表示相机内部，outside是相机的外部。 相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="祥瑞客栈">
+<meta property="og:url" content="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.14/index.html">
+<meta property="og:site_name" content="祥瑞客栈">
+<meta property="og:description" content="散焦模糊传统相机的局限现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。  如上图所示，inside表示相机内部，outside是相机的外部。 相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643970443347-3db9b25c-c319-4f16-92fe-841fa915af9c.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643973076508-497c8957-39b9-46c8-8202-5b3052917235.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643976783038-8526d1b9-95c6-4cef-b5fc-413bf73fd84b.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644241403158-330630b4-149f-456e-9abd-a749828948f6.png">
+<meta property="article:published_time" content="2022-03-13T05:48:31.686Z">
+<meta property="article:modified_time" content="2022-03-13T06:03:24.506Z">
+<meta property="article:author" content="Collider">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png">
+
+<link rel="canonical" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.14/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 祥瑞客栈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">祥瑞客栈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录点滴的成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-13 13:48:31 / 修改时间：14:03:24" itemprop="dateCreated datePublished" datetime="2022-03-13T13:48:31+08:00">2022-03-13</time>
+            </span>
+
+          
+            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.14/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<hr>
+<h1 id="散焦模糊"><a href="#散焦模糊" class="headerlink" title="散焦模糊"></a>散焦模糊</h1><h2 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h2><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png" alt="img"></p>
+<p>如上图所示，inside表示相机内部，outside是相机的外部。</p>
+<p>相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其他距离下的物体，都会因为光线无法精准落于一点而出现模糊。离完美对焦距离越远，就越模糊。</p>
+<h2 id="模拟散焦模糊"><a href="#模拟散焦模糊" class="headerlink" title="模拟散焦模糊"></a>模拟散焦模糊</h2><p>在《抗锯齿》那一章我们编写的多采样求平均的算法就可以完美模拟从镜头采集到成像的过程，现在，只需要改变我们光线的发射位置，假装光线是从镜头上任意一点发射的即可。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643970443347-3db9b25c-c319-4f16-92fe-841fa915af9c.png" alt="img"></p>
+<p>具体要怎么做呢？</p>
+<p><strong>1.要如何模拟镜头呢？</strong></p>
+<p>我们可以以原来的固定光线发射点为圆心，找一个圆片，这个圆片和虚拟视口所在平面平行，和相机正对方向垂直。然后在这个圆片上随机找一个点，以这个点为起点发射光线（这个圆片就是虚拟相机的镜头）。这个圆片的大小对应着真实相机中的镜头光圈大小，圆片越大，散焦模糊效果就越大。</p>
+<p><strong>2.要如何模拟光线聚焦效果呢？</strong></p>
+<p>光线是射向虚拟视口上的虚拟像素内的。在我们原来的设计里，虚拟视口和相机位置的距离始终为1，这意味着，我们的光线都会在镜头前方距离为1的平面上聚焦，如果我们需要让他能在任意位置聚焦，我们只需要改变虚拟视口距离相机的距离即可。</p>
+<p>还记得是如何在代码中规定虚拟视口的位置的吗？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - w;</span><br></pre></td></tr></table></figure>
+
+<p>如果我想把它推到和相机位置距离为2的平面上，仅仅是修改w的系数就可以了吗？比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - <span class="number">2</span>*w;</span><br></pre></td></tr></table></figure>
+
+<p>这样就足够了吗？不行，看下图：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643973076508-497c8957-39b9-46c8-8202-5b3052917235.png" alt="img"></p>
+<p>图上描绘的是相机空间下VoW面上的截面，假设中间的绿色竖线就是原先的虚拟视口，它离相机的距离为1，现在要把它移动到右边的蓝色平面上，根据相似三角形，如果它离相机的距离改成2，那它的高度会同步扩大为2，且因为像素数量没变，每个虚拟像素的大小也会增加为2。<strong>这意味着horizontal和vertical也得同步进行放大。</strong></p>
+<p>图中射向虚拟视口的光线假设命中了第x行，如果像素的大小扩大两倍，这根光线的延长线也会命中蓝色视口的第x行。如果像素没有放大，它将命中第2x行，这就不对了。</p>
+<p>更改相机代码，现在我们可以传入焦距和光圈大小：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">camera</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">camera</span>(</span><br><span class="line">            point3 lookfrom,</span><br><span class="line">            point3 lookat,</span><br><span class="line">            vec3   vup,</span><br><span class="line">            <span class="keyword">double</span> vfov,</span><br><span class="line">            <span class="keyword">double</span> aspect_ratio,</span><br><span class="line">            <span class="comment">//光圈直径</span></span><br><span class="line">            <span class="keyword">double</span> aperture,</span><br><span class="line">            <span class="comment">//焦距</span></span><br><span class="line">            <span class="keyword">double</span> focus_dist</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="keyword">auto</span> theta = <span class="built_in">degrees_to_radians</span>(vfov);</span><br><span class="line">            <span class="keyword">auto</span> h = <span class="built_in">tan</span>(theta/<span class="number">2</span>);</span><br><span class="line">            <span class="keyword">auto</span> viewport_height = <span class="number">2.0</span> * h;</span><br><span class="line">            <span class="keyword">auto</span> viewport_width = aspect_ratio * viewport_height;</span><br><span class="line"></span><br><span class="line">            w = <span class="built_in">unit_vector</span>(lookfrom - lookat);</span><br><span class="line">            u = <span class="built_in">unit_vector</span>(<span class="built_in">cross</span>(vup, w));</span><br><span class="line">            v = <span class="built_in">cross</span>(w, u);</span><br><span class="line"></span><br><span class="line">            origin = lookfrom;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//我们要把虚拟视口推到离相机位置有focus_dist的距离的平面上。</span></span><br><span class="line">            <span class="comment">//原本的距离是1，距离变成原来的focus_dist倍。</span></span><br><span class="line">            <span class="comment">//所以，horizontal和vertical得同步乘以focus_dist倍。</span></span><br><span class="line">            horizontal = focus_dist * viewport_width * u;</span><br><span class="line">            vertical = focus_dist * viewport_height * v;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//距离不再是w，而是focus_dist*w。</span></span><br><span class="line">            lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - focus_dist*w;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//处理一下，拿到半径。</span></span><br><span class="line">            lens_radius = aperture / <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function">ray <span class="title">get_ray</span><span class="params">(<span class="keyword">double</span> s, <span class="keyword">double</span> t)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 生成一个偏移值。</span></span><br><span class="line">            <span class="comment">// 这个random_in_unit_disk()函数会产生一个XoY平面上的以原点为圆心的单位圆片内随机一点。</span></span><br><span class="line">            <span class="comment">// 该函数之后给出。</span></span><br><span class="line">            vec3 rd = lens_radius * <span class="built_in">random_in_unit_disk</span>();</span><br><span class="line">            <span class="comment">// 把圆片从XoY平面，调整到uv平面上。</span></span><br><span class="line">            vec3 offset = u * rd.<span class="built_in">x</span>() + v * rd.<span class="built_in">y</span>();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">ray</span>(</span><br><span class="line">                <span class="comment">// 顶点加上偏移。</span></span><br><span class="line">                origin + offset,</span><br><span class="line">                <span class="comment">// -offset使得光线还是朝虚拟视口上的当前像素上发射的。</span></span><br><span class="line">                lower_left_corner + s*horizontal + t*vertical - origin - offset</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        point3 origin;</span><br><span class="line">        point3 lower_left_corner;</span><br><span class="line">        vec3 horizontal;</span><br><span class="line">        vec3 vertical;</span><br><span class="line">        vec3 u, v, w;</span><br><span class="line">        <span class="keyword">double</span> lens_radius;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>把random_in_unit_disk函数写在vec3.h类的类外，这个函数负责生成一个XoY面上以原点为圆心的圆片内的随机一点：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XoY面上以原点为圆心的圆片内的随机一点。</span></span><br><span class="line"><span class="function">vec3 <span class="title">random_in_unit_disk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">auto</span> p = <span class="built_in">vec3</span>(<span class="built_in">random_double</span>(<span class="number">-1</span>,<span class="number">1</span>), <span class="built_in">random_double</span>(<span class="number">-1</span>,<span class="number">1</span>), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (p.<span class="built_in">length_squared</span>() &gt;= <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还是使用上一章的场景，但要调整相机，给一个很大的光圈直径，并且把对焦平面（虚拟视口）放在画面正中心的小球上：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line"><span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> dist_to_focus = (lookfrom-lookat).<span class="built_in">length</span>();</span><br><span class="line"><span class="keyword">auto</span> aperture = <span class="number">2.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">camera <span class="title">cam</span><span class="params">(lookfrom, lookat, vup, <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>​    会得到这张图，这里的光圈很大，只要物体离虚拟视口有一点距离，就看不清了。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643976783038-8526d1b9-95c6-4cef-b5fc-413bf73fd84b.png" alt="img"></p>
+<h2 id="最终成果"><a href="#最终成果" class="headerlink" title="最终成果"></a>最终成果</h2><p>现在来汇总在第一章中学到的所有知识，绘制一张图片，这将会是集大成之作，写入代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这个函数帮助生成一个丰富多彩的场景！！！</span></span><br><span class="line"><span class="function">hittable_list <span class="title">random_scene</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    hittable_list world;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> ground_material = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>));</span><br><span class="line">    <span class="comment">//先来一个“地板”，它比我们之前创建过最大的球还要大十倍！！！</span></span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>,<span class="number">-1000</span>,<span class="number">0</span>), <span class="number">1000</span>, ground_material));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在这个循环里我们将生成数个小球！！！</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">-11</span>; a &lt; <span class="number">11</span>; a++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> b = <span class="number">-11</span>; b &lt; <span class="number">11</span>; b++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//先进行一次随机采样，这次采样用来决定本轮循环生成的小球的材质！！！</span></span><br><span class="line">            <span class="keyword">auto</span> choose_mat = <span class="built_in">random_double</span>();</span><br><span class="line">            <span class="comment">//在一个y=0.2这个平面上的一块方形区域里随机找一个点，作为这颗小球的球心！！！</span></span><br><span class="line">            <span class="function">point3 <span class="title">center</span><span class="params">(a + <span class="number">0.9</span>*random_double(), <span class="number">0.2</span>, b + <span class="number">0.9</span>*random_double())</span></span>;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//我们腾出一个位置，让生成的这些小球离(4, 0.2, 0)这个点远一点！！！</span></span><br><span class="line">            <span class="comment">//因为这里我们要放置一个非常明显的大球，如果出现球与球重合就会影响美观了！！！</span></span><br><span class="line">            <span class="keyword">if</span> ((center - <span class="built_in">point3</span>(<span class="number">4</span>, <span class="number">0.2</span>, <span class="number">0</span>)).<span class="built_in">length</span>() &gt; <span class="number">0.9</span>) &#123;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">//定义一个智能指针，但先别急着决定指向什么类型的材质对象！！！</span></span><br><span class="line">                shared_ptr&lt;material&gt; sphere_material;</span><br><span class="line">				</span><br><span class="line">          </span><br><span class="line">                <span class="keyword">if</span> (choose_mat &lt; <span class="number">0.8</span>) &#123;<span class="comment">//我们的材质有百分之八十的概率会是磨砂材质。</span></span><br><span class="line">                    <span class="keyword">auto</span> albedo = color::<span class="built_in">random</span>() * color::<span class="built_in">random</span>();</span><br><span class="line">                    sphere_material = make_shared&lt;lambertian&gt;(albedo);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125; </span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (choose_mat &lt; <span class="number">0.95</span>) &#123;<span class="comment">//我们的材质有百分之十五的概率会是金属材质。</span></span><br><span class="line">                    <span class="keyword">auto</span> albedo = color::<span class="built_in">random</span>(<span class="number">0.5</span>, <span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">auto</span> fuzz = <span class="built_in">random_double</span>(<span class="number">0</span>, <span class="number">0.5</span>);</span><br><span class="line">                    sphere_material = make_shared&lt;metal&gt;(albedo, fuzz);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;<span class="comment">//我们的材质有百分之五的概率会是玻璃材质。</span></span><br><span class="line">                    sphere_material = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//三颗站在C位的大球！！！</span></span><br><span class="line">    <span class="keyword">auto</span> material1 = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material1));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> material2 = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.1</span>));</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-4</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material2));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> material3 = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.7</span>, <span class="number">0.6</span>, <span class="number">0.5</span>), <span class="number">0.0</span>);</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material3));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> world;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调整图片参数</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> aspect_ratio = <span class="number">3.0</span> / <span class="number">2.0</span>;</span><br><span class="line">    <span class="comment">//分辨率调高点，玩票大的！！！</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">1200</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> image_height = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(image_width / aspect_ratio);</span><br><span class="line">    <span class="comment">//拉高采样率会增加最终艺术品的成色！！！</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//调用函数生成一个有着许多随机小球的场景！！！</span></span><br><span class="line">    <span class="keyword">auto</span> world = <span class="built_in">random_scene</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 放置相机</span></span><br><span class="line">    <span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">13</span>,<span class="number">2</span>,<span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dist_to_focus = <span class="number">10.0</span>;</span><br><span class="line">    <span class="comment">//这次是小光圈。</span></span><br><span class="line">    <span class="keyword">auto</span> aperture = <span class="number">0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">camera <span class="title">cam</span><span class="params">(lookfrom, lookat, vup, <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// renderloop</span></span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;P3\n&quot;</span> &lt;&lt; image_width &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; image_height &lt;&lt; <span class="string">&quot;\n255\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height<span class="number">-1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644241403158-330630b4-149f-456e-9abd-a749828948f6.png" alt="image.png"></p>
+<p>可以给你的随机数生成器其他的种子，来改变小球的随机位置，直到你得到满意的结果。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
+<p>参考自《RayTracingInOneWeekend》第12节。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.13/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.15/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E7%84%A6%E6%A8%A1%E7%B3%8A"><span class="nav-number">1.</span> <span class="nav-text">散焦模糊</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9B%B8%E6%9C%BA%E7%9A%84%E5%B1%80%E9%99%90"><span class="nav-number">1.1.</span> <span class="nav-text">传统相机的局限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E6%95%A3%E7%84%A6%E6%A8%A1%E7%B3%8A"><span class="nav-number">1.2.</span> <span class="nav-text">模拟散焦模糊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E6%88%90%E6%9E%9C"><span class="nav-number">1.3.</span> <span class="nav-text">最终成果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.4.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Collider"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Collider</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/endlesscollider" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;endlesscollider" rel="noopener" target="_blank"><i class="GitHub fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1652737065@qq.com" title="E-Mail → mailto:1652737065@qq.com" rel="noopener" target="_blank"><i class="E-Mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Collider</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz","app_key":"6k9HROMoqf6vzPadEMksx26r","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+
+  
+  
+    <script src="/js/cursor/cherry.js"></script>
+  
+
+</body>
+</html>

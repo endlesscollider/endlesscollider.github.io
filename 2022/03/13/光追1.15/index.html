@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条">
+<meta property="og:type" content="article">
+<meta property="og:title" content="祥瑞客栈">
+<meta property="og:url" content="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/index.html">
+<meta property="og:site_name" content="祥瑞客栈">
+<meta property="og:description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644765772450-258fabf2-16b2-4f31-833b-4cade26bc58a.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766071978-e908b653-500a-4b87-82e3-a9ab94cf4a54.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766120244-c255d9d5-445b-40b9-a73d-24345c04dee8.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766148415-4d46e8c8-b22d-45fb-a2df-c6010d4a258d.png">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png">
+<meta property="article:published_time" content="2022-03-13T06:03:37.815Z">
+<meta property="article:modified_time" content="2022-03-13T06:12:16.910Z">
+<meta property="article:author" content="Collider">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png">
+
+<link rel="canonical" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 祥瑞客栈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">祥瑞客栈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录点滴的成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-13 14:03:37 / 修改时间：14:12:16" itemprop="dateCreated datePublished" datetime="2022-03-13T14:03:37+08:00">2022-03-13</time>
+            </span>
+
+          
+            <span id="/2022/03/13/%E5%85%89%E8%BF%BD1.15/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<hr>
+<h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
+<p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
+<h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>在计算机中我们常听到进程与线程，<strong>进程</strong>是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。<strong>线程</strong>是一条执行路径，是程序执行时的最小单位，他们之间的关系就好比一个部门和其中的每一个人，当然人越多干活越快，需要的总工资（内存和cpu资源）也越多。一个线程的使用示例代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line"><span class="comment">//t.detach();</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="建立输出管理类"><a href="#建立输出管理类" class="headerlink" title="建立输出管理类"></a>建立输出管理类</h2><p>单线程代码中，渲染循环是由主线程独自运行完成的。建立多个线程平摊渲染循环中繁杂重复的任务是很容易想到的多线程加速方案。</p>
+<p><strong>可以建立N个线程，让它们同时从不同行开始绘制。</strong>因为最终的ppm文件是有严格的顺序要求，每个线程绘制的像素都不可能都把画好的像素立即的输出到文件里，这里可以在内存上开一个缓冲区用来暂时存放结果，每个线程绘制好的像素先填入其中，等所有线程都绘制完成的时候，再将数组中的内容输出。</p>
+<p>对于这部分缓冲区的管理，和最终输出到ppm文件的操作，我们可以封装到一个类里，创建imageoutput.h文件，敲入如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> IMAGEOUTPUT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IMAGEOUTPUT_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 颜色的值最高只到255，只需要8bit存储，使用int类型太过浪费。</span></span><br><span class="line"><span class="comment">// 我们给unsigned char这个8bit类型重命名，用它来当缓冲区类型。</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> D_BYTE;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">imageoutput</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 构造函数，通过文件名直接输出。</span></span><br><span class="line">    <span class="built_in">imageoutput</span>(<span class="keyword">int</span> wth, <span class="keyword">int</span> hgt, <span class="keyword">const</span> <span class="keyword">char</span>* file_nm) :<span class="built_in">width</span>(wth), <span class="built_in">height</span>(hgt) &#123;</span><br><span class="line">        <span class="comment">// 分配一块大小为width * height * 3的区域用于存取像素的rgb。</span></span><br><span class="line">        buffer = <span class="keyword">new</span> D_BYTE[width * height * <span class="number">3</span>];</span><br><span class="line">        <span class="comment">// 建立输出文件流。</span></span><br><span class="line">        outFile = std::<span class="built_in">ofstream</span>(file_nm);</span><br><span class="line">        <span class="comment">// ppm文件的开头要加上这句话。</span></span><br><span class="line">        outFile &lt;&lt; <span class="string">&quot;P3\n&quot;</span> &lt;&lt; width &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; height &lt;&lt; <span class="string">&quot;\n255\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 析构函数，释放缓冲区。为保证安全性，需要确认它不为空。</span></span><br><span class="line">    ~<span class="built_in">imageoutput</span>() &#123;</span><br><span class="line">         <span class="keyword">if</span> (buffer != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            <span class="keyword">delete</span>[] buffer;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 填写颜色到数组中，需要传入像素的位置，以及rgb值。这里做了之前color类做的一些事情。</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">write_buffer</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; x, <span class="keyword">const</span> <span class="keyword">int</span>&amp; y, <span class="keyword">const</span> <span class="keyword">double</span> red, <span class="keyword">const</span> <span class="keyword">double</span> green, <span class="keyword">const</span> <span class="keyword">double</span> blue)</span> </span>&#123;</span><br><span class="line">        D_BYTE ir = <span class="built_in">D_BYTE</span>(<span class="number">255.999</span> * <span class="built_in">clamp</span>(red, <span class="number">0</span>, <span class="number">0.999</span>));</span><br><span class="line">        D_BYTE ig = <span class="built_in">D_BYTE</span>(<span class="number">255.999</span> * <span class="built_in">clamp</span>(green, <span class="number">0</span>, <span class="number">0.999</span>));</span><br><span class="line">        D_BYTE ib = <span class="built_in">D_BYTE</span>(<span class="number">255.999</span> * <span class="built_in">clamp</span>(blue, <span class="number">0</span>, <span class="number">0.999</span>));</span><br><span class="line">        <span class="comment">// 二维坐标转一维数组坐标，然后依次填入rgb。</span></span><br><span class="line">        <span class="keyword">int</span> n = (y * width + x) * <span class="number">3</span>;</span><br><span class="line">        buffer[n] = ir;</span><br><span class="line">        buffer[n + <span class="number">1</span>] = ig;</span><br><span class="line">        buffer[n + <span class="number">2</span>] = ib;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这个函数把整个缓冲区内的数据写入文件。</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buffer_to_file</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = (height - <span class="number">1</span>); j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; width; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> n = (j * width + i) * <span class="number">3</span>;</span><br><span class="line">                outFile &lt;&lt; (<span class="keyword">int</span>)buffer[n] &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="keyword">int</span>)buffer[n + <span class="number">1</span>] </span><br><span class="line">                    &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; (<span class="keyword">int</span>)buffer[n + <span class="number">2</span>] &lt;&lt; std::endl;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> width;</span><br><span class="line">    <span class="keyword">int</span> height;</span><br><span class="line">    D_BYTE* buffer;</span><br><span class="line">    std::ofstream outFile;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="平摊渲染循环任务"><a href="#平摊渲染循环任务" class="headerlink" title="平摊渲染循环任务"></a>平摊渲染循环任务</h2><p>输出管理类提供了写缓冲区和最终生成图片的函数，接下来的任务就很明确了：创建线程们调用write_buffer函数写缓冲区，再在main函数的最后，把缓冲区写成文件。</p>
+<p>为了拆分渲染循环，我们把它从main中抽离，并且把与之相关的一些变量都改为全局变量，方便多线程共享调用。</p>
+<p>以下代码会重构main函数所在文件，为保留之前的代码，建议新建RayTracingByMultithread.cpp文件作为新的main文件，老代码记得保存，新代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;camera.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;color.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable_list.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;sphere.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;material.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;imageoutput.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//图片参数</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> aspect_ratio = <span class="number">3.0</span> / <span class="number">2.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">400</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_height = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(image_width / aspect_ratio);</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//thread相关，我们可以先设置为50个线程</span></span><br><span class="line"><span class="keyword">int</span> numThread = <span class="number">50</span>;</span><br><span class="line"><span class="comment">//定义一个输出设置</span></span><br><span class="line">imageoutput* buf;</span><br><span class="line"></span><br><span class="line"><span class="comment">//相机与场景</span></span><br><span class="line">hittable_list world;</span><br><span class="line">camera* cam;</span><br><span class="line"></span><br><span class="line"><span class="comment">//着色函数，直接复制。</span></span><br><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world, <span class="keyword">int</span> depth)</span> </span>&#123;...&#125;</span><br><span class="line"><span class="comment">//最终场景，直接复制。</span></span><br><span class="line"><span class="function">hittable_list <span class="title">random_scene</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把渲染循环切分成numThread份，分配给每个线程执行。</span></span><br><span class="line"><span class="comment">//这是分配第k个线程的任务。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ray_tracing_by_thread</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height - k - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j -= numThread) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; image_width; i++) &#123;</span><br><span class="line">            <span class="function">color <span class="title">tmp</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; samples_per_pixel; s++) &#123;</span><br><span class="line">                <span class="keyword">auto</span> u = (i + <span class="built_in">random_double</span>()) / (image_width - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">auto</span> v = (j + <span class="built_in">random_double</span>()) / (image_height - <span class="number">1</span>);</span><br><span class="line">                ray r = cam-&gt;<span class="built_in">get_ray</span>(u, v);</span><br><span class="line">                tmp += <span class="built_in">ray_color</span>(r, world, max_depth);</span><br><span class="line">            &#125;</span><br><span class="line">            tmp /= <span class="built_in"><span class="keyword">float</span></span>(samples_per_pixel);</span><br><span class="line">            <span class="comment">//将颜色gamma矫正，存入缓冲区</span></span><br><span class="line">   			buf-&gt;<span class="built_in">write_buffer</span>(i, j, <span class="built_in">sqrt</span>(tmp[<span class="number">0</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">1</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">2</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 摆放场景</span></span><br><span class="line">    world = <span class="built_in">random_scene</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化缓冲区和输出文件流，并给图片命名。</span></span><br><span class="line">    buf = <span class="keyword">new</span> <span class="built_in">imageoutput</span>(image_width, image_height,<span class="string">&quot;image.ppm&quot;</span>);</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 线程列表</span></span><br><span class="line">    std::vector&lt;std::thread&gt; threads;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 放置相机</span></span><br><span class="line">    <span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">13</span>, <span class="number">2</span>, <span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dist_to_focus = <span class="number">10.0</span>;</span><br><span class="line">    <span class="keyword">auto</span> aperture = <span class="number">0.1</span>;</span><br><span class="line">    cam = <span class="keyword">new</span> <span class="built_in">camera</span>(lookfrom, lookat, <span class="built_in">vec3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//多线程下的renderloop</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; numThread; k++) &#123;</span><br><span class="line">        threads.<span class="built_in">push_back</span>(std::<span class="built_in">thread</span>(ray_tracing_by_thread, k));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; thread : threads) &#123;</span><br><span class="line">        <span class="comment">//阻塞主线程，必须等待所有线程执行完毕，再会执行后续的代码。</span></span><br><span class="line">        thread.<span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//缓冲区已经填充完毕，输出成文件。</span></span><br><span class="line">    buf-&gt;<span class="built_in">buffer_2_file</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//释放堆上内存。</span></span><br><span class="line">    <span class="keyword">delete</span> cam;</span><br><span class="line">    <span class="keyword">delete</span> buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然选择使用文件流的方式创建文件，那么也不需要使用命令窗口了，可以直接点击vs中的本地调试以生成文件，紧接着就可以在代码所在目录下找到image.ppm文件了。</p>
+<p>如果还是采用命令行的方式生成（不使用重定向符号，命令行中直接运行exe），image.ppm文件会生成在exe文件同目录下。</p>
+<p>如果本次生成感到卡顿，可以降低线程数量，但总体来说，生成文件的速度肯定比单线程要快上好几倍。</p>
+<h2 id="进度提示"><a href="#进度提示" class="headerlink" title="进度提示"></a>进度提示</h2><p>最后一步，加上进度提示。</p>
+<p>先在每个线程里对共享的记录变量进行操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//剩余行数</span></span><br><span class="line"><span class="keyword">int</span> line_remain = image_height;</span><br><span class="line"><span class="comment">//剩余多少线程没完成任务</span></span><br><span class="line"><span class="keyword">int</span> thread_remain = numThread;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ray_tracing_by_thread</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height - k - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j -= numThread) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; image_width; i++) &#123;</span><br><span class="line">           ...</span><br><span class="line">            buf-&gt;<span class="built_in">write_buffer</span>(i, j, <span class="built_in">sqrt</span>(tmp[<span class="number">0</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">1</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">2</span>]));</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//执行到这说明有一行像素存缓冲区完毕。</span></span><br><span class="line">        --line_remain;         </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//执行到这说明有一个线程执行完毕。</span></span><br><span class="line">    --thread_remain;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在main函数里进行记录，这次把线程改成detach于主线程。因为主线程可以通过thread_remain来判断线程们的运行情况，就不必担心主线程会先结束了，并且还可以利用主线程的等待时间进行进度的显示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    cam = <span class="keyword">new</span> <span class="built_in">camera</span>(lookfrom, lookat, <span class="built_in">vec3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//多线程下的renderloop</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; numThread; k++) &#123;</span><br><span class="line">        threads.<span class="built_in">push_back</span>(std::<span class="built_in">thread</span>(ray_tracing_by_thread, k));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; thread : threads) &#123;</span><br><span class="line">        <span class="comment">//detach单独使用是非常危险的，但后续的while循环会卡住主线程，让线程结束顺序变得可控。</span></span><br><span class="line">        thread.<span class="built_in">detach</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (thread_remain &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// line_remain-1是为了最后能让显示数字归零，工整好看。</span></span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;\rScanlines remaining: &quot;</span> &lt;&lt; line_remain<span class="number">-1</span> &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; std::flush;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;\nDone.\n&quot;</span>;</span><br><span class="line">    buf-&gt;<span class="built_in">buffer_2_file</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span> cam;</span><br><span class="line">    <span class="keyword">delete</span> buf;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样控制台就会有进度提示了。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png" alt="img"></p>
+<p>数字刷新速度开始很慢，这说明在程序运行的一开始，main函数中的while循环争取到cpu的频率不高，cpu大多被副线程们占据，最后会随着副线程们一个个全都完成，主线程能争取到的cpu时间会变多，刷新速度变得顺畅。</p>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p>注意到line_remain和thread_remain变量在同时被多个线程访问中所产生的问题吗？如果有那么一个时刻，有两个线程同时拿取了line_remain的值——假设是53，他们同时对其进行–操作，然后相继写回了它们各自认为的正确的值——52，实际上这个值是错误的，有两个线程在同一时刻完成了图片中的某行的渲染，这个值理应减到51。</p>
+<p>对变量加同步锁，可以完美的解决这个问题。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//运行到这的线程都会尝试给some_mutex加上属于它们自己的锁。</span></span><br><span class="line"><span class="comment">//但是如果这时候锁已经有主人了，这个请求就会失败，申请的线程会被阻塞，直到锁被持有者释放。</span></span><br><span class="line">some_mutex.<span class="built_in">lock</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//互斥代码</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">//锁的持有者释放了这个锁！现在其他线程们可以来抢夺这枚锁了！</span></span><br><span class="line">some_mutex.<span class="built_in">unlock</span>();</span><br></pre></td></tr></table></figure>
+
+<p>锁的本质是创造一个只有一个线程可以独享的区域，上述代码中，some_mutex是个同步信号量，对其实行lock()操作意味有某个线程想要占有这枚锁，之后所有想要拥有这枚锁的线程，都必须要等待本线程释放掉它。</p>
+<p>在lock和unlock之间的代码，在同一时间里，至多只有一个线程执行。这样就避免了同时写变量，导致变量值出错的问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="comment">//信号量</span></span><br><span class="line">std::mutex line_remain_mutex;</span><br><span class="line">std::mutex thread_remain_mutex;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = image_height - k - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j -= numThread) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; image_width; i++) &#123;</span><br><span class="line">          ...</span><br><span class="line">        &#125;</span><br><span class="line">        line_remain_mutex.<span class="built_in">lock</span>();</span><br><span class="line">        --line_remain;</span><br><span class="line">        line_remain_mutex.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    thread_remain_mutex.<span class="built_in">lock</span>();</span><br><span class="line">    --thread_remain;</span><br><span class="line">    thread_remain_mutex.<span class="built_in">unlock</span>();</span><br></pre></td></tr></table></figure>
+
+<h2 id="用宏控制要执行的代码块"><a href="#用宏控制要执行的代码块" class="headerlink" title="用宏控制要执行的代码块"></a>用宏控制要执行的代码块</h2><p>因为之后依然是在单线程模式的基础上进行编写的，有时候需要切回单线程模式，来回黏贴代码很麻烦，可以使用如下方式自由的在两种模式之间切换，首先，确保项目目录下有第十五章结束时候的main函数所在文件和本章新创建的文件。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644765772450-258fabf2-16b2-4f31-833b-4cade26bc58a.png" alt="img"></p>
+<p>在老文件RayTracing.cpp（当然你的可能不叫这个名字）中加入如下宏，<strong>包裹所有的代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !MULTITHREAD</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//所有代码</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在新文件中使用同样的操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> MULTITHREAD</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//所有代码</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>接下来尝试添加一下预编译命令，此处展示vs中更改预编译命令的方法：</p>
+<p>注意，一定要保证修改的配置页是当前的代码环境，比如下图中修改的是“活动(Release)”-“活动(Win32)”平台，如果你的代码是Debug平台或者是x64，此更改并不会生效。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766071978-e908b653-500a-4b87-82e3-a9ab94cf4a54.png" alt="img"></p>
+<p>添加MULTITHREAD命令，本程序便会进入多线程模式：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766120244-c255d9d5-445b-40b9-a73d-24345c04dee8.png" alt="img"></p>
+<p>添加完成后，显示如下：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766148415-4d46e8c8-b22d-45fb-a2df-c6010d4a258d.png" alt="img"></p>
+<p>在MULTITHREAD的宏定义成功后，老文件中的代码应该全显示为灰色。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png" alt="img"></p>
+<p>如果想使用单线程，就再次编辑上述预处理器文本，删除MULTITHREAD命令即可。</p>
+<p>其他编辑器有各自的预处理命令的添加方式，或者你可以通过新建一个.h文件作为配置文件，再把<code>#define MULTITHREAD 1or0</code>输入到配置文件中，来定义并使用宏。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8A%A0%E9%80%9F"><span class="nav-number">1.</span> <span class="nav-text">多线程加速</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%BE%93%E5%87%BA%E7%AE%A1%E7%90%86%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">建立输出管理类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E6%91%8A%E6%B8%B2%E6%9F%93%E5%BE%AA%E7%8E%AF%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.3.</span> <span class="nav-text">平摊渲染循环任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%BA%A6%E6%8F%90%E7%A4%BA"><span class="nav-number">1.4.</span> <span class="nav-text">进度提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">1.5.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E5%AE%8F%E6%8E%A7%E5%88%B6%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">1.6.</span> <span class="nav-text">用宏控制要执行的代码块</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Collider"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Collider</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/endlesscollider" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;endlesscollider" rel="noopener" target="_blank"><i class="GitHub fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1652737065@qq.com" title="E-Mail → mailto:1652737065@qq.com" rel="noopener" target="_blank"><i class="E-Mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Collider</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz","app_key":"6k9HROMoqf6vzPadEMksx26r","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+
+  
+  
+    <script src="/js/cursor/cherry.js"></script>
+  
+
+</body>
+</html>
