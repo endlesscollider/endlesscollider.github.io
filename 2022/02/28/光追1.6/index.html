@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="物体列表实现有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入： 12345678910111213141516171">
+  <meta name="description" content="实现有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入： 123456789101112131415161718192">
 <meta property="og:type" content="article">
 <meta property="og:title" content="物体列表">
 <meta property="og:url" content="http://mackrui.com/2022/02/28/%E5%85%89%E8%BF%BD1.6/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="物体列表实现有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入： 12345678910111213141516171">
+<meta property="og:description" content="实现有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入： 123456789101112131415161718192">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1640711858250-599470c8-aca1-45dd-a55e-022902a5ac05.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307133434367.png">
 <meta property="article:published_time" content="2022-02-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T08:34:32.670Z">
+<meta property="article:modified_time" content="2022-04-02T08:53:48.004Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -131,17 +131,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:34:32" itemprop="dateModified" datetime="2022-04-02T16:34:32+08:00">2022-04-02</time>
+                <time title="修改时间：2022-04-02 16:53:48" itemprop="dateModified" datetime="2022-04-02T16:53:48+08:00">2022-04-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,7 +274,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="物体列表"><a href="#物体列表" class="headerlink" title="物体列表"></a>物体列表</h1><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入：</p>
+        <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>有了物体类，我们可以创建单个物体了，但是如果场景物体非常的多，我们则需要一个数组储存它们，不仅如此我们在进行光线的碰撞检测的时候还需要依次调用它们碰撞函数，并且在创景变化或者程序结束的时候去释放内存等等。所以这些操作放在main函数中是不合适的，所以最好的办法是定义一个类去实现这些操作。创建hittable_list.h文件，写入：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HITTABLE_LIST_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HITTABLE_LIST_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//智能指针的头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//智能指针！用它来帮我们管理物体列表，就不用担心内存泄漏问题了！</span></span><br><span class="line"><span class="keyword">using</span> std::shared_ptr;</span><br><span class="line"><span class="keyword">using</span> std::make_shared;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hittable_list</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">hittable_list</span>() &#123;&#125;</span><br><span class="line">    	<span class="comment">//当创建物体列表的时候传入了某一个物体，我们直接调用add函数把这个物体加入列表。</span></span><br><span class="line">    	<span class="built_in">hittable_list</span>(shared_ptr&lt;hittable&gt; object) &#123; <span class="built_in">add</span>(object); &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//clear函数调用列表的clear函数清空列表。</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123; objects.<span class="built_in">clear</span>(); &#125;</span><br><span class="line">    	<span class="comment">//add函数调用push_back把新物体的智能指针加入列表</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(shared_ptr&lt;hittable&gt; object)</span> </span>&#123; objects.<span class="built_in">push_back</span>(object); &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//声明我们需要override父类的hit函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">//物体列表，使用vector去存每个物体的智能指针。</span></span><br><span class="line">        std::vector&lt;shared_ptr&lt;hittable&gt;&gt; objects;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写之后的hit函数。</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">hittable_list::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    hit_record temp_rec;</span><br><span class="line">    <span class="keyword">bool</span> hit_anything = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//最开始，把能接受的最远位置设置成外部传进来的t_max。</span></span><br><span class="line">    <span class="keyword">auto</span> closest_so_far = t_max;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//对每个物体做碰撞</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; object : objects) &#123;</span><br><span class="line"> 		<span class="comment">//光线射到了这一堆物体里的某一个。</span></span><br><span class="line">        <span class="keyword">if</span> (object-&gt;<span class="built_in">hit</span>(r, t_min, closest_so_far, temp_rec)) &#123;</span><br><span class="line">            <span class="comment">//光线有射中东西，把最终函数的返回值设定为true。</span></span><br><span class="line">            hit_anything = <span class="literal">true</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//光线虽然已经射中了一个东西了，但不确定射中的这个物体是不是离相机最近的。</span></span><br><span class="line">            <span class="comment">//范围缩小，然后继续遍历物体列表。</span></span><br><span class="line">            closest_so_far = temp_rec.t;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//每次有新的碰撞，就设定它的record为最终record。</span></span><br><span class="line">            <span class="comment">//遍历完成后，就可以找到最近的碰撞点并返回它的rec。</span></span><br><span class="line">            rec = temp_rec;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//返回这根光线是否有碰到物体列表中的任何物体。</span></span><br><span class="line">    <span class="keyword">return</span> hit_anything;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>这里面有两个C++非常中要的概念：智能指针和多态</p>
@@ -414,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E4%BD%93%E5%88%97%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">物体列表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%B1%BB"><span class="nav-number">1.3.</span> <span class="nav-text">数学类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E6%9E%9C"><span class="nav-number">1.4.</span> <span class="nav-text">成果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">数学类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">成果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -430,20 +430,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

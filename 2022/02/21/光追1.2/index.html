@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="点、向量、颜色既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646">
+  <meta name="description" content="既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768">
 <meta property="og:type" content="article">
 <meta property="og:title" content="点、向量、颜色">
 <meta property="og:url" content="http://mackrui.com/2022/02/21/%E5%85%89%E8%BF%BD1.2/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="点、向量、颜色既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646">
+<meta property="og:description" content="既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T08:34:01.558Z">
+<meta property="article:modified_time" content="2022-04-02T08:54:14.289Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -128,17 +128,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:34:01" itemprop="dateModified" datetime="2022-04-02T16:34:01+08:00">2022-04-02</time>
+                <time title="修改时间：2022-04-02 16:54:14" itemprop="dateModified" datetime="2022-04-02T16:54:14+08:00">2022-04-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="点、向量、颜色"><a href="#点、向量、颜色" class="headerlink" title="点、向量、颜色"></a>点、向量、颜色</h1><p>既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们：</p>
+        <p>既然是光追，肯定离不开点和方向于颜色，在大多数工程中，颜色和方向是四维的向量，但是对于这个工程，三位向量可以满足需求，我们定义一个类来表示它们：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//防止被重复引用，用ifndef去包裹所有代码。</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> VEC3_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VEC3_H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//需要一些cmath类里面的数学函数</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//精确引用，只需要开方函数就只引入最小的命名空间</span></span><br><span class="line"><span class="keyword">using</span> std::sqrt;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vec3</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">// 空构造，默认构造一个（0，0，0）向量</span></span><br><span class="line">        <span class="built_in">vec3</span>() : e&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125; &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// 传入三个参数的构造。</span></span><br><span class="line">        <span class="built_in">vec3</span>(<span class="keyword">double</span> e0, <span class="keyword">double</span> e1, <span class="keyword">double</span> e2) : e&#123;e0, e1, e2&#125; &#123;&#125;</span><br><span class="line">		</span><br><span class="line">    	<span class="comment">//定义x，y，z分量。这样就可以用 向量.x() 直接拿取x分量。</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">x</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">0</span>]; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">y</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">1</span>]; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">z</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> e[<span class="number">2</span>]; &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//下面进行运算符重载。</span></span><br><span class="line">    </span><br><span class="line">    	<span class="comment">//单目 &#x27;-&#x27; 运算符 ，会对三维向量的每一维取反。</span></span><br><span class="line">        vec3 <span class="keyword">operator</span>-() <span class="keyword">const</span> &#123; <span class="keyword">return</span> <span class="built_in">vec3</span>(-e[<span class="number">0</span>], -e[<span class="number">1</span>], -e[<span class="number">2</span>]); &#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// &#x27;[]&#x27; 运算符的const版本，返回右值。</span></span><br><span class="line">    	<span class="keyword">double</span> <span class="keyword">operator</span>[](<span class="keyword">int</span> i) <span class="keyword">const</span> &#123; <span class="keyword">return</span> e[i]; &#125;</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">// &#x27;[]&#x27; 运算符普通版本，返回左值</span></span><br><span class="line">        <span class="keyword">double</span>&amp; <span class="keyword">operator</span>[](<span class="keyword">int</span> i) &#123; <span class="keyword">return</span> e[i]; &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">// &#x27;+=&#x27;运算符，const保护参数不被修改，返回引用允许操作符嵌套。</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>+=(<span class="keyword">const</span> vec3 &amp;v) &#123;</span><br><span class="line">            e[<span class="number">0</span>] += v.e[<span class="number">0</span>];</span><br><span class="line">            e[<span class="number">1</span>] += v.e[<span class="number">1</span>];</span><br><span class="line">            e[<span class="number">2</span>] += v.e[<span class="number">2</span>];</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">    	<span class="comment">// &#x27;*=&#x27;运算符</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>*=(<span class="keyword">const</span> <span class="keyword">double</span> t) &#123;</span><br><span class="line">            e[<span class="number">0</span>] *= t;</span><br><span class="line">            e[<span class="number">1</span>] *= t;</span><br><span class="line">            e[<span class="number">2</span>] *= t;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">// &#x27;/=&#x27;运算符，直接使用*=去定义&#x27;/=&#x27;。</span></span><br><span class="line">        vec3&amp; <span class="keyword">operator</span>/=(<span class="keyword">const</span> <span class="keyword">double</span> t) &#123;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span> *= <span class="number">1</span>/t;</span><br><span class="line">        &#125;</span><br><span class="line">		</span><br><span class="line">    </span><br><span class="line">    	<span class="comment">//模相关。</span></span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 模的平方。</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">length_squared</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> e[<span class="number">0</span>]*e[<span class="number">0</span>] + e[<span class="number">1</span>]*e[<span class="number">1</span>] + e[<span class="number">2</span>]*e[<span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    	</span><br><span class="line">    	<span class="comment">// 模</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">sqrt</span>(<span class="built_in">length_squared</span>());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">// 向量中的数组也直接暴露出去了，这里是float也没问题，看你的喜好。</span></span><br><span class="line">        <span class="keyword">double</span> e[<span class="number">3</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 给vec3类多起几个名字。</span></span><br><span class="line"><span class="keyword">using</span> point3 = vec3;   <span class="comment">// 3D point，在指定三维空间中的点的时候使用这种别名。</span></span><br><span class="line"><span class="keyword">using</span> color = vec3;    <span class="comment">// RGB color，在指定颜色的时候使用这种别名。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <h2 id="类外补充"><a href="#类外补充" class="headerlink" title="类外补充"></a>类外补充</h2><p>接下来是一些加减乘除等操作，其中的有些操作并不可以写在类内，比如double类型<code>*</code>vec3类型，所以统一写在类外：</p>
@@ -387,7 +387,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%82%B9%E3%80%81%E5%90%91%E9%87%8F%E3%80%81%E9%A2%9C%E8%89%B2"><span class="nav-number">1.</span> <span class="nav-text">点、向量、颜色</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%A4%96%E8%A1%A5%E5%85%85"><span class="nav-number">1.1.</span> <span class="nav-text">类外补充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E7%A6%BB%E4%B8%8E%E7%AE%80%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">抽离与简化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%A4%96%E8%A1%A5%E5%85%85"><span class="nav-number">1.</span> <span class="nav-text">类外补充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E7%A6%BB%E4%B8%8E%E7%AE%80%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">抽离与简化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.0.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -403,20 +403,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

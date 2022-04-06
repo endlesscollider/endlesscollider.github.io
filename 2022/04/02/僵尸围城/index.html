@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="hello! 大家好，这是我的第一篇博客1、 我是谁？​        我是谁不重要。重要的是我想成为知识的传播者。">
+  <meta name="description" content="面板基类因为我们所需要的大部分UI都需要一个淡入和淡出的效果，否则会显得非常突兀，所以在面板基类中实现这个功能，以后所有的面板都可以继承它来完成该效果。看代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的第一篇博客">
-<meta property="og:url" content="http://mackrui.com/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:title" content="丧尸围城-UI">
+<meta property="og:url" content="http://mackrui.com/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="hello! 大家好，这是我的第一篇博客1、 我是谁？​        我是谁不重要。重要的是我想成为知识的传播者。">
+<meta property="og:description" content="面板基类因为我们所需要的大部分UI都需要一个淡入和淡出的效果，否则会显得非常突兀，所以在面板基类中实现这个功能，以后所有的面板都可以继承它来完成该效果。看代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-11-06T00:43:59.000Z">
-<meta property="article:modified_time" content="2021-12-09T03:44:57.319Z">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220402172035636.png">
+<meta property="article:published_time" content="2022-04-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T00:23:55.153Z">
 <meta property="article:author" content="Collider">
-<meta property="article:tag" content="生活">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="unity">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220402172035636.png">
 
-<link rel="canonical" href="http://mackrui.com/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+<link rel="canonical" href="http://mackrui.com/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E/">
 
 
 <script id="page-configurations">
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>我的第一篇博客 | 祥瑞客栈</title>
+  <title>丧尸围城-UI | 祥瑞客栈</title>
   
 
 
@@ -196,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -209,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          我的第一篇博客
+          丧尸围城-UI
         </h1>
 
         <div class="post-meta">
@@ -219,14 +222,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-11-06 08:43:59" itemprop="dateCreated datePublished" datetime="2021-11-06T08:43:59+08:00">2021-11-06</time>
+              <time title="创建时间：2022-04-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-09 11:44:57" itemprop="dateModified" datetime="2021-12-09T11:44:57+08:00">2021-12-09</time>
+                <time title="修改时间：2022-04-06 08:23:55" itemprop="dateModified" datetime="2022-04-06T08:23:55+08:00">2022-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,7 +237,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
+                  <a href="/categories/unity/" itemprop="url" rel="index"><span itemprop="name">unity</span></a>
                 </span>
             </span>
 
@@ -254,8 +257,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/06/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -270,11 +273,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="hello-大家好，这是我的第一篇博客"><a href="#hello-大家好，这是我的第一篇博客" class="headerlink" title="hello! 大家好，这是我的第一篇博客"></a>hello! 大家好，这是我的第一篇博客</h1><h2 id="1、-我是谁？"><a href="#1、-我是谁？" class="headerlink" title="1、 我是谁？"></a>1、 我是谁？</h2><p>​        我是谁不重要。重要的是我想成为知识的传播者。</p>
-<span id="more"></span>
+        <h1 id="面板基类"><a href="#面板基类" class="headerlink" title="面板基类"></a>面板基类</h1><p>因为我们所需要的大部分UI都需要一个淡入和淡出的效果，否则会显得非常突兀，所以在面板基类中实现这个功能，以后所有的面板都可以继承它来完成该效果。看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.Events;</span><br><span class="line"></span><br><span class="line">public abstract class BasePanel : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    //用于控制面板透明度的组件</span><br><span class="line">    private CanvasGroup canvasGroup;</span><br><span class="line"></span><br><span class="line">    //淡入淡出的速度</span><br><span class="line">    private float alphaSpeed = 10;</span><br><span class="line"></span><br><span class="line">    //表示面板当前状态</span><br><span class="line">    private bool isShow = false;</span><br><span class="line"></span><br><span class="line">    protected virtual void Awake()</span><br><span class="line">    &#123;</span><br><span class="line">        canvasGroup = GetComponent&lt;CanvasGroup&gt;();</span><br><span class="line">		</span><br><span class="line">        //安全处理，没找到组件就创建一个</span><br><span class="line">        if (canvasGroup == null)</span><br><span class="line">        &#123;</span><br><span class="line">            canvasGroup = this.gameObject.AddComponent&lt;CanvasGroup&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">    protected virtual void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        Init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   	//抽象的初始化函数</span><br><span class="line">    public abstract void Init();</span><br><span class="line"></span><br><span class="line">    //委托类型：当隐藏完毕做的事情</span><br><span class="line">    private UnityAction hitCallBack = null;</span><br><span class="line"></span><br><span class="line">    //显示函数，参数为是否要求淡入淡出</span><br><span class="line">    public virtual void ShowMe(bool isFade = true)</span><br><span class="line">    &#123;</span><br><span class="line">        //需要淡入，首先调整透明度为0，然后打开showme开关，然后updata函数会识别并调整透明度实现淡入。</span><br><span class="line">        if (isFade)</span><br><span class="line">        &#123;</span><br><span class="line">            canvasGroup.alpha = 0;</span><br><span class="line">            isShow = true;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            canvasGroup.alpha = 1;</span><br><span class="line">            isShow = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //隐藏函数</span><br><span class="line">    public virtual void HideMe(UnityAction callBack)</span><br><span class="line">    &#123;</span><br><span class="line">        //透明度调整为1，之后关闭显示状态。</span><br><span class="line">        canvasGroup.alpha = 1;</span><br><span class="line">        isShow = false;</span><br><span class="line">		</span><br><span class="line">        hitCallBack = callBack;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    protected virtual void Update()</span><br><span class="line">    &#123;</span><br><span class="line">		//与ShowMe和HideMe函数配合达到淡入淡出效果</span><br><span class="line">        if (isShow &amp;&amp; canvasGroup.alpha != 1)</span><br><span class="line">        &#123;</span><br><span class="line">            canvasGroup.alpha += alphaSpeed * Time.deltaTime;</span><br><span class="line">            //防止性能浪费，将其透明度定为1之后不再进入循环</span><br><span class="line">            if (canvasGroup.alpha &gt;= 1)</span><br><span class="line">            &#123;</span><br><span class="line">                canvasGroup.alpha = 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(!isShow &amp;&amp; canvasGroup.alpha != 0)</span><br><span class="line">        &#123;</span><br><span class="line">            canvasGroup.alpha -= alphaSpeed * Time.deltaTime;</span><br><span class="line">            if (canvasGroup.alpha &lt;= 0)</span><br><span class="line">            &#123;</span><br><span class="line">                canvasGroup.alpha = 0;</span><br><span class="line">                //当隐藏完毕后执行hitCallBack委托，？确保hitCallBack是否存在。</span><br><span class="line">                hitCallBack?.Invoke();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2、创建博客的初衷"><a href="#2、创建博客的初衷" class="headerlink" title="2、创建博客的初衷"></a>2、创建博客的初衷</h2><p>​        我在解决一个又一个的问题的时候，各种博客、平台帮了我很多，这其中有很多非常详细且友好的帖子，但也有充斥各种问题的帖子，如语意不清、啰嗦、付费、繁杂等等，虽然最后我还是解决了这些问题，我不希望获得知识的路上充满荆棘，所以我创建了自己的博客，希望分享我所获得的知识，同时把我解决问题的过程、思考、以及总结的经验保存下来。为了你，也为了以后的我不再重蹈覆辙。</p>
-<h2 id="3、我的计划"><a href="#3、我的计划" class="headerlink" title="3、我的计划"></a>3、我的计划</h2><p>​        我计划首先分享我在阅读书籍中、以前unity项目中、刷题中、以及搭建博客中的遇到的问题，同时因为我目前从事的是忆阻器件的制备，我也会分享在半导体方向所收获的知识（这方面的知识网上尤其的少）。也希望自己能够再接再厉。学更多的知识、看更远的风景。</p>
+<h1 id="Begin面板"><a href="#Begin面板" class="headerlink" title="Begin面板"></a>Begin面板</h1><p>Begin面板需要什么功能呢？我这里主要需要：开始游戏、设置、关于、退出：它所做的就是当玩家点击对应的地方时弹出对应的面板或跳转到其他界面或关闭游戏。来看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.UI;</span><br><span class="line"></span><br><span class="line">public class BeginPanel : BasePanel</span><br><span class="line">&#123;</span><br><span class="line">    //分别对应四个按钮组件</span><br><span class="line">    public Button btnStart;</span><br><span class="line">    public Button btnSet;</span><br><span class="line">    public Button btnAbout;</span><br><span class="line">    public Button btnQuit;</span><br><span class="line"></span><br><span class="line">    //覆写基类中的初始化函数</span><br><span class="line">    public override void Init()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用按钮点击的监听函数，传入lambda表达式调用相机中的TurnLeft函数。</span><br><span class="line">        btnStart.onClick.AddListener(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            //同时通过UI管理者的显示选择角色面板</span><br><span class="line">            Camera.main.GetComponent&lt;CameraAnimation&gt;().TurnLeft(() =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                UIManager.Instance.showPanel&lt;SelectPanel&gt;();</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            //隐藏此面板，显示选择角色面板</span><br><span class="line">            UIManager.Instance.HidePanel&lt;BeginPanel&gt;();</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        btnSet.onClick.AddListener(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            //显示设置面板</span><br><span class="line">            UIManager.Instance.showPanel&lt;SetPanel&gt;();</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        btnAbout.onClick.AddListener(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            //自制</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        btnQuit.onClick.AddListener(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            //退出</span><br><span class="line">            //Application.Quit();</span><br><span class="line">            UnityEditor.EditorApplication.isPlaying = false;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>开始界面如下：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220402172035636.png"></p>
+<h1 id="设置面板"><a href="#设置面板" class="headerlink" title="设置面板"></a>设置面板</h1><p>接下来介绍设置面板，设置面板我主要希望它能够控制背景音乐和游戏音效的大小，且能够让音量数据持久化，这样在重新启动游戏后保持以前的音效。</p>
 
     </div>
 
@@ -284,7 +291,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag"># 生活</a>
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/unity/" rel="tag"># unity</a>
           </div>
 
         
@@ -292,10 +300,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/11/07/%E7%B1%BB%E5%90%8D%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/" rel="next" title="类名冲突问题">
-      类名冲突问题 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="散焦模糊">
+      <i class="fa fa-chevron-left"></i> 散焦模糊
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/" rel="next" title="丧尸围城-管理者">
+      丧尸围城-管理者 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -373,7 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hello-%E5%A4%A7%E5%AE%B6%E5%A5%BD%EF%BC%8C%E8%BF%99%E6%98%AF%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.</span> <span class="nav-text">hello! 大家好，这是我的第一篇博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81-%E6%88%91%E6%98%AF%E8%B0%81%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">1、 我是谁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%88%9D%E8%A1%B7"><span class="nav-number">1.2.</span> <span class="nav-text">2、创建博客的初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E6%88%91%E7%9A%84%E8%AE%A1%E5%88%92"><span class="nav-number">1.3.</span> <span class="nav-text">3、我的计划</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E6%9D%BF%E5%9F%BA%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">面板基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Begin%E9%9D%A2%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">Begin面板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%9D%A2%E6%9D%BF"><span class="nav-number">3.</span> <span class="nav-text">设置面板</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
+  <meta name="description" content="本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行路径，是程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程加速">
 <meta property="og:url" content="http://mackrui.com/2022/04/02/%E5%85%89%E8%BF%BD1.15/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="多线程加速本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行">
+<meta property="og:description" content="本章内容为个人探索。 在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。 线程概念在计算机中我们常听到进程与线程，进程是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。线程是一条执行路径，是程">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644760612951-6f06140b-95a2-44f0-bd93-ae060937d22d.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644765772450-258fabf2-16b2-4f31-833b-4cade26bc58a.png">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766148415-4d46e8c8-b22d-45fb-a2df-c6010d4a258d.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png">
 <meta property="article:published_time" content="2022-04-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T08:36:04.638Z">
+<meta property="article:modified_time" content="2022-04-02T08:52:43.223Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -135,17 +135,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -228,7 +228,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：16:36:04" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
+              <time title="创建时间：2022-04-02 00:00:00 / 修改时间：16:52:43" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,7 +272,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="多线程加速"><a href="#多线程加速" class="headerlink" title="多线程加速"></a>多线程加速</h1><p><em>本章内容为个人探索。</em></p>
+        <p><em>本章内容为个人探索。</em></p>
 <p>在《抗锯齿》那一章中，增加了多次采样的逻辑后，程序的运行速度开始变得非常缓慢。多次采样是渲染真实感图像的基石，想要保持多次采样的同时加快程序的运行速度，就得另辟蹊径。</p>
 <h2 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h2><p>在计算机中我们常听到进程与线程，<strong>进程</strong>是资源（CPU、内存等）分配的基本单位，通俗来说就是我们桌面上的每一个应用当点击QQ时，就创建了一个进程，我们所用的VS本地调式也是一个进程。<strong>线程</strong>是一条执行路径，是程序执行时的最小单位，他们之间的关系就好比一个部门和其中的每一个人，当然人越多干活越快，需要的总工资（内存和cpu资源）也越多。一个线程的使用示例代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="built_in">func</span>(par1, par2)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//直接构造thread对象t，第一个参数为函数，后面依次传入对应函数所需参数</span></span><br><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(func, par1, par2...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//detach表示彻底放养t线程，这是一个危险的行为，如果不能保证主线程在t线程之后走完</span></span><br><span class="line"><span class="comment">//就会导致t线程的资源无法回收。</span></span><br><span class="line">t.<span class="built_in">detach</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">//join t线程到本线程，在join完后表示接下来的代码必须等待t执行完成之后才开始执行。</span></span><br><span class="line">t.<span class="built_in">join</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -346,8 +346,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" rel="prev" title="散焦模糊">
-      <i class="fa fa-chevron-left"></i> 散焦模糊
+    <a href="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/" rel="prev" title="丧尸围城-管理者">
+      <i class="fa fa-chevron-left"></i> 丧尸围城-管理者
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -426,7 +426,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8A%A0%E9%80%9F"><span class="nav-number">1.</span> <span class="nav-text">多线程加速</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%BE%93%E5%87%BA%E7%AE%A1%E7%90%86%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">建立输出管理类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E6%91%8A%E6%B8%B2%E6%9F%93%E5%BE%AA%E7%8E%AF%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.3.</span> <span class="nav-text">平摊渲染循环任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%BA%A6%E6%8F%90%E7%A4%BA"><span class="nav-number">1.4.</span> <span class="nav-text">进度提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">1.5.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E5%AE%8F%E6%8E%A7%E5%88%B6%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">1.6.</span> <span class="nav-text">用宏控制要执行的代码块</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">线程概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%BE%93%E5%87%BA%E7%AE%A1%E7%90%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">建立输出管理类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E6%91%8A%E6%B8%B2%E6%9F%93%E5%BE%AA%E7%8E%AF%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">平摊渲染循环任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%BA%A6%E6%8F%90%E7%A4%BA"><span class="nav-number">4.</span> <span class="nav-text">进度提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">5.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E5%AE%8F%E6%8E%A7%E5%88%B6%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">6.</span> <span class="nav-text">用宏控制要执行的代码块</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -442,20 +442,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -122,17 +122,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -186,6 +186,327 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第八章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-03 14:57:08" itemprop="dateModified" datetime="2022-01-03T14:57:08+08:00">2022-01-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/10/%E7%AC%AC%E5%85%AB%E7%AB%A0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="IO库"><a href="#IO库" class="headerlink" title="IO库"></a>IO库</h1><p>以往用到的IO库设施：</p>
+<ul>
+<li><p>istream(输入流)类型，提供输入操作。</p>
+</li>
+<li><p>ostre am(输出流)类型，提供输出操作。</p>
+</li>
+<li><p>cin, 一个istream对象，从标准输入读取数据。</p>
+</li>
+<li><p>cout，一个ostream对象，向标准输出写入数据。</p>
+</li>
+<li><p>cerr，一个ostream对象，通常用于输出程序错误消息，写入到标准错误。</p>
+</li>
+<li><p><code>&gt;&gt;</code>运算符，用来从一个istream对象读取输入数据。</p>
+</li>
+<li><p><code>&lt;&lt;</code>运算符，用来向一个ostream对象写入输出数据。</p>
+</li>
+<li><p>getline函数，从一个给定的istream读取一行数据，存入一个给定的string对象中。</p>
+</li>
+</ul>
+<h2 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h2><table>
+<thead>
+<tr>
+<th>头文件</th>
+<th align="left">类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iostream</td>
+<td align="left">istream, wistream从流读取数据<br/>ostream, wost ream向流写入数据<br/>iostream，wiostream读写流</td>
+</tr>
+<tr>
+<td>fstream</td>
+<td align="left">ifstream, wifstream 从文件读取数据<br/>ofstream, wofstream 向文件写入数据<br/>fstream，wfstream读写文件</td>
+</tr>
+<tr>
+<td>sstream</td>
+<td align="left">istringstream, wistringstream 从string读取数据.<br/>ostringstream, wostringstream 向string写入数据<br/>stringstream, wstringstream 读写string</td>
+</tr>
+</tbody></table>
+<p>为了支持使用宽字符的语言，标准库定义了一组类型和对象来操纵wchar_t 类型的数据。宽字符版本的类型和函数的名字以一个w开始。例如，wcin、wcout和wcerr是分别对应cin、cout和cerr的宽字符版对象。宽字符版本的类型和对象与其对应的普通char版本的类型定义在同一个头文件中。例如，头文件fstream定义了ifstream 和wifstream类型。</p>
+<h4 id="IO类型间的关系"><a href="#IO类型间的关系" class="headerlink" title="IO类型间的关系"></a>IO类型间的关系</h4><p>设备类型和字符大小不会影响我们执行的IO操作，例如使用&gt;&gt;读取数据，我们不需要管是从控制台还是磁盘文件、还是string读取，同样也不需要管字符存入的是char还是wchar_t。这一点实际上是通过类的继承机制实现的。类型ifstream和istringstream都继承自istream. 因此，我们可以像使用istream对象-样来使用ifstream和istringstream对象。</p>
+<h3 id="IO对象无拷贝或赋值"><a href="#IO对象无拷贝或赋值" class="headerlink" title="IO对象无拷贝或赋值"></a>IO对象无拷贝或赋值</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ofstream out1， out2;</span><br><span class="line">out1 = out2;								<span class="comment">//错误:不能对流对象賦值</span></span><br><span class="line"><span class="function">ofstream <span class="title">print</span> <span class="params">(ofstream)</span> </span>;					<span class="comment">//错误:不能初始化ofstream参数</span></span><br><span class="line">out2 = <span class="built_in">print</span> (out2) ;						<span class="comment">//错误:不能拷贝流对象</span></span><br></pre></td></tr></table></figure>
+
+<p>由于不能拷贝IO对象，因此我们也不能将形参或返回类型设置为流类型。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是const的。</p>
+<h3 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h3><p>一个流发生错误，后续的IO操作都会失败，所以因通过代码检查它是否处于良好状态：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(cin &gt;&gt; word)&#123;</span><br><span class="line">	<span class="comment">//如果能够进来，代表流状态良好</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询流的状态"><a href="#查询流的状态" class="headerlink" title="查询流的状态"></a>查询流的状态</h4><p>上面的操作只知道有没有错误，但不知道是什么错误，所以IO库定义了一个与机器无关的iostate类型：</p>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>badbit</td>
+<td>系统级错误，如不可恢复的读写错误。</td>
+</tr>
+<tr>
+<td>failbit</td>
+<td>期望读取的数值却读出一个字符等错误，这种问题可以修正，且流还可以使用。<br>到达文件结束位置会被置位。</td>
+</tr>
+<tr>
+<td>eofbit</td>
+<td>到达文件结束位置，其会被置位。</td>
+</tr>
+<tr>
+<td>goodbit</td>
+<td>值为0表示流未发生错误，如果上面任何一个被置位，则检测流状态的条件会失败</td>
+</tr>
+</tbody></table>
+<p>标准库还定义了一组函数来查询这些标志位的状态。操作 good在所有错误位均未置位的情况下返回true，而 bad、fail和 eof则在对应错误位被置位时返回true。此外，在 badbit被置位时，fail也会返回true。这意味着，使用good或fail是确定流的总体状态的正确方法。实际上，我们将流当作条件使用的代码就等价于!fail()。而eof和 bad操作只能表示特定的错误。</p>
+<h4 id="管理条件状态"><a href="#管理条件状态" class="headerlink" title="管理条件状态"></a>管理条件状态</h4><p>流对象的rdstate成员返回一个iostate值，对应流的当前状态。setstate操作将给定条件位置位，表示发生了对应错误。clear成员是一个重载的成员(参见6.4节,第206页):它有一个不接受参数的版本，而另一个版本接受一个iostate类型的参数。<br>clear不接受参数的版本清除(复位)所有错误标志位。执行clear()后,调用good会返回true。我们可以这样使用这些成员:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//记住cin的当前状态</span></span><br><span class="line"><span class="keyword">auto</span> old_state = cin.<span class="built_in">rdstate</span>();			<span class="comment">//记住cin的当前状态</span></span><br><span class="line">cin.<span class="built_in">clear</span>();							<span class="comment">//使cin有效</span></span><br><span class="line"><span class="built_in">process_input</span> (cin) ;					<span class="comment">//使用cin</span></span><br><span class="line">cin.<span class="built_in">setstate</span>(old_state) ;				<span class="comment">//将cin置为原有状态</span></span><br></pre></td></tr></table></figure>
+
+<p>带参数的clear版本接受一个iostate值，表示流的新状态。为了复位单一的条件状态位，我们首先用rdstate读出当前条件状态，然后用位操作将所需位复位来生成新的状态。例如，下面的代码将failbit和 badbit复位，但保持eofbit不变://复位failbit和badbit，保持其他标志位不变cin.clear(cin.rdstate () &amp; ~cin.failbit &amp; ~cin.badbit);</p>
+<h3 id="管理输出缓冲"><a href="#管理输出缓冲" class="headerlink" title="管理输出缓冲"></a>管理输出缓冲</h3><p>每个输出流都管理一个缓冲区，用来保存程序读写的数据。例如，如果执行下面的代码</p>
+<p><code>os &lt;&lt; &quot;please enter a value: &quot;;</code></p>
+<p>文本串可能立即打印出来，但也有可能被操作系统保存在缓冲区中，随后再打印。有了缓冲机制，操作系统就可以将程序的多个输出操作组合成单一的系统级写操作。由于设备的写操作可能很耗时，允许操作系统将多个输出操作组合为单一的设备写操作可以带来很大的性能提升。</p>
+<p>导致缓冲刷新（即，数据真正写到输出设备或文件）的原因有很多;</p>
+<ul>
+<li>程序正常结束，作为main函数的return操作的一部分，缓冲刷新被执行。</li>
+<li>缓冲区满时，需要刷新缓冲，而后新的数据才能继续写入缓冲区。</li>
+<li>我们可以使用操纵符如 endl（参见1.2节，第6页）来显式刷新缓冲区。</li>
+<li>在每个输出操作之后，我们可以用操纵符unitbuf设置流的内部状态，来清空缓冲区。默认情况下，对cerr是设置unitbuf的，因此写到cerr的内容都是立即刷新的。</li>
+<li>一个输出流可能被关联到另一个流。在这种情况下，当读写被关联的流时，关联到的流的缓冲区会被刷新。例如，默认情况下，cin和 cerr都关联到cout。因此，读cin或写cerr都会导致cout的缓冲区被刷新。</li>
+</ul>
+<h4 id="刷新输出缓冲区"><a href="#刷新输出缓冲区" class="headerlink" title="刷新输出缓冲区"></a>刷新输出缓冲区</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt;<span class="string">&quot;hi! &quot;</span> &lt;&lt;endl;			<span class="comment">//输出hi和一个换行，然后刷新缓冲区</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hi ! &quot;</span> &lt;&lt; flush;		<span class="comment">//输出hi，然后刷新缓冲区，不附加任何额外字符</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;hi ! &quot;</span> &lt;&lt;ends;			<span class="comment">//输出hi和一个空字符，然后刷新缓冲区</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="unitbuf操纵符"><a href="#unitbuf操纵符" class="headerlink" title="unitbuf操纵符"></a>unitbuf操纵符</h4><p>如果想在每次输出操作后都刷新缓冲区，我们可以使用unitbuf操纵符。它告诉流在接下来的每次写操作之后都进行一次 flush 操作。而nounitbuf操纵符则重置流，使其恢复使用正常的系统管理的缓冲区刷新机制：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout &lt;&lt; unitbuf;					<span class="comment">//所有输出操作后都会立即刷新缓冲区	</span></span><br><span class="line"><span class="comment">//任何输出都立即刷新，无缓冲</span></span><br><span class="line">cout &lt;&lt;nounitbuf ;					<span class="comment">//回到正常的缓冲方式</span></span><br></pre></td></tr></table></figure>
+
+<p><em>如果程序异常终止,输出缓冲区是不会被刷新的。当一个程序崩溃后，它所输出的数据很可能停留在输出缓冲区中等待打印。<br>当调试一个已经崩溃的程序时,需要确认那些你认为已经输出的数据确实已经刷新了。否则，可能将大量时间浪费在追踪代码为什么没有执行上，而实际上代码已经执行了，只是程序崩溃后缓冲区没有被刷新，输出数据被挂起没有打印而已。</em></p>
+<h4 id="关联输入和输出流"><a href="#关联输入和输出流" class="headerlink" title="关联输入和输出流"></a>关联输入和输出流</h4><p>当一个输入流被关联到一个输出流时，任何试图从输入流读取数据的操作都会先刷新关联的输出流。标准库将cout和 cin关联在一起，因此下面语句导致cout的缓冲区被刷新。<br><code>cin &gt;&gt; ival;</code><br>tie可以将自己和一个输出流绑定起来，并且返回与自己关联的对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cin.<span class="built_in">tie</span> ( &amp;cout) ;						<span class="comment">//仅仅是用来展示:标准库将cin和cout关联在一起</span></span><br><span class="line"><span class="comment">// old_tie指向当前关联到cin的流（如果有的话)</span></span><br><span class="line">ostream *old_tie = cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>); 	<span class="comment">//cin 不再与其他流关联</span></span><br><span class="line"><span class="comment">//将cin 与cerr关联;这不是一个好主意，因为cin应该关联到cout</span></span><br><span class="line">cin.<span class="built_in">tie</span> ( &amp;cerr);						<span class="comment">//读取cin会刷新cerr而不是cout</span></span><br><span class="line">cin.<span class="built_in">tie</span>(old_tie) ;						<span class="comment">//重建cin和 cout间的正常关联</span></span><br></pre></td></tr></table></figure>
+
+<p>在这段代码中，为了将一个给定的流关联到一个新的输出流，我们将新流的指针传递给了tie。为了彻底解开流的关联，我们传递了一个空指针。每个流同时最多关联到一个流，但多个流可以同时关联到同一个ostream。</p>
+<h2 id="文件输入输出"><a href="#文件输入输出" class="headerlink" title="文件输入输出"></a>文件输入输出</h2><p>头文件 fstream定义了三个类型来支持文件IO:ifstream从一个给定文件读取数据，ofstream向一个给定文件写入数据，以及fstream可以读写给定文件。</p>
+<p>fstream中定义的类型还增加了一些新的成员管理与流关联的文件</p>
+<table>
+<thead>
+<tr>
+<th align="left">代码</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">fstream fstrm;</td>
+<td>创建一个未绑定的文件流。fstream是头文件fstream 中定义的一个类型</td>
+</tr>
+<tr>
+<td align="left">fstream fstrm (s);</td>
+<td>创建一个fstream，并打开名为s的文件。s可以是string类型，或者是<br>一个指向C风格字符串的指针。这些构造函数都是explicit的。默认的<br>文件模式mode依赖于fstream的类型</td>
+</tr>
+<tr>
+<td align="left">fstream fstrm <br>(s,mode) ;</td>
+<td>与前一个构造函数类似，但按指定mode打开文件</td>
+</tr>
+<tr>
+<td align="left">fstrm.open (s)</td>
+<td>打开名为s 的文件，并将文件与 fstrm绑定。s可以是一个string或一个指向<br>C风格字符串的指针。默认的文件mode依赖于fstream的类型。返回void</td>
+</tr>
+<tr>
+<td align="left">fstrm.close ()</td>
+<td>关闭与fstrm绑定的文件。返回void</td>
+</tr>
+<tr>
+<td align="left">fstrm.is_open ()</td>
+<td>返回一个bool值,指出与fstrm关联的文件是否成功打开且尚未关闭</td>
+</tr>
+</tbody></table>
+<h3 id="使用文件流对象"><a href="#使用文件流对象" class="headerlink" title="使用文件流对象"></a>使用文件流对象</h3><p>向读写一个文件时，需要先定义一个文件流对象，如果提供了一个文件名，则会自动调用open：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">in</span> <span class="params">(ifile)</span></span>;						<span class="comment">//构造一个ifstream并打开给定文件</span></span><br><span class="line">ofstream out;								<span class="comment">//输出文件流未关联到任何文件</span></span><br></pre></td></tr></table></figure>
+
+<p>输入流in，初始化为从文件读取数据，输出流out，未关联。</p>
+<h4 id="用fstream代替iostream-amp"><a href="#用fstream代替iostream-amp" class="headerlink" title="用fstream代替iostream&amp;"></a>用fstream代替iostream&amp;</h4><p>根据在要求使用基类对象的地方，我们可以使用继承类型的对象来替代。所以在调用一个具有iostream的参数时，可以用fstream来调用。</p>
+<h4 id="成员函数open和close"><a href="#成员函数open和close" class="headerlink" title="成员函数open和close"></a>成员函数open和close</h4>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第四章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-09 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-09T00:00:00+08:00">2021-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-12 15:00:25" itemprop="dateModified" datetime="2021-12-12T15:00:25+08:00">2021-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><strong>一元运算符</strong>作用于一个运算对象，二元运算符作用于两个运算对象，三元对运算对象没有限制。</p>
+<p>C++语言定义了运算符作用于内置类型和复合类型的运算对象时所执行的操作。当运算符作用于类类型的运算对象时，用户可以自行定义其含义。因为这种自定义的过程事实上是为已存在的运算符赋予了另外一层含义，所以称之为**重载运算符（ overloadedoperator)**。IO库的&gt;&gt;和&lt;&lt;运算符以及string对象、vector对象和迭代器使用的运算</p>
+<p><strong>左值和右值</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/09/%E7%AC%AC%E5%9B%9B%E7%AB%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -736,20 +1057,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

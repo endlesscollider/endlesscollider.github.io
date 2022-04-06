@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="物体类简化首先可以简化一些不必要的常数项，聊胜于无的优化： 12345678910111213141516double hit_sphere(const point3&amp; center, double radius, const ray&amp; r) &amp;#123;    vec3 oc &#x3D; r.origin() - center;    auto a &#x3D; r.direction().len">
+  <meta name="description" content="简化首先可以简化一些不必要的常数项，聊胜于无的优化： 12345678910111213141516double hit_sphere(const point3&amp; center, double radius, const ray&amp; r) &amp;#123;    vec3 oc &#x3D; r.origin() - center;    auto a &#x3D; r.direction().length">
 <meta property="og:type" content="article">
 <meta property="og:title" content="物体类">
 <meta property="og:url" content="http://mackrui.com/2022/02/26/%E5%85%89%E8%BF%BD1.5/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="物体类简化首先可以简化一些不必要的常数项，聊胜于无的优化： 12345678910111213141516double hit_sphere(const point3&amp; center, double radius, const ray&amp; r) &amp;#123;    vec3 oc &#x3D; r.origin() - center;    auto a &#x3D; r.direction().len">
+<meta property="og:description" content="简化首先可以简化一些不必要的常数项，聊胜于无的优化： 12345678910111213141516double hit_sphere(const point3&amp; center, double radius, const ray&amp; r) &amp;#123;    vec3 oc &#x3D; r.origin() - center;    auto a &#x3D; r.direction().length">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/d87a46ba28d0db64bb2642603c553fba.svg">
 <meta property="article:published_time" content="2022-02-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T08:34:21.008Z">
+<meta property="article:modified_time" content="2022-04-02T08:53:54.091Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -130,17 +130,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:34:21" itemprop="dateModified" datetime="2022-04-02T16:34:21+08:00">2022-04-02</time>
+                <time title="修改时间：2022-04-02 16:53:54" itemprop="dateModified" datetime="2022-04-02T16:53:54+08:00">2022-04-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +273,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="物体类"><a href="#物体类" class="headerlink" title="物体类"></a>物体类</h1><h2 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h2><p>首先可以简化一些不必要的常数项，聊胜于无的优化：</p>
+        <h2 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h2><p>首先可以简化一些不必要的常数项，聊胜于无的优化：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">hit_sphere</span><span class="params">(<span class="keyword">const</span> point3&amp; center, <span class="keyword">double</span> radius, <span class="keyword">const</span> ray&amp; r)</span> </span>&#123;</span><br><span class="line">    vec3 oc = r.<span class="built_in">origin</span>() - center;</span><br><span class="line">    <span class="keyword">auto</span> a = r.<span class="built_in">direction</span>().<span class="built_in">length_squared</span>();</span><br><span class="line">    <span class="comment">//默认直接把2除掉</span></span><br><span class="line">    <span class="keyword">auto</span> half_b = <span class="built_in">dot</span>(oc, r.<span class="built_in">direction</span>());</span><br><span class="line">    <span class="keyword">auto</span> c = oc.<span class="built_in">length_squared</span>() - radius*radius;</span><br><span class="line">    <span class="comment">//这个discriminant是之前的四分之一。</span></span><br><span class="line">    <span class="keyword">auto</span> discriminant = half_b*half_b - a*c;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (discriminant &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1.0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//分子分母都是简化前的一半。</span></span><br><span class="line">        <span class="built_in"><span class="keyword">return</span></span> (-half_b - <span class="built_in">sqrt</span>(discriminant) ) / a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h2><p>现在有了球，或许需要一个球类去描述它，但是未来可能还会有更多的其他种类的物体，最容易想到的方法是首先编写一个物体基类。</p>
@@ -403,7 +403,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E4%BD%93%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">物体类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">简化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">抽象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%95%E7%BA%BF%E4%BF%AE%E6%AD%A3"><span class="nav-number">1.4.</span> <span class="nav-text">法线修正</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">简化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">抽象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%95%E7%BA%BF%E4%BF%AE%E6%AD%A3"><span class="nav-number">4.</span> <span class="nav-text">法线修正</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,20 +419,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
