@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">37</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">39</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -186,6 +186,558 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/02/12/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/12/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第十五章</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-12T00:00:00+08:00">2022-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-04 12:58:23" itemprop="dateModified" datetime="2022-03-04T12:58:23+08:00">2022-03-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/12/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/12/%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="面向对象程序设计"><a href="#面向对象程序设计" class="headerlink" title="面向对象程序设计"></a>面向对象程序设计</h1><h2 id="OOP：概述"><a href="#OOP：概述" class="headerlink" title="OOP：概述"></a>OOP：概述</h2><p><strong>面向对象程序设计（object-oriented programming）</strong>的核心思想是<strong>数据抽象</strong>、<strong>继承</strong>和<strong>动态绑定</strong>。</p>
+<ul>
+<li>使用数据抽象，我们可以将类的接口与实现分离；</li>
+<li>使用继承，可以定义相似的类型并对其相似关系建模；</li>
+<li>使用动态绑定，可以在一定程度上忽略相似类型的区别，而以统一的方式使用它们的对象。</li>
+</ul>
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><p>通过<strong>继承（inheritance）</strong>联系在一起的类构成一种层次关系。通常在层次关系的根部有一个**基类(base class)<strong>，其他类则直接或间接地从基类继承而来，这些继承得到的类称为</strong>派生类( derived class)**。基类负责定义在层次关系中所有类共同拥有的成员，而每个派生类定义各自特有的成员。</p>
+<p>C++中，基类将类型相关的函数与派生类不做改变直接继承的函数区分对待。对于某些函数，基类希望它的派生类各自定义适合自身的版本，此时基类就将这些函数声明成虚函数（ virtual function)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">std::string <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std: :<span class="keyword">size_t</span> n)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>派生类必须通过使用类派生列表(class derivation list）明确指出它是从哪个（哪些）基类继承而来的。类派生列表的形式是 : 首先是一个冒号，后面紧跟以逗号分隔的基类列表，其中每个基类前面可以有访问说明符:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote &#123;</span><br><span class="line"><span class="comment">//Bulk_quote继承了Quote</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std::<span class="keyword">size_t</span>)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>因为使用public派生，所以可以使用基类成员，可以把Bulk quote的对象当成Quote的对象来使用。</p>
+<h4 id="动态绑定"><a href="#动态绑定" class="headerlink" title="动态绑定"></a>动态绑定</h4><p>用它可以分别处理Quote和Bulk_quote的对象。例如，当要购买的书籍和购买的数量都已知时，下面的函数负责打印总的费用:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//计算并打印销售给定数量的某种书籍所得的费用</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">print_total</span><span class="params">(ostream &amp;os, <span class="keyword">const</span> Quote &amp;item, <span class="keyword">size_t</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//根据传入item形参的对象类型调用Quote::net_price</span></span><br><span class="line">    <span class="comment">//或者Bulk_quote::net_price</span></span><br><span class="line">	<span class="keyword">double</span> ret = item.<span class="built_in">net_price</span> (n);</span><br><span class="line">	os &lt;&lt; <span class="string">&quot;ISBN:&quot;</span> &lt;&lt; item.<span class="built_in">isbn</span> ()<span class="comment">//调用Quote: :isbn</span></span><br><span class="line">		&lt;&lt;<span class="string">&quot; # sold: &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; total due: &quot;</span> &lt;&lt; ret &lt;&lt; endl;<span class="keyword">return</span> ret;</span><br></pre></td></tr></table></figure>
+
+<p>函数形参中的item是基类的引用，我们既可以使用基类的该函数，又可以使用派生类中的该函数，这回根据对象的类型决定执行哪一个版本：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// basic的类型是Quote; bulk的类型是Bulk_quote</span></span><br><span class="line"><span class="built_in">print_total</span> (cout, basic,<span class="number">20</span>);			<span class="comment">//调用Quote的net_price</span></span><br><span class="line"><span class="built_in">print_total</span> (cout, bulk,<span class="number">20</span>);			<span class="comment">//调用Bulk quote的net price</span></span><br></pre></td></tr></table></figure>
+
+<p>函数的运行版本由实参决定，所以动态绑定又被称为运行时绑定。</p>
+<p><strong>在C++语言中，当我们使用基类的引用(或指针)调用一个虚函数时将发生动态绑定。</strong></p>
+<h2 id="定义基类和派生类"><a href="#定义基类和派生类" class="headerlink" title="定义基类和派生类"></a>定义基类和派生类</h2><h3 id="定义基类"><a href="#定义基类" class="headerlink" title="定义基类"></a>定义基类</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Quote</span>() = <span class="keyword">default</span>;		<span class="comment">//关于=default请参见7.1.4节（第 237页)</span></span><br><span class="line">	<span class="built_in">Quote</span>(<span class="keyword">const</span> std::string &amp;book,<span class="keyword">double</span> sales_price) </span><br><span class="line">        : <span class="built_in">bookNo</span> (book), <span class="built_in">price</span>(sales_price)&#123; &#125;</span><br><span class="line">	<span class="function">std::string <span class="title">isbn</span> <span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo;&#125;</span><br><span class="line">	<span class="comment">//返回给定数量的书籍的销售总额</span></span><br><span class="line">	<span class="comment">//派生类负责改写并使用不同的折扣计算算法</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std::<span class="keyword">size_t</span> n)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">					</span>&#123; <span class="keyword">return</span> n * price; &#125;</span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">Quote</span> () = <span class="keyword">default</span>;	<span class="comment">//对析构函数进行动态绑定</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	std::string bookNo;				<span class="comment">//书籍的ISBN 编号</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">double</span> price = <span class="number">0.0</span>;				<span class="comment">//代表普通状态下不打折的价格</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>基类通常都应该定义一个虚析构函数,即使该函数不执行任何实际操作也是如此。</strong></p>
+<h4 id="成员函数与继承"><a href="#成员函数与继承" class="headerlink" title="成员函数与继承"></a>成员函数与继承</h4><p>派生类需要提供自己新定义覆盖从基类而来的虚函数。任何希望在派生类中改变的函数定义为virtual，而不希望改变的直接定义为函数。</p>
+<p>任何构造函数之外的非静态函数都可以是虚函数。关键字virtual只能出现在类内部的声明语句之前而不能用于类外部的函数定义。如果基类把一个函数声明成虚函数，则该函数在派生类中隐式地也是虚函数。</p>
+<h4 id="访问控制与继承"><a href="#访问控制与继承" class="headerlink" title="访问控制与继承"></a>访问控制与继承</h4><p>派生类可以继承定义在基类中的成员，但是派生类的成员函数不一定有权访问从基类继承而来的成员。和其他使用基类的代码一样，派生类能访问公有成员，而不能访问私有成员。不过在某些时候基类中还有这样一种成员，基类希望它的派生类有权访问该成员，同时禁止其他用户访问。我们用<strong>受保护的( protected）</strong>访问运算符说明这样的成员。</p>
+<h3 id="定义派生类"><a href="#定义派生类" class="headerlink" title="定义派生类"></a>定义派生类</h3><p>派生类必须使用类派生列表指出从哪继承而来。派生类必须将继承类的虚函数重新声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote &#123;		<span class="comment">//Bulk_quote继承自Quote</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Bulk_quote</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="built_in">Bulk_quote</span> (<span class="keyword">const</span> std::string&amp;,<span class="keyword">double</span>,std::<span class="keyword">size_t</span>, <span class="keyword">double</span>);</span><br><span class="line">    <span class="comment">//覆盖基类的函数版本以实现基于大量购买的折扣政策</span></span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std: :<span class="keyword">size_t</span>)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	std::<span class="keyword">size_t</span> min_qty = <span class="number">0</span>;		<span class="comment">//适用折扣政策的最低购买量</span></span><br><span class="line">	<span class="keyword">double</span> discount = <span class="number">0.0</span> ;			<span class="comment">//以小数表示的折扣额</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>再派生类中使用public继承，所以回隐式包含isbn函数</p>
+<h4 id="派生类中的虚函数"><a href="#派生类中的虚函数" class="headerlink" title="派生类中的虚函数"></a>派生类中的虚函数</h4><p>派生类可以不覆盖它继承的虚函数，但必须重新声明：如果没有覆写，其行为类似其他的普通成员。</p>
+<p>派生类可以再它覆盖的函数前使用virtual，可以在函数const关键字后添加override。</p>
+<h4 id="派生类对象及派生类向基类转换"><a href="#派生类对象及派生类向基类转换" class="headerlink" title="派生类对象及派生类向基类转换"></a>派生类对象及派生类向基类转换</h4><p>派生类大致可以认为是这样分布：</p>
+<p><img src="https://s2.loli.net/2022/02/15/wRpdlhZ4XqbNygO.png" alt="image.png"></p>
+<p>因为在派生类对象中含有与其基类对应的组成部分，所以我们能把派生类的对象当成基类对象来使用，而且我们也能将基类的指针或引用绑定到派生类对象中的基类部分上。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Quote item;				<span class="comment">//基类对象</span></span><br><span class="line">Bulk_quote bulk;		<span class="comment">//派生类对象</span></span><br><span class="line">Quote *p = &amp;item;		<span class="comment">//p指向Quote对象</span></span><br><span class="line">p = &amp;bulk ;				<span class="comment">// p指向bulk 的 Quote部分</span></span><br><span class="line">Quote &amp;r = bulk;		<span class="comment">// r绑定到bulk 的Quote部分</span></span><br></pre></td></tr></table></figure>
+
+<p>这种派生类到基类的转换回隐式的进行，所以可以将派生类的引用或指针用在基类引用或者指针上。</p>
+<h4 id="派生类构造函数"><a href="#派生类构造函数" class="headerlink" title="派生类构造函数"></a>派生类构造函数</h4><p>派生类构造函数可以调用基类的构造函数帮助建立自己的构造函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Bulk <span class="title">quote</span><span class="params">(<span class="keyword">const</span> std::string&amp; book,<span class="keyword">double</span> p,</span></span></span><br><span class="line"><span class="params"><span class="function">			std::<span class="keyword">size_t</span> qty,<span class="keyword">double</span> disc)</span>:</span></span><br><span class="line"><span class="function">			Quote(book, p), min_qty(qty), discount (disc)&#123;</span> &#125;</span><br><span class="line">		<span class="comment">//与之前一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>除非特别指出，否则派生类的所有成员都会执行默认初始化。编译器会首先初始化基类的部分，然后按顺序声明派生类的成员。</p>
+<h4 id="派生类使用基类成员"><a href="#派生类使用基类成员" class="headerlink" title="派生类使用基类成员"></a>派生类使用基类成员</h4><p>派生类可以访问基类的公有成员和受保护成员:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果达到了购买书籍的某个最低限量值，就可以享受折扣价格了</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Bulk_quote::net_price</span><span class="params">(<span class="keyword">size_t</span> cnt)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(cnt &gt;= min_qty)</span><br><span class="line">		<span class="keyword">return</span> cnt *(<span class="number">1</span> - discount) * price;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> cnt * price;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>派生类的作用域嵌套在基类的作用域之内。因此，对于派生类的一个成员来说，它使用派生类成员（例如min_qty和discount)的方式与使用基类成员（例如price）的方式没什么不同。</p>
+<p><strong>关键概念:遵循基类的接口</strong><br>必须明确一点:每个类负责定义各自的接口。要想与类的对象交互必须使用该类的接口,即使这个对象是派生类的基类部分也是如此。<br>派生类对象不能直接初始化基类的成员。尽管从语法上来说我们可以在派生类构造函数体内给它的公有或受保护的基类成员赋值，但是最好不要这么做。和使用基类的其他场合一样，派生类应该遵循基类的接口，并且通过调用基类的构造函数来初始化那些从基类中继承而来的成员。</p>
+<h4 id="继承与静态成员"><a href="#继承与静态成员" class="headerlink" title="继承与静态成员"></a>继承与静态成员</h4><p>如果基类定义了静态成员，则它在整个继承体系中只存在该成员的唯一定义。不论有几个派生，每个静态成员都只存在唯一实例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">statmem</span> <span class="params">()</span> </span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f</span> <span class="params">(<span class="keyword">const</span> Derived&amp;)</span> </span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>静态成员遵循通用的访问控制规则，如果基类中的成员是private的，则派生类无权访问它。假设某静态成员是可访问的，则我们既能通过基类使用它也能通过派生类使用它</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Derived::f</span><span class="params">(<span class="keyword">const</span> Derived &amp;derived_obj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base::<span class="built_in">statmem</span> ();		<span class="comment">//正确:Base定义了statmem</span></span><br><span class="line">	Derived::<span class="built_in">statmem</span> ();	<span class="comment">//正确:Derived继承了statmem</span></span><br><span class="line">	<span class="comment">//正确:派生类的对象能访问基类的静态成员</span></span><br><span class="line">	derived_obj.<span class="built_in">statmem</span> () ;<span class="comment">//通过Derived对象访问</span></span><br><span class="line">	<span class="built_in">statmem</span> ();				<span class="comment">//通过this对象访问</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="派生类的声明"><a href="#派生类的声明" class="headerlink" title="派生类的声明"></a>派生类的声明</h4><p>派生类声明方式和一般类一样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote;<span class="comment">//错误:派生列表不能出现在这里</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span>;</span>				<span class="comment">//正确:声明派生类的正确方式</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="被用作基类的类"><a href="#被用作基类的类" class="headerlink" title="被用作基类的类"></a>被用作基类的类</h4><p>如果想将派生类作为基类，则必须已经被定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span>;</span>				<span class="comment">//声明但未定义</span></span><br><span class="line"><span class="comment">//错误:Quote必须被定义</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote &#123; ... &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>派生类包含从基类中来的成员，为了使用它们，必须先知道它们。也表明了一个类不能派生它本身。</p>
+<p>一个类是基类，同时也可以是派生类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span><span class="comment">/* ...*/</span> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D1</span>:</span> <span class="keyword">public</span> Base &#123;<span class="comment">/* ...*/</span> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D2</span>:</span> <span class="keyword">public</span> D1 &#123;<span class="comment">/* ...*/</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在这个继承关系中，Base是D1的**直接基类( direct base)<strong>，同时是D2的</strong>间接基类( indirectbase)**。直接基类出现在派生列表中，而间接基类由派生类通过其直接基类继承而来。</p>
+<p>每个类都会继承直接基类的所有成员。对于一个最终的派生类来说，它会继承其直接基类的成员;该直接基类的成员又含有其基类的成员;依此类推直至继承链的顶端。</p>
+<h4 id="防止继承的发生"><a href="#防止继承的发生" class="headerlink" title="防止继承的发生"></a>防止继承的发生</h4><p>类名后加上final可防止类被继承：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NoDerived</span> <span class="keyword">final</span> &#123;</span> <span class="comment">/** / &#125;;			//NoDerived不能作为基类</span></span><br><span class="line"><span class="comment">class Base &#123;/* */</span> &#125;;	</span><br><span class="line"><span class="comment">// Last是final的;我们不能继承</span></span><br><span class="line">Lastclass Last <span class="keyword">final</span> : Base &#123;<span class="comment">/**/</span> &#125;;		<span class="comment">// Last不能作为基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bad</span> :</span> NoDerived&#123;<span class="comment">/**/</span>&#125;;				<span class="comment">//错误:NoDerived是final的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bad2</span> :</span> Last &#123;<span class="comment">/* */</span> &#125;;					<span class="comment">//错误: Last是final的</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="类型转换与继承"><a href="#类型转换与继承" class="headerlink" title="类型转换与继承"></a>类型转换与继承</h3><p>在继承关系的类中，基类的指针和引用可以绑定到派生类对象上，所以使用基类指针或者引用时，并不清楚绑定对象的真实类型。</p>
+<p><strong>和内置指针一样,智能指针类也支持派生类向基类的类型转换,这意味着我们可以将一个派生类对象的指针存储在一个基类的智能指针内。</strong></p>
+<h4 id="静态类型与动态类型"><a href="#静态类型与动态类型" class="headerlink" title="静态类型与动态类型"></a>静态类型与动态类型</h4><p>在继承关系中必须区分两种类型，表达式的静态类型在编译时总是已知的，它是变量声明时的类型或表达式生成的类型，动态类型则是变量或表达式表示的内存中的对象的类型。动态类型直到运行时才可知。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当print_total调用net_price 时(参见15.1节，第527页):</span></span><br><span class="line"><span class="keyword">double</span> ret = item.<span class="built_in">net_price</span> (n) ;</span><br></pre></td></tr></table></figure>
+
+<p>item在前面时用Quote&amp;去定义的，那么Quote&amp;就是item的静态类型，动态类型知道在运行时调用该函数才会知道。如果传递一个Bulk_quote对象给print_total，则item的动态类型于静态类型不一致。只有引用和指针动态和静态类型才会不一致。</p>
+<h4 id="不存在基类想派生类的隐式类型转换"><a href="#不存在基类想派生类的隐式类型转换" class="headerlink" title="不存在基类想派生类的隐式类型转换"></a>不存在基类想派生类的隐式类型转换</h4><p>派生类可以向基类转换是因为每一个派生类对象都包含一个基类的部分。所以一个基类对象既可以独立存在可以作为派生类的一部分存在。但任何派生类对象都不可以向基类隐式的转换，包括引用和指针。</p>
+<p><strong>总结</strong>：要想理解在具有继承关系的类之间发生的类型转换，有三点非常重要</p>
+<ul>
+<li>从派生类向基类的类型转换只对指针或引用类型有效。</li>
+<li>基类向派生类不存在隐式类型转换。</li>
+<li>和任何其他成员一样,派生类向基类的类型转换也可能会由于访问受限而变得不可行。我们将在15.5节（第544页)详细介绍可访问性的问题。</li>
+</ul>
+<p>尽管自动类型转换只对指针或引用类型有效，但是继承体系中的大多数类仍然(显式或隐式地)定义了拷贝控制成员。因此，我们通常能够将一个派生类对象拷贝、移动或赋值给一个基类对象。不过需要注意的是，这种操作只处理派生类对象的基类部分。</p>
+<h2 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h2><p>在我们使用基类的引用或指针调用虚函数时会执行动态绑定。因为知道运行时才知道调用了哪个版本，所以所有的虚函数都必须有定义，不论它是否被用到。</p>
+<h4 id="对虚函数的调用可能在运行时才被解析"><a href="#对虚函数的调用可能在运行时才被解析" class="headerlink" title="对虚函数的调用可能在运行时才被解析"></a>对虚函数的调用可能在运行时才被解析</h4><p>虚函数执行哪个版本完全依赖于运行时绑定到其对象的实际动态类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Quote <span class="title">base</span><span class="params">(<span class="string">&quot;0-201-82470-1&quot;</span>, <span class="number">50</span>)</span></span>;</span><br><span class="line"><span class="built_in">print_total</span>(cout, base, <span class="number">10</span>);			<span class="comment">//调用Quote::net price</span></span><br><span class="line"><span class="function">Bulk_quote <span class="title">derived</span><span class="params">(<span class="string">&quot;0-201-82470-1&quot;</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">.19</span>)</span></span>;</span><br><span class="line"><span class="built_in">print_total</span>(cout, derived, <span class="number">10</span>);			<span class="comment">//调用Bulk_quote::net_price</span></span><br></pre></td></tr></table></figure>
+
+<p>依据调用对象的不同，会调用两种不同的函数。此外动态绑定也只有当通过指针或引用调用虚函数才会发生：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">base = derived;			<span class="comment">//把derived的Quote部分拷贝给base</span></span><br><span class="line">base.<span class="built_in">net_price</span> (<span class="number">20</span>);	<span class="comment">//调用Quote::net price</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>关键概念:C++的多态性</strong><br>OOP的核心思想是多态性（polymorphism)。多态性这个词源自希腊语，其含义是“多种形式”。我们把具有继承关系的多个类型称为多态类型,因为我们能使用这些类型的“多种形式”而无须在意它们的差异。<strong>引用或指针的静态类型与动态类型不同</strong>这一事实正是C++语言支持多态性的根本所在。</p>
+<p>当我们使用基类的引用或指针调用基类中定义的一个函数时,我们并不知道该函数真正作用的对象是什么类型，因为它可能是一个基类的对象也可能是一个派生类的对象。如果该函数是虚函数，则直到运行时才会决定到底执行哪个版本,判断的依据是引用或指针所绑定的对象的真实类型。</p>
+<p>另一方面,对非虚函数的调用在编译时进行绑定。类似的,通过对象进行的函数(虚函数或非虚函数）调用也在编译时绑定。对象的类型是确定不变的，我们无论如何都不可能令对象的动态类型与静态类型不一致。因此,通过对象进行的函数调用将在编译时绑定到该对象所属类中的函数版本上。</p>
+<p><strong>当且仅当对通过指针或引用调用虚函数时，才会在运行时解析该调用，也只有在这种情况下对象的动态类型才有可能与静态类型不同。</strong></p>
+<h4 id="派生类中的虚函数-1"><a href="#派生类中的虚函数-1" class="headerlink" title="派生类中的虚函数"></a>派生类中的虚函数</h4><p>当我们在派生类中可以再一次使用virtual关键字指出函数的性质。一个派生类的函数如果覆盖了某个继承而来的虚函数，则它的形参、返回类型必须与被覆盖的基类函数完全一致。有一个例外是当类的虚函数返回类型是类本身的指针和引用时，规则无效：也就是说，如果D由B派生得到，则基类的虚函数可以返回B<code>*</code>而派生类的对应函数可以返回D<code>*</code>，只不过这样的返回类型要求从D到B的类型转换是可访问的。</p>
+<h4 id="final和override"><a href="#final和override" class="headerlink" title="final和override"></a>final和override</h4><p>我们使用override来覆盖继承而来的虚函数，但该函数并没有覆盖已存在的虚函数，此时编译器将会报错：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">B</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f1</span> <span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f2</span> <span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f3</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D1</span> :</span> B &#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;		<span class="comment">//正确:f1与基类中的f1匹配</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">override</span></span>;				<span class="comment">//错误:B没有形如2 (int)的函数</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f3</span><span class="params">()</span> <span class="keyword">override</span></span>;					<span class="comment">//错误:f3不是虚函数</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f4</span><span class="params">()</span> <span class="keyword">override</span></span>;					<span class="comment">//错误:B没有名为f4的函数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们还能把某个函数指定为final，如果我们已经把函数定义成final了，则之后任何尝试覆盖该函数的操作都将引发错误:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D2</span> :</span> B &#123;</span><br><span class="line">	<span class="comment">//从B继承f2()和f3 ()，覆盖f1 (int)</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span> <span class="keyword">final</span></span>;<span class="comment">//不允许后续的其他类覆盖f1(int)</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">D3</span> :</span> D2 &#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">// 正确:覆盖从间接基类B继承而来的f2</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//错误:D2已经将f2声明成final</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>final和 override说明符出现在形参列表(包括任何const或引用修饰符）以及尾置返回类型之后。</strong></p>
+<h4 id="虚函数与默认实参"><a href="#虚函数与默认实参" class="headerlink" title="虚函数与默认实参"></a>虚函数与默认实参</h4><p>虚函数可以有默认实参，如果某次函数调用使用默认实参，则实参值由静态类型决定：</p>
+<p>换句话说，如果我们通过基类的引用或指针调用函数，则使用基类中定义的默认实参，即使实际运行的是派生类中的函数版本也是如此。此时，传入派生类函数的将是基类函数定义的默认实参。</p>
+<p><strong>如果虚函数使用默认实参，则基类和派生类中定义的默认实参最好一致。</strong></p>
+<h4 id="回避虚函数的机制"><a href="#回避虚函数的机制" class="headerlink" title="回避虚函数的机制"></a>回避虚函数的机制</h4><p>如果希望虚函数调用不要进行动态绑定，而是强迫其执行某个版本，可以使用作用域运算符：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//强行调用基类中定义的函数版本而不管baseP的动态类型到底是什么</span></span><br><span class="line"><span class="keyword">double</span> undiscounted = baseP-&gt;Quote::<span class="built_in">net_price</span>(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此代码在编译时就可以完成解析</p>
+<p><em>通常情况下,只有成员函数(或友元）中的代码才需要使用作用域运算符来回避虚函数的机制。</em></p>
+<p><em>如果一个派生类虚函数需要调用它的基类版本，但是没有使用作用域运算符,则在运行时该调用将被解析为对派生类版本自身的调用,从而导致无限递归</em></p>
+<h2 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h2><p>我们可以将一个函数定义为纯虚函数，这样做的目的时为了告诉用户，当前此函数没有任何意义，所以它无需定义，通过在函数体位置添加=0就可以声明一个纯虚函数，它只能出现在类内部虚函数声明语句处：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用于保存折扣值和购买量的类，派生类使用这些数据可以实现不同的价格策略</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Disc_quote</span> :</span> <span class="keyword">public</span> Quote &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Disc_quote</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="built_in">Disc_quote</span>(<span class="keyword">const</span> std : : string &amp; book, <span class="keyword">double</span> price,</span><br><span class="line">		std : : <span class="keyword">size_t</span> qty, <span class="keyword">double</span> disc) :</span><br><span class="line">		<span class="built_in">Quote</span>(book, price),</span><br><span class="line">		<span class="built_in">quantity</span>(qty), <span class="built_in">discount</span>(disc) &#123; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std : : <span class="keyword">size_t</span>)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	std : : <span class="keyword">size_t</span> quantity = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//折扣适用的购买量</span></span><br><span class="line">	<span class="keyword">double</span> discount - <span class="number">0.0</span>;</span><br><span class="line">	<span class="comment">//表示折扣的小数值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以为纯虚函数提供定义，不过函数体必须定义在类的外部。也就是说，我们不能在类的内部为一个=0的函数提供函数体。</p>
+<h4 id="含有纯虚函数的类是抽象基类"><a href="#含有纯虚函数的类是抽象基类" class="headerlink" title="含有纯虚函数的类是抽象基类"></a>含有纯虚函数的类是抽象基类</h4><p>含有纯虚函数的类是<strong>抽象基类</strong>，这种类只负责定义接口，后续的其他类可以覆盖接口，我们不可以直接创建一个抽象基类的对象，因为此时的其中的纯虚函数并没有被定义，我们可以在派生类中覆盖此函数，然后就可以创建派生类的对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Disc_quote声明了纯虚函数，而Bulk_quote将覆盖该函数</span></span><br><span class="line">Disc_quote discounted;		<span class="comment">//错误:不能定义 Disc quote的对象</span></span><br><span class="line">Bulk_quote bulk;			<span class="comment">//正确:Bulk quote中没有纯虚函数</span></span><br></pre></td></tr></table></figure>
+
+<p>如果不给出纯虚函数的定义，它任然是抽象基类。</p>
+<h4 id="派生类构造函数只初始化它的直接基类"><a href="#派生类构造函数只初始化它的直接基类" class="headerlink" title="派生类构造函数只初始化它的直接基类"></a>派生类构造函数只初始化它的直接基类</h4><p>重新实现Bulk_quote，让它继承Disc_quote：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//当同一书籍的销售量超过某个值时启用折扣</span></span><br><span class="line"><span class="comment">//折扣的值是一个小于1的正的小数值，以此来降低正常销售价格</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Disc_quote &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Bulk_quote</span>() = <span class="keyword">default</span>;</span><br><span class="line">		<span class="built_in">Bulk_quote</span>(<span class="keyword">const</span> std : : string &amp; book, <span class="keyword">double</span> price,</span><br><span class="line">			std : : <span class="keyword">size_t</span> qty, <span class="keyword">double</span> disc) :</span><br><span class="line">		<span class="built_in">Disc_quote</span>(book, price, qty, disc) &#123; &#125;;<span class="comment">//覆盖基类中的函数版本以实现一种新的折扣策略</span></span><br><span class="line">		<span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std : : <span class="keyword">size_t</span>)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个版本的 Bulk_quote 的直接基类是 Disc_quote，间接基类是 Quote。每个Bulk quote对象包含三个子对象:一个(空的)Bulk_quote部分、一个 Disc_quote子对象和一个Quote子对象。</p>
+<p>每个类各自控制其对象的初始化过程。因此，即使Bulk_quote没有自己的数据成员，也必须提供构造函数，在构造函数中调用直接基类的构造函数，进而继续调用间接基类 的构造函数。</p>
+<p><strong>关键概念:重构</strong><br>在Quote的继承体系中增加Disc_quote类是重构(refactoring)的一个典型示例。</p>
+<p>重构负责重新设计类的体系以便将操作和/或数据从一个类移动到另一个类中。对于面向对象的应用程序来说,重构是一种很普遍的现象。</p>
+<p>值得注意的是，即使我们改变了整个继承体系，那些使用了Bulk_quote或Quote的代码也无须进行任何改动。不过一旦类被重构(或以其他方式被改变)，就意味着我们必须重新编译含有这些类的代码了。</p>
+<h2 id="访问控制与继承-1"><a href="#访问控制与继承-1" class="headerlink" title="访问控制与继承"></a>访问控制与继承</h2><p>每个类分别控制自己的成员初始化过程，与之类似，每个类还分别控制着其成员对于派生类来说是否<strong>可访问</strong>（ accessible)。</p>
+<h4 id="受保护的成员"><a href="#受保护的成员" class="headerlink" title="受保护的成员"></a>受保护的成员</h4><p>如前所述，一个类使用protected关键字来声明那些它希望与派生类分享但是不想被其他公共访问使用的成员。protected说明符可以看做是 public和 private 中和后的产物:</p>
+<ul>
+<li>和私有成员类似，受保护的成员对于类的用户来说是不可访问的。</li>
+<li>和公有成员类似，受保护的成员对于派生类的成员和友元来说是可访问的。</li>
+<li>派生类的成员或友元只能通过派生类对象来访问基类的受保护成员。派生类对于一个基类对象中的受保护成员没有任何访问特权。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">int</span> prot_mem;						<span class="comment">// protected成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sneaky</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">	<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky&amp;)</span></span>;		<span class="comment">//能访问Sneaky: :prot_mem</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base&amp;)</span></span>;			<span class="comment">//不能访问Base: :prot_mem</span></span><br><span class="line">	<span class="keyword">int</span> j;								<span class="comment">// j默认是private</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//正确:clobber能访问Sneaky对象的private和protected成员</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Sneaky &amp;s)</span> </span>&#123; s.j = s.prot_mem = <span class="number">0</span>; &#125;</span><br><span class="line"><span class="comment">//错误:clobber不能访问Base的protected成员</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clobber</span><span class="params">(Base&amp; b)</span> </span>&#123; b.prot_mem = <span class="number">0</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>例子中派生类成员函数使用基类对象访问受保护的成员是不可行的。</p>
+<h4 id="公有、私有、受保护继承"><a href="#公有、私有、受保护继承" class="headerlink" title="公有、私有、受保护继承"></a>公有、私有、受保护继承</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pub_mem</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">// public成员</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">int</span> prot_mem;</span><br><span class="line">	<span class="comment">// protected成员</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">char</span> priv_mem;</span><br><span class="line">	<span class="comment">// private成员</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Pub_Derv</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">	<span class="comment">// 正确:派生类能访问protected成员int f() &#123; return prot_mem; &#125;</span></span><br><span class="line">	<span class="comment">//错误:private成员对于派生类来说是不可访问的char g() &#123; return priv_mem;&#125;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Priv_Derv</span> :</span> <span class="keyword">private</span> Base &#123;</span><br><span class="line">	<span class="comment">// 依旧不能访问</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">f1</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> prot_mem; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>派生访问说明符对派生类的成员（及友元）能否访问直接基类成员没有影响。访问权限只与基类中的访问说明符有关。派生类只能访问直接基类的受保护的与共有的成员。</p>
+<p>派生访问说明符的目的是控制派生类用户(包括派生类的派生类在内）对于基类成员的访问权限，概括来说：</p>
+<ul>
+<li>如果是共有继承，那么继承而来的成员访问等级不变。</li>
+<li>受保护继承，继承而来的访问等级上升一级，public变为protect。</li>
+<li>私有继承，所有继承成员访问等级上升到最高，及全部为private</li>
+</ul>
+<h4 id="派生类向基类转换的可访问性"><a href="#派生类向基类转换的可访问性" class="headerlink" title="派生类向基类转换的可访问性"></a>派生类向基类转换的可访问性</h4><p>派生类向基类的转换（参见15.2.2 节，第530页)是否可访问由使用该转换的代码决定，同时派生类的派生访问说明符也会有影响。假定D继承自B:</p>
+<ul>
+<li>只有当D 公有地继承B时，用户代码才能使用派生类向基类的转换;如果D继承B的方式是受保护的或者私有的，则用户代码不能使用该转换。</li>
+<li>不论D以什么方式继承B，D的成员函数和友元都能使用派生类向基类的转换;派生类向其直接基类的类型转换对于派生类的成员和友元来说永远是可访问的。</li>
+<li>如果D继承B的方式是公有的或者受保护的，则D的派生类的成员和友元可以使用D向B的类型转换;反之，如果D继承B的方式是私有的，则不能使用。</li>
+</ul>
+<p><strong>对于代码中的某个给定节点来说，如果基类的公有成员是可访问的，则派生类向基类的类型转换也是可访问的;反之则不行。</strong></p>
+<p><strong>关键概念:类的设计与受保护的成员</strong><br>不考虑继承的话,我们可以认为一个类有两种不同的用户:普通用户和类的实现者。</p>
+<p>其中，普通用户编写的代码使用类的对象，这部分代码只能访问类的公有(接口)成员；实现者则负责编写类的成员和友元的代码，成员和友元既能访问类的公有部分，也能访问类的私有(实现)部分。</p>
+<p>如果进一步考虑继承的话就会出现第三种用户，即派生类。基类把它希望派生类能够使用的部分声明成受保护的。普通用户不能访问受保护的成员，而派生类及其友元仍旧不能访问私有成员。</p>
+<p>和其他类一样，基类应该将其接口成员声明为公有的；同时将属于其实现的部分分成两组：一组可供派生类访问，另一组只能由基类及基类的友元访问。对于前者应该声明为受保护的，这样派生类就能在实现自己的功能时使用基类的这些操作和数据;对于后者应该声明为私有的。</p>
+<h4 id="友元与继承"><a href="#友元与继承" class="headerlink" title="友元与继承"></a>友元与继承</h4><p>就像友元关系不能传递一样，友元关系同样也不能继承。基类的友元在访问派生类成员时不具有特殊性，类似的，派生类的友元也不能随意访问基类的成员:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">	<span class="comment">//添加friend声明，其他成员与之前的版本一致</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Pal</span>;</span>			<span class="comment">// Pal在访问Base的派生类时不具有特殊性</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pal</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(Base b)</span> </span>&#123; <span class="keyword">return</span> b.prot_mem; &#125; 		<span class="comment">//正确: Pal是 Base的友元</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">f2</span><span class="params">(Sneaky s)</span> </span>&#123; <span class="keyword">return</span> s.j; &#125;			<span class="comment">//错误: Pal不是Sneaky的友元</span></span><br><span class="line">    <span class="comment">//对基类的访问权限由基类本身控制，即使对于派生类的基类部分也是如此</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">f3</span><span class="params">(Sneaky s)</span> </span>&#123; <span class="keyword">return</span> s.prot_mem; &#125;		<span class="comment">//正确: Pal是Base的友元</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>在f2中j是Sneaky成员而不是Base成员，由于pal只是Base的友元所以不能访问其派生类成员。而f3访问的是Sneaky中的Base成员所以可以访问。</p>
+<p>当一个类将另一个类声明为友元时，这种友元关系只对做出声明的类有效。对于原来那个类来说，其友元的基类或者派生类不具有特殊的访问能力:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// D2对Base 的 protected和private成员不具有特殊的访问能力class D2 : public Pal &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">mem</span><span class="params">(Base b)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> b.prot_mem;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//错误:友元关系不能继承</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="改变个别成员的可访问性"><a href="#改变个别成员的可访问性" class="headerlink" title="改变个别成员的可访问性"></a>改变个别成员的可访问性</h4><p>使用using声明可以改变和继承某个名字的访问级别</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	std : : <span class="function"><span class="keyword">size_t</span> <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> n; &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	std : : <span class="keyword">size_t</span> n;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">private</span> Base &#123;</span><br><span class="line">	<span class="comment">//注意:private继承</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//保持对象尺寸相关的成员的访问级别</span></span><br><span class="line">    <span class="keyword">using</span> Base : : size;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">using</span> Base : : n;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>using使得不论如何继承而来的成员在保持using前一个访问说明符的访问等级，如size是public，n是protect。但是派生的类只能为可以访问的名字提供using声明</p>
+<h4 id="默认的继承保护级别"><a href="#默认的继承保护级别" class="headerlink" title="默认的继承保护级别"></a>默认的继承保护级别</h4><p>默认情况下class定义派生类是私有继承，而struct是共有继承。但更建议显示的声明出来。</p>
+<h2 id="继承中的类作用域"><a href="#继承中的类作用域" class="headerlink" title="继承中的类作用域"></a>继承中的类作用域</h2><p><strong>派生类的作用域嵌套在基类内</strong>，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Bulk_quote bulk;</span><br><span class="line">cout &lt;&lt;bulk.<span class="built_in">isbn</span> () ;</span><br></pre></td></tr></table></figure>
+
+<p>名字isbn的解析将按照下述过程所示:</p>
+<ul>
+<li>因为我们是通过Bulk_quote的对象调用isbn的，所以首先在Bulk_quote中查找，这一步没有找到名字isbn</li>
+<li>因为Bulk quote是 Disc quote 的派生类，所以接下来在 Disc_quote 中查找，仍然找不到。</li>
+<li>因为 Disc_quote是 Quote的派生类，所以接着查找Quote;此时找到了名字isbn，所以我们使用的isbn最终被解析为Quote中的isbn。</li>
+</ul>
+<h4 id="编译时进行名字查找"><a href="#编译时进行名字查找" class="headerlink" title="编译时进行名字查找"></a>编译时进行名字查找</h4><p>一个对象、引用或指针的静态类型决定了该对象的哪些成员是可见的。即使静态类型与动态类型可能不一致(当使用基类的引用或指针时会发生这种情况)，但是我们能使用哪些成员仍然是由静态类型决定的。</p>
+<p>这是因为当使用基类指针时，可使用的成员已经确定，如果使用它绑定一个派生类对象，且派生类对象又新增了几个成员，此时对于这个指针来说，它并不知道这些多出来的成员，自然也无法使用它们。</p>
+<h4 id="名字冲突与继承"><a href="#名字冲突与继承" class="headerlink" title="名字冲突与继承"></a>名字冲突与继承</h4><p>如果派生类中定义了其基类同名的成员，那么此成员将会隐藏基类中的同名成员，就像局部变量被优先使用。主要还是因为派生类的作用域嵌套在基类内。</p>
+<h4 id="通过作用域运算符使用隐藏成员"><a href="#通过作用域运算符使用隐藏成员" class="headerlink" title="通过作用域运算符使用隐藏成员"></a>通过作用域运算符使用隐藏成员</h4><p>通过在同名成员前加上作用域就可以调用它：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base &#123;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">get_base_mem</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Base : :mem;&#125; <span class="comment">//...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>建议还是不要同名。</p>
+<p>*<em>关键概念:名字查找与继承</em><br>理解函数调用的解析过程对于理解C++的继承至关重要,假定我们调用p-&gt;mem ()（或者obj .mem())，则依次执行以下4个步骤:</p>
+<ul>
+<li>首先确定p(或obj)的静态类型。因为我们调用的是一个成员,所以该类型必然是类类型。</li>
+<li>在p(或obj)的静态类型对应的类中查找mem。如果找不到，则依次在直接基类中不断查找直至到达继承链的顶端。如果找遍了该类及其基类仍然找不到,则编译器将报错。</li>
+<li>一旦找到了mem,就进行常规的类型检查(参见6.1节,第183页)以确认对于当前找到的 mem，本次调用是否合法。</li>
+<li>假设调用合法,则编译器将根据调用的是否是虚函数而产生不同的代码:<ul>
+<li>如果 mem是虚函数且我们是通过引用或指针进行的调用,则编译器产生的代码将在运行时确定到底运行该虚函数的哪个版本，依据是对象的动态类型。</li>
+<li>反之，如果mem不是虚函数或者我们是通过对象(而非引用或指针)进行的调用,则编译器将产生一个常规函数调用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="一如既往，名字查找先于类型检查"><a href="#一如既往，名字查找先于类型检查" class="headerlink" title="一如既往，名字查找先于类型检查"></a>一如既往，名字查找先于类型检查</h4><p>如前所述，声明在内层作用域的函数并不会重载声明在外层作用域的函数。因此，定义派生类中的函数也不会重载其基类中的成员。和其他作用域一样，如果派生类(即内层作用域）的成员与基类（即外层作用域)的某个成员同名，则派生类将在其作用域内隐藏该基类成员。即使派生类成员和基类成员的形参列表不一致。</p>
+<h4 id="虚函数与作用域"><a href="#虚函数与作用域" class="headerlink" title="虚函数与作用域"></a>虚函数与作用域</h4><p>现在可以理解为什么基类与派生类的虚函数必须有相同的形参列表了，如果不相同就会隐藏同名成员，而不是覆写。不然就无法通过基类引用或指针访问派生类的对象了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">fcn</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D1</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//隐藏基类的fcn，这个fcn不是虚函数</span></span><br><span class="line">    <span class="comment">// D1继承了Base : :fcn ()的定义</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">fcn</span><span class="params">(<span class="keyword">int</span>)</span></span>;			<span class="comment">//形参列表与Base 中的fcn不一致</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span></span>;		<span class="comment">//是一个新的虚函数，在 Base中不存在</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D2</span> :</span> <span class="keyword">public</span> D1 &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">fcn</span><span class="params">(<span class="keyword">int</span>)</span></span>;	<span class="comment">//是一个非虚函数，隐藏了D1 : : fcn (int)</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">fcn</span><span class="params">()</span></span>;		<span class="comment">//覆盖了Base的虚函数fcn</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span></span>;		<span class="comment">//覆盖了D1的虚函数f2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过基类调用隐藏的虚函数"><a href="#通过基类调用隐藏的虚函数" class="headerlink" title="通过基类调用隐藏的虚函数"></a>通过基类调用隐藏的虚函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Base bobj; D1 d1obj; D2 d2obj;</span><br><span class="line">Base* bp1l = &amp;bobj, * bp2 = &amp;dlobj, * bp3 = &amp;d2obj; </span><br><span class="line">bp1-&gt;<span class="built_in">fcn</span>();			<span class="comment">//虚调用，将在运行时调用 Base : : fcn</span></span><br><span class="line">bp2-&gt;<span class="built_in">fcn</span>();			<span class="comment">//虚调用,将在运行时调用 Base : : fcn</span></span><br><span class="line">bp3-&gt;<span class="built_in">fcn</span>();			<span class="comment">//虚调用,将在运行时调用D2 : :fcn</span></span><br><span class="line">D1* dlp = &amp;dlobj; D2* d2p = &amp;d2obj;</span><br><span class="line">bp2-&gt;<span class="built_in">f2</span>();			<span class="comment">//错误:Base没有名为f2的成员</span></span><br><span class="line">dlp-&gt;<span class="built_in">f2</span>();			<span class="comment">//虚调用，将在运行时调用D1 : :f2()</span></span><br><span class="line">d2p-&gt;<span class="built_in">f2</span>();			<span class="comment">// 虚调用，将在运行时调用D2: : f2()</span></span><br></pre></td></tr></table></figure>
+
+<p>对于调用非虚函数，并不会发生动态绑定，由指针的类型决定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Base *pl = &amp;d2obj; D1 *p2 = &amp;d2obj; D2 *p3 = &amp;d2obj;</span><br><span class="line">p1-&gt;<span class="built_in">fcn</span> (<span class="number">42</span>);			<span class="comment">//错误:Base中没有接受一个int的fcn</span></span><br><span class="line">p2-&gt;<span class="built_in">fcn</span> (<span class="number">42</span>);			<span class="comment">//静态绑定，调用D1 : :fcn(int)</span></span><br><span class="line">p3-&gt;<span class="built_in">fcn</span> ( <span class="number">42</span>);			<span class="comment">//静态绑定，调用D2 : :fcn (int)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="覆盖重载函数"><a href="#覆盖重载函数" class="headerlink" title="覆盖重载函数"></a>覆盖重载函数</h4><p>和其他函数一样，成员函数无论是否是虚函数都能被重载。派生类可以覆盖重载函数的0个或多个实例。如果派生类希望所有的重载版本对于它来说都是可见的，那么它就需要覆盖所有的版本，或者一个也不覆盖。</p>
+<p>有时一个类仅需覆盖重载集合中的一些而非全部函数，此时，如果我们不得不覆盖基类中的每一个版本的话，显然操作将极其烦琐。</p>
+<p>一种好的解决方案是为重载的成员提供一条using声明语句（参见15.5节，第546页)，这样我们就无须覆盖基类中的每一个重载版本了。using声明语句指定一个名字而不指定形参列表，所以一条基类成员函数的using声明语句就可以把该函数的所有重载实例添加到派生类作用域中。此时，派生类只需要定义其特有的函数就可以了，而无须为继承而来的其他函数重新定义。</p>
+<h2 id="构造函数与拷贝控制"><a href="#构造函数与拷贝控制" class="headerlink" title="构造函数与拷贝控制"></a>构造函数与拷贝控制</h2><h3 id="虚析构函数"><a href="#虚析构函数" class="headerlink" title="虚析构函数"></a>虚析构函数</h3><p>继承关系对基类拷贝控制最直接的影响是基类通常应该定义一个虚析构函数（参见15.2.1节，第528页)，这样我们就能动态分配继承体系中的对象了。</p>
+<p>当delete一个动态分配的对象的指针时执行析构函数，但如果指针指向了其“子孙”，则有可能出现指针静态类型与被删除对象的动态类型不符。所以必须在基类中将析构函数定义为析构函数保证函数的执行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//如果我们删除的是一个指向派生类对象的基类指针，则需要虚析构函数</span></span><br><span class="line">	<span class="keyword">virtual</span> ~<span class="built_in">Quote</span>() = <span class="keyword">default</span>;		<span class="comment">// 动态绑定析构函数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果基类的析构函数不是虚函数,则delete一个指向派生类对象的基类指针将产生未定义的行为。</strong></p>
+<p>在之前的准则中：如果一个类需要一个析构函数，那么它同样也需要拷贝和赋值操作。但基类的析构是一个重要的例外。它的虚函数并没有内容所以可以没有其他操作。</p>
+<h4 id="虚析构函数阻止合成移动"><a href="#虚析构函数阻止合成移动" class="headerlink" title="虚析构函数阻止合成移动"></a>虚析构函数阻止合成移动</h4><p>基类需要一个虚析构函数这一事实还会对基类和派生类的定义产生另外一个间接的影响:如果一个类定义了析构函数，即使它通过=default的形式使用了合成的版本，编译器也不会为这个类合成移动操作。</p>
+<h3 id="合成拷贝控制与继承"><a href="#合成拷贝控制与继承" class="headerlink" title="合成拷贝控制与继承"></a>合成拷贝控制与继承</h3><p>这里的合成的拷贝，赋值或析构与普通类似，</p>
+<p>基类或派生类的合成拷贝控制成员的行为与其他合成的构造函数、赋值运算符或析构<br>函数类似:它们对类本身的成贝依城优对一个对象的直接基类部分进行初始化、赋值或销成员还负责使用直接基类中对应的操作对一个对象的直接基类部分进行初始化、赋值或销毁的操作。例如，</p>
+<ul>
+<li>合成的Bulk quote默认构造函数运行Disc_quote 的默认构造函数，后者又运行Quote的默认构造函数。</li>
+<li>Quote 的默认构造函数将bookNo成员默认初始化为空字符串，同时使用类内初始值将price初始化为0。</li>
+<li>Quote的构造函数完成后，继续执行Disc_quote的构造函数，它使用类内初始值初始化 qty和discount。</li>
+<li>Disc_quote的构造函数完成后，继续执行Bulk_quote的构造函数，但是它什么具体工作也不做。</li>
+</ul>
+<p>拷贝构造也是类似，此外基类成员是合成或自定义都没有影响，但唯一的要求是成员应该可以访问比关切不是被删除的。</p>
+<p>如前所述，Quote因为定义了析构函数而不能拥有合成的移动操作，因此当我们移动Quote对象时实际使用的是合成的拷贝操作。如我们即将看到的那样，Quote没有移动操作意味着它的派生类也没有。</p>
+<h4 id="派生类中删除的拷贝控制与基类的关系"><a href="#派生类中删除的拷贝控制与基类的关系" class="headerlink" title="派生类中删除的拷贝控制与基类的关系"></a>派生类中删除的拷贝控制与基类的关系</h4><ul>
+<li>如果基类中基础操作（构造、拷贝。。。）是删除的函数或不可访问，那么派生类对应的成员也是被删除的，因为派生类不能通过这些基类成员来为基类执行这些操作。</li>
+<li>如果在基类中有一个不可访问或删除掉的析构函数，则派生类中合成的默认和拷贝构造函数将是被删除的，因为编译器无法销毁派生类对象的基类部分。</li>
+<li>和过去一样，编译器将不会合成一个删除掉的移动操作。当我们使用=default请求一个移动操作时，如果基类中的对应操作是删除的或不可访问的，那么派生类中该函数将是被删除的，原因是派生类对象的基类部分不可移动。同样，如果基类的析构函数是删除的或不可访问的，则派生类的移动构造函数也将是被删除的。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">B</span>();</span><br><span class="line">	<span class="built_in">B</span>(<span class="keyword">const</span> B&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">	<span class="comment">//其他成员，不含有移动构造函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span> :</span> <span class="keyword">public</span> B &#123;</span><br><span class="line">	<span class="comment">//没有声明任何构造函数</span></span><br><span class="line">&#125;;</span><br><span class="line">D d;					<span class="comment">//正确:D的合成默认构造函数使用B的默认构造函数</span></span><br><span class="line"><span class="function">D <span class="title">d2</span><span class="params">(d)</span></span>;				<span class="comment">//错误:D的合成拷贝构造函数是被删除的</span></span><br><span class="line"><span class="function">D <span class="title">d3</span><span class="params">(std: : move(d))</span></span>;	<span class="comment">//错误:隐式地使用D的被删除的拷贝构造函数</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="移动操作与继承"><a href="#移动操作与继承" class="headerlink" title="移动操作与继承"></a>移动操作与继承</h4><p>如前所述，大多数基类都会定义一个虚析构函数。因此在默认情况下，基类通常不含有合成的移动操作，而且在它的派生类中也没有合成的移动操作。</p>
+<p>因为基类缺少移动操作会阻止派生类拥有自己的合成移动操作，所以当我们确实需要执行移动操作时应该首先在基类中进行定义。我们的Quote可以使用合成的版本，不过前提是Quote必须显式地定义这些成员。一旦 Quote定义了自己的移动操作，那么它必须同时显式地定义铂贝操作（参见13.6.2节，第476页):</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Quote</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="comment">//对成员依次进行默认初始化</span></span><br><span class="line">	<span class="built_in">Quote</span>(<span class="keyword">const</span> Quote&amp;) = <span class="keyword">default</span>;</span><br><span class="line">	<span class="comment">//对成员依次拷贝</span></span><br><span class="line">	<span class="built_in">Quote</span>(Quote&amp;&amp;) = <span class="keyword">default</span>;</span><br><span class="line">	<span class="comment">//对成员依次拷贝</span></span><br><span class="line">	Quote&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Quote&amp;) = <span class="keyword">default</span>;<span class="comment">//拷贝赋值</span></span><br><span class="line">	Quote&amp; <span class="keyword">operator</span>=(Quote&amp;&amp;) = <span class="keyword">default</span>;<span class="comment">//移动赋值virtual ~Quote() = default;</span></span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="派生类的拷贝控制成员"><a href="#派生类的拷贝控制成员" class="headerlink" title="派生类的拷贝控制成员"></a>派生类的拷贝控制成员</h3><p>派生类的拷贝和移动构造函数不仅仅要负责自己的成员初始化还有基类成员。而析构函数只负责销毁派生类自己分配的资源</p>
+<p><strong>当派生类定义了拷贝或移动操作时,该操作负责铂贝或移动包括基类部分成员在内的整个对象。</strong></p>
+<h4 id="定义派生类的拷贝或移动构造函数"><a href="#定义派生类的拷贝或移动构造函数" class="headerlink" title="定义派生类的拷贝或移动构造函数"></a>定义派生类的拷贝或移动构造函数</h4><p>派生类拷贝或移动构造通常是应用对应的基类构造来初始化对象的基类部分：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span><span class="comment">/* ...*/</span> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//默认情况下，基类的默认构造函数初始化对象的基类部分</span></span><br><span class="line">	<span class="comment">//要想使用拷贝或移动构造函数，我们必须在构造函数初始值列表中</span></span><br><span class="line">    <span class="comment">//显式地调用该构造函数</span></span><br><span class="line">	<span class="built_in">D</span>(<span class="keyword">const</span> D&amp; d) : <span class="built_in">Base</span>(d)</span><br><span class="line">		<span class="comment">//拷贝基类成员</span></span><br><span class="line">		<span class="comment">/* D的成员的初始值*/</span> &#123;<span class="comment">/* ...*/</span>	&#125;</span><br><span class="line">    <span class="built_in">D</span>(D&amp;&amp; d) : <span class="built_in">Base</span>(std : : <span class="built_in">move</span>(d))<span class="comment">//移动基类成员</span></span><br><span class="line">		<span class="comment">/* D的成员的初始值*/</span> &#123;<span class="comment">/* ... */</span>&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将D类型的对象d传递给基类的拷贝构造函数。这个构造负责将d的基类部分拷贝给要创建的对象。如果d并没有基类初始值，则默认初始化。</p>
+<p><strong>在默认情况下,基类默认构造函数初始化派生类对象的基类部分。如果我们想拷贝（或移动)基类部分，则必须在派生类的构造函数初始值列表中显式地使用基类的拷贝(或移动)构造函数。</strong></p>
+<h4 id="派生类赋值运算符"><a href="#派生类赋值运算符" class="headerlink" title="派生类赋值运算符"></a>派生类赋值运算符</h4><p>派生类的赋值运算符也必须显示地为其基类部分赋值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Base: : operator=(const Base&amp;)不会被自动调用</span></span><br><span class="line">D D: :<span class="keyword">operator</span>=(<span class="keyword">const</span> D &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">	Base: :<span class="keyword">operator</span>=(rhs); <span class="comment">//为基类部分赋值</span></span><br><span class="line">    <span class="comment">//按照过去的方式为派生类的成员赋值</span></span><br><span class="line">	<span class="comment">//酌情处理自赋值及释放已有资源等情况return *this;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用基类的赋值操作无论基类的构造函数或赋值运算符是合成还是自定义，派生类的对应操作都能够使用它们。</p>
+<h4 id="派生类析构函数"><a href="#派生类析构函数" class="headerlink" title="派生类析构函数"></a>派生类析构函数</h4><p>派生类析构函数只负责销毁由派生类自己分配的资源:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span> :</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//Base : : ~Base被自动调用执行</span></span><br><span class="line">	~<span class="built_in">D</span>() &#123;<span class="comment">/*该处由用户定义清除派生类成员的操作*/</span> &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对象销毁的顺序与创建的顺序相反。从子孙到祖先。</p>
+<h4 id="在构造和析构函数中调用虚函数"><a href="#在构造和析构函数中调用虚函数" class="headerlink" title="在构造和析构函数中调用虚函数"></a>在构造和析构函数中调用虚函数</h4><h3 id="继承的构造函数"><a href="#继承的构造函数" class="headerlink" title="继承的构造函数"></a>继承的构造函数</h3><p>一个类只能初始化的直接基类，一个类也只能继承其直接类的构造函数。类不能默认继承默认的拷贝和移动构造函数。如果派生类没有直接定义这些构造函数，则编译器会为派生类合成。</p>
+<p>派生类继承基类构造函数的方式是提供一条注明了（直接）基类名的using声明语句。举个例子，我们可以重新定义Bulk_quote类，令其继承Disc_quote类的构造函数:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Disc_quote &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">using</span> Disc_quote : : Disc_quote;<span class="comment">//继承Disc_quote的构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">net_price</span><span class="params">(std: :<span class="keyword">size_t</span>)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>通常情况下，using声明语句只是令某个名字在当前作用域内可见。而当作用于构造函数时，using声明语句将令编译器产生代码。对于基类的每个构造函数，编译器都生成一个与之对应的派生类构造函数。换句话说，对于基类的每个构造函数，编译器都在派生类中生成一个形参列表完全相同的构造函数。</p>
+<p>生成的构造函数为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">derived</span> (parms) : <span class="built_in">base</span> (args)&#123; &#125;</span><br><span class="line"><span class="comment">//在我们的 Bulk_quote类中，继承的构造函数等价于:</span></span><br><span class="line"><span class="function">Bulk <span class="title">quote</span><span class="params">(<span class="keyword">const</span> std : : string &amp; book, <span class="keyword">double</span> price,</span></span></span><br><span class="line"><span class="params"><span class="function">	std : : <span class="keyword">size_t</span> qty, <span class="keyword">double</span> disc)</span> :</span></span><br><span class="line"><span class="function">	Disc quote(book, price, qty, disc) &#123;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>derived是派生类的名字，base是基类的名字，parms是构造函数的形参列表，args将派生类构造函数的形参传递给基类的构造函数。</p>
+<h4 id="继承的构造函数的特点"><a href="#继承的构造函数的特点" class="headerlink" title="继承的构造函数的特点"></a>继承的构造函数的特点</h4><p>和普通using不一样的是，构造函数的using声明不会改变构造函数的访问级别，且using声明也不能指定exlicit或者constexpr。继承的构造函数会具有相同的属性。</p>
+<p>当基类的构造函数含有默认的实参时，这些实参并不会被继承，相反的是，派生类会获得多个继承的构造函数，每个构造函数分别省略掉由默认实参的形参。</p>
+<h2 id="容器与继承"><a href="#容器与继承" class="headerlink" title="容器与继承"></a>容器与继承</h2><p><strong>当派生类对象被赋值给基类对象时，其中的派生类部分将被“切掉”,因此容器和存在继承关系的类型无法兼容。</strong></p>
+<h4 id="在容器中放置智能指针而非对象"><a href="#在容器中放置智能指针而非对象" class="headerlink" title="在容器中放置智能指针而非对象"></a>在容器中放置智能指针而非对象</h4><p>容器中防止继承关系的对象时，通常存放的是基类的指针（智能指针更好）。</p>
+<h3 id="编写Basket类"><a href="#编写Basket类" class="headerlink" title="编写Basket类"></a>编写Basket类</h3><p>我们定义一个表示购物篮的类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Basket</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//Basket使用合成的默认构造函数和拷贝控制成员</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">add_item</span><span class="params">(<span class="keyword">const</span> std : : shared_ptr&lt;Quote&gt;&amp; sale)</span> </span>&#123; items.<span class="built_in">insert</span>(sale); &#125;</span><br><span class="line">	<span class="comment">//打印每本书的总价和购物篮中所有书的总价</span></span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">total_receipt</span><span class="params">(std : : ostream&amp;)</span><span class="keyword">const</span></span>; </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//该函数用于比较shared_ptr，multiset成员会用到它</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> std : : shared_ptr&lt;Quote&gt;&amp; lhs,</span></span></span><br><span class="line"><span class="params"><span class="function">		<span class="keyword">const</span> std : : shared_ptr&lt;Quote&gt;&amp; rhs)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs-&gt;<span class="built_in">isbn</span>() &lt; rhs-&gt;<span class="built_in">isbn</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//multiset保存多个报价，按照compare成员排序</span></span><br><span class="line">	std::multiset&lt;std::shared ptr&lt;Quote&gt;, <span class="keyword">decltype</span> (compare)*&gt; items&#123; compare &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们的类使用一个multiset（参见11.2.1节，第377页)来存放交易信息，这样我们就能保存同一本书的多条交易记录，而且对于一本给定的书籍，它的所有交易信息都保存在一起（参见11.2.2节，第 378页)。</p>
+<p>这个声明看起来不太容易理解，但是从左向右读的话，我们就能明白它其实是定义了一个指向Quote对象的shared ptr的multiset。这个multiset将使用一个与compare成员类型相同的函数来对其中的元素进行排序。multiset成员的名字是 items，我们初始化items并令其使用我们的compare函数。</p>
+<h4 id="定义Basket的成员"><a href="#定义Basket的成员" class="headerlink" title="定义Basket的成员"></a>定义Basket的成员</h4><p>这个成员的名字是total_receipt，它负责将购物篮的内容逐项打印成清单，然后返回购物篮中所有物品的总价格</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> Basket : : <span class="built_in">total_receipt</span>(ostream&amp; os) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">double</span> sum = <span class="number">0.0</span>;		<span class="comment">//保存实时计算出的总价格</span></span><br><span class="line">	<span class="comment">// iter指向ISBN相同的一批元素中的第一个</span></span><br><span class="line">	<span class="comment">// upper_bound返回一个迭代器，该迭代器指向这批元素的尾后位置</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> iter = items.<span class="built_in">cbegin</span>();</span><br><span class="line">			iter != items.<span class="built_in">cend</span>();</span><br><span class="line">			iter = items.<span class="built_in">upper_bound</span>(*iter))&#123;</span><br><span class="line">		<span class="comment">//我们知道在当前的Basket中至少有一个该关键字的元素</span></span><br><span class="line">        <span class="comment">//打印该书籍对应的项目</span></span><br><span class="line">		sum += <span class="built_in">print_total</span>(os, **iter, items.<span class="built_in">count</span>(*iter));</span><br><span class="line">	&#125;</span><br><span class="line">	os &lt;&lt; <span class="string">&quot;Total sale: &quot;</span> &lt;&lt; sum &lt;&lt; endl; <span class="comment">//打印最终的总价格</span></span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的for循环中upper函数会跳过相同的书直接指到下一种书。此外在print_total函数中，第二个参数第一次解引用得到一个指向该对象的指针指针，再一次解引用才能得到这个Quto对象（或派生对象）。使用multiset统计有多少个相同元素。</p>
+<h4 id="隐藏指针"><a href="#隐藏指针" class="headerlink" title="隐藏指针"></a>隐藏指针</h4><p>接下的需要定义add_item成员，先看使用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Basket bsk;</span><br><span class="line">bsk.<span class="built_in">add_item</span> (make_shared&lt;Quote&gt; ( <span class="string">&quot;123&quot;</span>,<span class="number">45</span>));</span><br><span class="line">bsk,<span class="built_in">add_item</span> (make_shared&lt;Bulk_quote&gt; (<span class="string">&quot;345&quot;</span>，<span class="number">45</span>，<span class="number">3</span>，<span class="number">.15</span>));</span><br></pre></td></tr></table></figure>
+
+<p>下一步重新定义add_item使它接受一个Quote对象而非shared_ptr，新版本的add_item将负责内存的分配。定义两个版本，一个拷贝它给定的对象，另一个采取移动操作。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_item</span> <span class="params">(<span class="keyword">const</span> Quote&amp; sale)</span> </span>;			<span class="comment">//拷贝给定的对象</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_item</span> <span class="params">(Quote&amp;&amp; sale)</span> </span>;				<span class="comment">//移动给定的对象</span></span><br></pre></td></tr></table></figure>
+
+<p>此时遇到的问题是，函数不知道分配的类型，若<code>new Quote(sale)</code>，则可能不正确，传入其派生类的对象时，会被切掉一部分。</p>
+<h4 id="模拟虚拷贝"><a href="#模拟虚拷贝" class="headerlink" title="模拟虚拷贝"></a>模拟虚拷贝</h4><p>我们给Quote添加一个虚函数，函数申请一份当前对象的拷贝。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Quote</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//该虚函数返回当前对象的一份动态分配的拷贝</span></span><br><span class="line">	<span class="comment">//这些成员使用的引用限定符参见13.6.3节（第483页)</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Quote* <span class="title">clone</span> <span class="params">()</span> <span class="keyword">const</span> &amp; </span>&#123;<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Quote</span> (*<span class="keyword">this</span>);&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> Quote* <span class="title">clone</span><span class="params">()</span> &amp;&amp;</span></span><br><span class="line"><span class="function">							</span>&#123; <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Quote</span>(std : : <span class="built_in">move</span> (*<span class="keyword">this</span>)); &#125;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span> :</span> <span class="keyword">public</span> Quote &#123;</span><br><span class="line">	<span class="function">Bulk_quote* <span class="title">clone</span> <span class="params">()</span> <span class="keyword">const</span> &amp; <span class="params">(<span class="keyword">return</span> <span class="keyword">new</span> Bulk_quote (*<span class="keyword">this</span>); &#125;</span></span></span><br><span class="line"><span class="params"><span class="function">    Bulk_quote* clone () &amp;&amp;</span></span></span><br><span class="line"><span class="params"><span class="function">						&#123;<span class="keyword">return</span> <span class="keyword">new</span> Bulk_quote (std: : move ( *<span class="keyword">this</span>)) ;&#125;</span></span></span><br><span class="line"><span class="params"><span class="function">	<span class="comment">//其他成员与之前的版本一致</span></span></span></span><br><span class="line"><span class="params"><span class="function">&#125;;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>因为我们拥有add_item的拷贝和移动版本，所以我们分别定义clone的左值和右值版本。</p>
+<p>使用clone写出新版的add_item:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Basket</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">add_item</span><span class="params">(<span class="keyword">const</span> Quote&amp; sale)</span>	<span class="comment">//拷贝给定的对象</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		items.<span class="built_in">insert</span>(std: :shared_ptr&lt;Quote&gt;(sale.<span class="built_in">clone</span>()));</span><br><span class="line">	&#125;<span class="function"><span class="keyword">void</span> <span class="title">add_item</span><span class="params">(Quote&amp;&amp; sale)</span>		<span class="comment">//移动给定的对象</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		items.<span class="built_in">insert</span>(</span><br><span class="line">			std: :shared_ptr&lt;Quote&gt;(std: :<span class="built_in">move</span>(sale).<span class="built_in">clone</span>()));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>clone根据作用与左值右值分不同的版本，add_item也有调用不同版本的重载。Sale的动态类型决定了运行Quote还是Bulk_quote函数。然后为这个对象绑定智能指针放在容器内。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" class="post-title-link" itemprop="url">C++ Primer文本查询程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-07T00:00:00+08:00">2022-02-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-19 12:24:45" itemprop="dateModified" datetime="2022-02-19T12:24:45+08:00">2022-02-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/07/C++%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​        此为C++ Primer中第十二章中的一个文本查询程序，我想通过自己的分析来更加透彻的理解整个程序的设计，于是将此节单独作为一章重点去看：</p>
+<h1 id="文本查询程序"><a href="#文本查询程序" class="headerlink" title="文本查询程序"></a>文本查询程序</h1><h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><ul>
+<li>当程序读取输入文件时，它必须记住单词出现的每一行。因此，程序需要逐行读取输入文件，并将每一行分解为独立的单词</li>
+<li>当程序生成输出时，<ul>
+<li>它必须能提取每个单词所关联的行号</li>
+<li>行号必须按升序出现且无重复</li>
+<li>它必须能打印给定行号中的文本。</li>
+</ul>
+</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>当输入element时，得到的是：</p>
+<p><img src="https://s2.loli.net/2022/02/07/7ANskrKFnG3qV1o.png" alt="image.png"></p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>​        首先看这里我认为最重要一个对应关系，单词→行号。每一个单词都有n行与之对应，那么容易想到的方法是用容器将每个单词的行号记录下来，由于每个行号只出现一次且需要升序排列，所以最优解就是使用set容器，接着如何实现通过行号找到那一行文字呢？我们可以想到使用<code>vector&lt;string&gt;</code>按行号保存文本。此外使用一个map可以将单词与它对应的set容器绑定起来，就可以实现，单词对应行号，行号对应文本。</p>
+<p>​        还有一个问题是：如何建立起这个map和set，我们定义一个函数，命名为istringstream，思路大致是从vector<string>读取每个元素（每行文本），访问每个单词前首先判断map中没有这个单词，如果有：就将对应的set中加入这一次遍历的下标（即行号），如果没有：就创建一个set，并将单词与set加入map中。</p>
+<h3 id="大致的类"><a href="#大致的类" class="headerlink" title="大致的类"></a>大致的类</h3><p>​        我们需要将这些结构与操作串联起来，从定义一个保存输入文件的类开始，将类命名为TextQuery，它包含一个vector和一个map。我们用这个类来构造vector和map，并且执行查询操作。</p>
+<p>​        之后如果我们查到了到底要返回什么呢？返回那么一大串的东西最好的方法就是定义另一个类，这个类内应该有一个打印操作。我们将它命名为QueryResult。</p>
+<h3 id="类之间的数据共享"><a href="#类之间的数据共享" class="headerlink" title="类之间的数据共享"></a>类之间的数据共享</h3><p>​        再仔细看一下这个QueryResult类，由于我们必须要返回文本，所以要用到提到过的保存整个文本的vector，然而它是第一类的成员，我们拷贝一份貌似没有必要，因为我们只需要调用其中很小的一部分，这样会造成大量的浪费，那么使用一个类内的迭代器（或指针）可以嘛？答案也是不行，因为如果第一个类在第二个类之前销毁，那么打印操作就会访问一个不存在的对象中的数据。最好的办法就是使用我们“最牛逼”的shared_ptr来反映数据结构中的共享关系。</p>
+<h3 id="设计类之前先使用类"><a href="#设计类之前先使用类" class="headerlink" title="设计类之前先使用类"></a>设计类之前先使用类</h3><p>​        当我们设计一个类时，在真正实现成员之前先编写程序使用这个类，是一种非常有用的方法。通过这种方法，可以看到类是否具有我们所需要的操作。例如，下面的程序使用了TextQuery和 QueryResult类。这个函数接受一个指向要处理的文件的ifstream，并与用户交互，打印给定单词的查询结果</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">runQueries</span><span class="params">(ifstream &amp;infile)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//infile是一个ifstream，指向我们要处理的文件</span></span><br><span class="line">	<span class="function">TextQuery <span class="title">tq</span><span class="params">(infile)</span></span>; 	<span class="comment">//保存文件并建立查询map</span></span><br><span class="line">	<span class="comment">//与用户交互:提示用户输入要查询的单词，完成查询并打印结果</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;enter word to look for, or q to quit: &quot;</span>;</span><br><span class="line">		string s;</span><br><span class="line">		<span class="comment">//若遇到文件尾或用户输入了&#x27;q&#x27;时循环终止</span></span><br><span class="line">		<span class="keyword">if</span>(!(cin &gt;&gt; s) || s == <span class="string">&quot;q&quot;</span>) <span class="keyword">break</span>;</span><br><span class="line">		<span class="comment">//指向查询并打印结果</span></span><br><span class="line">		<span class="built_in">print</span>(cout, tq.<span class="built_in">query</span>(s)) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="类的定义"><a href="#类的定义" class="headerlink" title="类的定义"></a>类的定义</h2><h3 id="TextQuery框架"><a href="#TextQuery框架" class="headerlink" title="TextQuery框架"></a>TextQuery框架</h3><p>​        首先是TextQuery，用用户提供的一个istream读取文件，类中应该还有query操作，接受string，返回QueryResult表示string出现的行。我们创建一个头文件命名为textquery，在其中输入：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEXTQUERY_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEXTQUERY_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::shared_ptr;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryResult</span>;</span><span class="comment">// 为了定义函数query的返回类型，这个定义是必需的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TextQuery</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//简化行下标</span></span><br><span class="line">	<span class="keyword">using</span> line_no = vector&lt;string&gt;::size_type;</span><br><span class="line">	<span class="comment">//通过用户提供的文本的构造函数</span></span><br><span class="line">	<span class="built_in">TextQuery</span>(std::ifstream&amp;);</span><br><span class="line">	<span class="comment">//返回查询结果的函数，由于只是查询所以应该加上const</span></span><br><span class="line">	<span class="function">QueryResult <span class="title">query</span><span class="params">(<span class="keyword">const</span> string&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//输入的文件</span></span><br><span class="line">	shared_ptr&lt;vector&lt;string&gt;&gt; file;</span><br><span class="line">	<span class="comment">//每个单词到它所在的行号的集合的映射</span></span><br><span class="line">	std::map&lt;string, shared_ptr&lt;std::set&lt;line_no&gt;&gt;&gt; wm;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​        至于这里为什么出现这么多的std，而不是直接引入整个命名空间：在头文件这样做是非常危险的，由于C++头文件通常与源文件分开存放，对于不知道这个头文件里有什么的用户来说，使用这个头文件就有可能会导致很多的命名冲突。这里建议在任何文件中都不要这样做。</p>
+<h3 id="QueryResult框架"><a href="#QueryResult框架" class="headerlink" title="QueryResult框架"></a>QueryResult框架</h3><p>​        QueryResult类有三个数据成员：一个string，保存查询单词：一个shared_ptr，指向保存输入文件的vector；一个shared ptr，指向保存单词出现行号的set。它唯一的一个成员函数是一个构造函数，初始化这三个数据成员。在刚才的类之后，紧接着写入以下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QueryResult</span> &#123;</span></span><br><span class="line">    <span class="comment">//将ostream声明为友元函数，之后用来打印结果</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> std::ostream&amp; <span class="title">print</span><span class="params">(std::ostream&amp;, <span class="keyword">const</span> QueryResult&amp;)</span></span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//构造函数</span></span><br><span class="line">	<span class="built_in">QueryResult</span>(string s,</span><br><span class="line">		shared_ptr&lt;set&lt;TextQuery::line_no&gt;&gt; p,</span><br><span class="line">		shared_ptr&lt;vector&lt;string&gt;&gt; f) :</span><br><span class="line">		<span class="built_in">sought</span>(s), <span class="built_in">lines</span>(p), <span class="built_in">file</span>(f) &#123;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// 查询单词</span></span><br><span class="line">	string sought; 							</span><br><span class="line">    <span class="comment">//出现的行号</span></span><br><span class="line">	shared_ptr&lt;set&lt;TextQuery::line_no&gt;&gt; lines;</span><br><span class="line">    <span class="comment">//输入文件</span></span><br><span class="line">	shared_ptr&lt;vector&lt;string&gt;&gt; file;		 </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里为什么不在TextQuery类之前那里写呢？因为这个类中我们用到了TextQuery中的line_no，这两个类其实是你中有我，我中有你的关系，所以我们在开头需要一个声明，在之后去定义他。</p>
+<h2 id="类的实现"><a href="#类的实现" class="headerlink" title="类的实现"></a>类的实现</h2><h3 id="TextQuery构造函数"><a href="#TextQuery构造函数" class="headerlink" title="TextQuery构造函数"></a>TextQuery构造函数</h3><p>接下来是类的实现，我们创建一个源文件，取名为textquery.cpp，首先是构造函数，直接写入代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取输入文件并建立单词到行号的映射</span></span><br><span class="line">TextQuery::<span class="built_in">TextQuery</span>(std::ifstream&amp; is) : <span class="built_in">file</span>(<span class="keyword">new</span> vector&lt;string&gt;)</span><br><span class="line">&#123;</span><br><span class="line">	string text;</span><br><span class="line">	<span class="comment">//对文件中每一行</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">getline</span>(is, text)) &#123;</span><br><span class="line">		<span class="comment">//保存此行文本</span></span><br><span class="line">		file-&gt;<span class="built_in">push_back</span>(text);</span><br><span class="line">		<span class="comment">//当前行号</span></span><br><span class="line">		<span class="keyword">int</span> n = file-&gt;<span class="built_in">size</span>() - <span class="number">1</span>;</span><br><span class="line">		<span class="comment">//将行文本分解为单词</span></span><br><span class="line">		<span class="function">std::istringstream <span class="title">line</span><span class="params">(text)</span></span>;</span><br><span class="line">		string word;</span><br><span class="line">		<span class="comment">//对行中每个单词</span></span><br><span class="line">		<span class="keyword">while</span> (line &gt;&gt; word) &#123;</span><br><span class="line">			<span class="comment">//如果单词不在 wm 中，以之为下标在wm中添加一项</span></span><br><span class="line">			<span class="comment">// lines是一个shared_ptr</span></span><br><span class="line">			<span class="keyword">auto</span>&amp; lines = wm[word];</span><br><span class="line">			<span class="keyword">if</span> (!lines)</span><br><span class="line">				<span class="comment">//分配一个新的set</span></span><br><span class="line">				lines.<span class="built_in">reset</span>(<span class="keyword">new</span> set&lt;line_no&gt;);</span><br><span class="line">			lines-&gt;<span class="built_in">insert</span>(n);<span class="comment">//将此行号插入set中</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看到在函数体之前就已经为file分配了动态内存，同时由于file是指针类型这里需要使用-&gt;来使用push函数，之后使用istringstream处理当前这一行的字符，按空格存入word内，在第二个while循环中，首先定义lines获取在map中的这个单词的set容器，注意这里line是一个只能指针类型，由于有可能是第一次录入改单词，则需要对line进行判断，若不存在则需要新分配一个set，这里同样需要动态的分配内存。最后不论一定要将则一行的行号传入这个set容器中。</p>
+<h3 id="query函数"><a href="#query函数" class="headerlink" title="query函数"></a>query函数</h3><p>它接受一个string参数，用它在map中对应行号，如果找到就构造一个QueryResult返回。这里有一个问题是如果没有找到返回什么呢？我们可以定义一个局部的static对象，它指向空的行号set的shared_ptr，没有找到就返回它：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QueryResult <span class="title">TextQuery::query</span><span class="params">(<span class="keyword">const</span> string&amp; sought)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">	<span class="comment">//如果未找到sought，我们将返回一个指向此set的指针</span></span><br><span class="line">	<span class="keyword">static</span> shared_ptr&lt;set&lt;line_no&gt;&gt; <span class="built_in">nodata</span>(<span class="keyword">new</span> set&lt;line_no&gt;);</span><br><span class="line">	<span class="comment">//使用find而不是下标运算符来查找单词，避免将单词添加到wm中!</span></span><br><span class="line">	<span class="keyword">auto</span> loc = wm.<span class="built_in">find</span>(sought);</span><br><span class="line">	<span class="keyword">if</span> (loc == wm.<span class="built_in">end</span>())</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">QueryResult</span>(sought, nodata, file);<span class="comment">//未找到</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">QueryResult</span>(sought, loc-&gt;second, file);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="print函数"><a href="#print函数" class="headerlink" title="print函数"></a>print函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果ctr的值大于1，返回word的复数形式</span></span><br><span class="line"><span class="function">string <span class="title">make_plural</span><span class="params">(<span class="keyword">size_t</span> ctr, <span class="keyword">const</span> string &amp;word, <span class="keyword">const</span> string &amp;ending)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (ctr &gt; <span class="number">1</span>) ? word + ending : word;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">std::ostream&amp; <span class="title">print</span><span class="params">(std::ostream&amp; os, <span class="keyword">const</span> QueryResult&amp; qr)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//如果找到了单词，打印出现次数和所有出现的位置</span></span><br><span class="line">	os &lt;&lt; qr.sought &lt;&lt; <span class="string">&quot; occurs &quot;</span> &lt;&lt; qr.lines-&gt;<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot; &quot;</span></span><br><span class="line">		&lt;&lt; <span class="built_in">make_plural</span>(qr.lines-&gt;<span class="built_in">size</span>(), <span class="string">&quot;time&quot;</span>, <span class="string">&quot;s&quot;</span>) &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> num : *qr.lines)</span><br><span class="line">		<span class="comment">//避免行号从0开始给用户带来的困惑</span></span><br><span class="line">		os &lt;&lt; <span class="string">&quot;\t (line &quot;</span> &lt;&lt; num + <span class="number">1</span> &lt;&lt; <span class="string">&quot;)&quot;</span></span><br><span class="line">		<span class="comment">//使用标准库:文本查询程序</span></span><br><span class="line">		&lt;&lt; *(qr.file-&gt;<span class="built_in">begin</span>() + num) &lt;&lt; std::endl;</span><br><span class="line">	<span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="文本查询程序2-0"><a href="#文本查询程序2-0" class="headerlink" title="文本查询程序2.0"></a>文本查询程序2.0</h1><p>利用C++继承与多态的性质改进该类， 以实现更多功能。</p>
+<h2 id="新的需求"><a href="#新的需求" class="headerlink" title="新的需求"></a>新的需求</h2><ul>
+<li><p>单词查询，用于得到匹配某个给定string的所有行:</p>
+<p>Executing Query for: Daddy<br>Daddy occurs 3 times<br>(line 2) Her Daddy says when the wind blows<br>(line 7) “Daddy , shush, there is no such thing , “<br>(line 10) shyly, she asks,”I mean,Daddy ,is there?”</p>
+</li>
+<li><p>逻辑非查询，使用~运算符得到不匹配查询条件的所有行:</p>
+<p>Executing Query for: ~(Alice)<br>~(Alice) occurs 9 times<br>( line 2) Her Daddy says when the wind blows<br>(line 3) through her hair, it looks almost alive,( line 4) like a fiery bird in flight.</p>
+</li>
+<li><p>逻辑或查询，使用|运算符返回匹配两个条件中任意一个的行:</p>
+<p>Executing Query for: (hair l Alice)<br>(hair \ Alice) occurs 2 times<br>(line 1) Alice Emma has long flowing red hair.(line 3) through her hair, it looks almost alive,</p>
+</li>
+<li><p>逻辑与查询，使用&amp;运算符返回匹配全部两个条件的行:</p>
+<p>Executing query for: (hair &amp; Alice)<br>(hair &amp;Alice) occurs 1 time<br>(line 1)Alice Emma has long f1owing red hair.</p>
+</li>
+<li><p>此外，我们还希望能够混合使用这些运算符，比如:fiery &amp; bird l wind</p>
+<p>Executing Query for: ((fiery &amp; bird)l wind)                                                                                                                ( (fiery &amp; bird) l wind) occurs 3 times<br>(line 2) Her Daddy says when the wind blows                                                                                                        (line 4) like a fiery bird in flight.<br>(line 5) A beautiful fiery bird, he tells her ,</p>
+</li>
+</ul>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>我们可以将集中不同的查询建模成相互独立的类，它们共享一个公共基类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wordQuery		<span class="comment">// Daddy</span></span><br><span class="line">NotQuery		<span class="comment">// ~Alice</span></span><br><span class="line">orQuery			<span class="comment">// hair l Alice</span></span><br><span class="line">AndQuery		<span class="comment">// hair &amp; Alice</span></span><br></pre></td></tr></table></figure>
+
+<p>这些类将只包含两个操作:</p>
+<ul>
+<li>eval，接受一个TextQuery对象并返回一个 QueryResult，eval函数使用给定的TextQuery对象查找与之匹配的行。</li>
+<li>rep，返回基础查询的string表示形式，eval函数使用rep创建一个表示匹配结果的QueryResult，输出运算符使用rep打印查询表达式。</li>
+</ul>
+<p><strong>关键概念:继承与组合</strong></p>
+<p>继承体系的设计本身是一个非常复杂的问题,已经超出了本书的范围。然而,有一条设计准则非常重要也非常基础，每个程序员都应该熟悉它。</p>
+<p>当我们令一个类公有地继承另一个类时，派生类应当反映与基类的“是一种(IsA)”关系。在设计良好的类体系当中，公有派生类的对象应该可以用在任何需要基类对象的地方。</p>
+<p>类型之间的另一种常见关系是“有一个(Has A)”关系，具有这种关系的类暗含成员的意思。</p>
+<p>在我们的书店示例中，基类表示的是按规定价格销售的书籍的报价。Bulk_quote“是一种”报价结果，只不过它使用的价格策略不同。我们的书店类都“有一个”价格成员和ISBN成员。</p>
+<h4 id="抽象基类"><a href="#抽象基类" class="headerlink" title="抽象基类"></a>抽象基类</h4><p>由于这四种查询并不存在继承关系，从概念上来说互为熊底，它们都共享同一个接口，我们定义一个抽象基类Query_base，并把eval和rep定义为纯虚函数。</p>
+<p><img src="https://s2.loli.net/2022/02/18/WJghfcmUL6SvKPE.png" alt="image.png"></p>
+<h4 id="将层次关系隐藏于接口类中"><a href="#将层次关系隐藏于接口类中" class="headerlink" title="将层次关系隐藏于接口类中"></a>将层次关系隐藏于接口类中</h4><p>我们的程序将致力于计算查询结果，而非仅仅构建查询的体系。为了使程序能正常运行，我们必须首先创建查询命令，最简单的办法是编写C++表达式。例如，可以编写下面的代码来生成之前描述的复合查询:</p>
+<p><code>Query q = Query(&quot;fiery&quot;) &amp; Query (&quot;bird&quot;) | Query ( &quot;wind&quot; ) ;</code></p>
+<p>用户不会直接使用这些类，而是使用Query保存一个Query_base指针，用户将通过 Query 对象的操作间接地创建并处理Query _base对象。我们定义Query对象的三个重载运算符以及一个接受string参数的Query构造函数，这些函数动态分配一个新的Query base派生类的对象:</p>
+<ul>
+<li><code>&amp;</code>运算符生成一个绑定到新的AndQuery对象上的Query对象;</li>
+<li><code>|</code>运算符生成一个绑定到新的orQuery对象上的Query对象;</li>
+<li><code>~</code>运算符生成一个绑定到新的NotQuery对象上的Query对象;</li>
+<li>接受string 参数的Query构造函数生成一个新的wordQuery对象。</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/02/18/RcP7iGoENgdhuf9.png" alt="image.png"></p>
+<h2 id="Query-base类和Query类"><a href="#Query-base类和Query类" class="headerlink" title="Query_base类和Query类"></a>Query_base类和Query类</h2><p>首先定义Query_base类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这是一个抽象基类，具体的查询类型从中派生，所有成员都是private的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query_base</span> &#123;</span></span><br><span class="line"><span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">Query</span>;</span> </span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">using</span> line_no = TextQuery: :line_no; <span class="comment">//用于eval函数virtual ~Query_base() = default;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">// eval返回与当前Query 匹配的QueryResult</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> QueryResult <span class="title">eval</span><span class="params">(<span class="keyword">const</span> TextQuery&amp;)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>; </span><br><span class="line">	<span class="comment">// rep是表示查询的一个string</span></span><br><span class="line">	<span class="keyword">virtual</span> std: :<span class="function">string <span class="title">rep</span><span class="params">()</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>把所有操作都纯虚函数，因此Query_base是一个抽象基类，因为不直接使用它，所有没有public成员。</p>
+<h4 id="Query类"><a href="#Query类" class="headerlink" title="Query类"></a>Query类</h4><p>它负责提供外界的接口，并隐藏继承体系。每个Query对象都含有一个指向Query_base对象的智能指针。</p>
+<p>接受一个string参数的Query构造函数将创建一个新的wordQuery对象，然后将它的 shared_ prt成员绑定到这个新创建的对象上。&amp;、|和~运算符分别创建AndQuery、OrQuery和 NotQuery对象，这些运算符将返回一个绑定到新创建的对象上的Query对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这是一个管理Query base继承体系的接口类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span> &#123;</span></span><br><span class="line">	<span class="comment">//这些运算符需要访问接受shared _ptr的构造函数，而该函数是私有的</span></span><br><span class="line">    <span class="keyword">friend</span> Query <span class="keyword">operator</span>~ (<span class="keyword">const</span> Query &amp;);</span><br><span class="line">	<span class="keyword">friend</span> Query <span class="keyword">operator</span>/ (<span class="keyword">const</span> Query&amp;, <span class="keyword">const</span> Query&amp;);</span><br><span class="line">	<span class="keyword">friend</span> Query <span class="keyword">operator</span>&amp; (<span class="keyword">const</span> Query&amp;, <span class="keyword">const</span> Query&amp;); </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Query</span>(<span class="keyword">const</span> std: :string&amp;);															</span><br><span class="line">	<span class="comment">//构建一个新的wordouery</span></span><br><span class="line">	<span class="comment">//接口函数:调用对应的Query base操作</span></span><br><span class="line">	<span class="function">QueryResult <span class="title">eval</span><span class="params">(<span class="keyword">const</span> TextQuery&amp; t)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> q-&gt;<span class="built_in">eval</span>(t);</span><br><span class="line">	&#125;</span><br><span class="line">	std: :<span class="function">string <span class="title">rep</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> q-&gt;<span class="built_in">rep</span>(); &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">Query</span>(std: :shared_ptr&lt;Query_base&gt; query) : <span class="built_in">q</span>(query)&#123; &#125;</span><br><span class="line">	std: :shared_ptr&lt;Query_base&gt; q;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Query-的输出运算符"><a href="#Query-的输出运算符" class="headerlink" title="Query 的输出运算符"></a>Query 的输出运算符</h3><p>输出运算符可以很好地解释我们的整个查询系统是如何工作的:std: :ostream &amp;<br>operator&lt;&lt;(std: :ostream &amp;os,const Query &amp;query)<br>/ / Query: :rep通过它的Query base指针对rep ()进行了虚调用return os&lt;&lt;query.rep (;<br>当我们打印一个 Query时，输出运算符调用Query类的公有rep成员。运算符函数通过指针成员虚调用当前Query所指对象的rep成员。也就是说，当我们编写如下代码时:<br>Query andq = Query (sought1) &amp;Query (sought2 );<br>cout &lt;&lt; andq &lt;&lt; endl;<br>输出运算符将调用andq 的 Query: :rep,而 Query: :rep通过它的Query base指针虚调用Query _base版本的rep函数。因为andq指向的是一个AndQuery对象，所以本次的函数调用将运行AndQuery: : rep。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1895,7 +2447,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-14 20:44:44" itemprop="dateModified" datetime="2021-12-14T20:44:44+08:00">2021-12-14</time>
+                <time title="修改时间：2022-04-06 21:35:59" itemprop="dateModified" datetime="2022-04-06T21:35:59+08:00">2022-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2059,437 +2611,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第六章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-18 15:24:06" itemprop="dateModified" datetime="2021-12-18T15:24:06+08:00">2021-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数基础"><a href="#函数基础" class="headerlink" title="函数基础"></a>函数基础</h2><p>包括返回类型、函数名字、0到多个形参组成的列表及函数体。</p>
-<p>调用运算符来执行函数。函数的调用完成两项工作:一是用实参初始化函数对应的形参，二是将控制权转移给被调用函数。此时，主调函数(calling function)的执行被暂时中断，被调函数（called function)开始执行。</p>
-<p><strong>形参和实参</strong></p>
-<p>形参和实参数量类型顺序必须一一对应。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/10/%E7%AC%AC%E5%85%AD%E7%AB%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2021/12/10/%E7%AC%AC%E4%B8%83%E7%AB%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/10/%E7%AC%AC%E4%B8%83%E7%AB%A0/" class="post-title-link" itemprop="url">C++ Primer 第七章</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-10 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-29 19:51:13" itemprop="dateModified" datetime="2021-12-29T19:51:13+08:00">2021-12-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/12/10/%E7%AC%AC%E4%B8%83%E7%AB%A0/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/10/%E7%AC%AC%E4%B8%83%E7%AB%A0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>​        <strong>写在前面</strong>：由于我的失误操作，导致第七章被第六章的内容覆盖，怀着悲痛的心情准备写第二遍，不过也应该可以比第一遍写的更好，在此提醒大家，不要随意切换文件并点击系统弹出来的保存，并即使做好备份。这是一个十分悲痛的教训，望大家注意。</p>
-<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><p>类的基本思想是数据<strong>抽象（data abstraction）</strong>和<strong>封装（encapsulation)<strong>。数据抽象是一种依赖于</strong>接口(interface）</strong>和**实现(implementation)**分离的编程（以及设计〉技术。类的接口包括用户所能执行的操作;类的实现则包括类的数据成员、负责接口实现的函数体以及定义类所需的各种私有函数。</p>
-<h2 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h2><h3 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h3><p>sales_data的接口应该包含以下操作:</p>
-<ul>
-<li>一个isbn 成员函数，用于返回对象的ISBN编号</li>
-<li>一个combine成员函数，用于将一个sales_data对象加到另一个对象上</li>
-<li>一个名为add 的函数，执行两个sales data对象的加法</li>
-<li>一个read函数，将数据从istream读入到sales_data对象中。</li>
-<li>一个print函数，将sales data对象的值输出到ostream</li>
-</ul>
-<h4 id="使用改进的Sales-data类"><a href="#使用改进的Sales-data类" class="headerlink" title="使用改进的Sales_data类"></a>使用改进的Sales_data类</h4><p>在考虑如何实现我们的类之前，首先来看看应该如何使用上面这些接口函数。举个例子，我们使用这些函数编写1.6节（第21页）书店程序的另外一个版本，其中不再使用sales_item对象，而是使用sales_data对象:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sales_data total ;								<span class="comment">//保存当前求和结果的变量</span></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">read</span> (cin, total))&#123;							<span class="comment">//读入第一笔交易</span></span><br><span class="line">	sales_data trans;							<span class="comment">//保存下一条交易数据的变量</span></span><br><span class="line">	<span class="keyword">while</span>(<span class="built_in">read</span> (cin,trans))&#123;					<span class="comment">//读入剩余的交易</span></span><br><span class="line">		<span class="keyword">if</span> (total .<span class="built_in">isbn</span> ( ) == trans.<span class="built_in">isbn</span> ( ))	<span class="comment">//检查 isbn</span></span><br><span class="line">			total.<span class="built_in">combine</span> (trans);				<span class="comment">//更新变量total当前的值</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">print</span> (cout, total) &lt;&lt; endl;		<span class="comment">//输出结果</span></span><br><span class="line">            total = trans;						<span class="comment">//处理下一本书</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">print</span> (cout, total) &lt;&lt; endl ;			<span class="comment">//输出最后一条交易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;											<span class="comment">//没有输入任何信息</span></span><br><span class="line">	cerr &lt;&lt;<span class="string">&quot;No data?! &quot;</span> &lt;&lt; endl ;				<span class="comment">//通知用户</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义改进的Sales-data类"><a href="#定义改进的Sales-data类" class="headerlink" title="定义改进的Sales_data类"></a>定义改进的Sales_data类</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sales_data</span> &#123;</span></span><br><span class="line">	<span class="comment">//新成员:关于sales_data对象的操作</span></span><br><span class="line">	std: :<span class="function">string <span class="title">isbn</span> <span class="params">( )</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo;&#125;</span><br><span class="line">	<span class="function">Sales_data&amp; <span class="title">combine</span> <span class="params">(<span class="keyword">const</span> sales_data&amp;)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">avg_price</span> <span class="params">( )</span> <span class="keyword">const</span></span>;</span><br><span class="line">	<span class="comment">//数据成员和2.6.1节（第64页）相比没有改变</span></span><br><span class="line">	std::string bookNo;</span><br><span class="line">	<span class="keyword">unsigned</span> units_sold = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> revenue = <span class="number">0.0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// sales_data的非成员接口函数</span></span><br><span class="line"><span class="function">sales_data <span class="title">add</span> <span class="params">(<span class="keyword">const</span> Sales_data&amp;,<span class="keyword">const</span> Sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="function">std::ostream &amp;<span class="title">print</span><span class="params">(std: :ostream&amp;,<span class="keyword">const</span> sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="function">std::istream &amp;<span class="title">read</span><span class="params">(std: :istream&amp;,Sales_data&amp;)</span> </span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="定义成员函数"><a href="#定义成员函数" class="headerlink" title="定义成员函数"></a>定义成员函数</h4><p>所有成员必须声明在类内部，但是成员函数体可以在类外定义。</p>
-<p>在isbn函数中是如何bookNo所依赖的对象的呢？</p>
-<h4 id="引入this"><a href="#引入this" class="headerlink" title="引入this"></a>引入this</h4><p>调用为：<code>total .isbn ()</code>这样的调用实际上是隐式地指向调用该函数的对象成员，这里返回的就是total.bookNo。</p>
-<p>成员函数通过一个名为<strong>this</strong>的额外的隐式参数来访问调用它的那个对象。当我们调用一个成员函数时，用请求该函数的对象地址初始化this，如</p>
-<p><code>total .isbn ()</code>则编译器负责把total的地址传递给isbn的隐式形参this，可以等价地认为编译器将该调用重写成了如下的形式:<code>//伪代码，用于说明调用成员函数的实际执行过程Sales_data : :isbn (&amp;total)</code></p>
-<h4 id="引入const成员函数"><a href="#引入const成员函数" class="headerlink" title="引入const成员函数"></a>引入const成员函数</h4><p>const修饰的成员函数，实际修饰该成员函数隐藏的this指针，表明在该成员函数中不能对类的任何成员进行修改。</p>
-<p>且const对象只能调用const函数。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Data</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Display</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Display1</span><span class="params">()</span><span class="keyword">const</span></span>&#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> Date d1;</span><br><span class="line">	d1.<span class="built_in">Display1</span>();<span class="comment">//d1为const成员，不可修改</span></span><br><span class="line">	Date d2;</span><br><span class="line">	d2.<span class="built_in">Display</span>();<span class="comment">//d1没有要求，可改可不改</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="类作用域和成员函数"><a href="#类作用域和成员函数" class="headerlink" title="类作用域和成员函数"></a>类作用域和成员函数</h4><p>类本身就是一个作用域，成员函数体可以随意使用类中的其他成员而无须在意这些成员出现的次序。</p>
-<p>因为编译器是首先编译成员的声明，其次才是成员函数体。</p>
-<h4 id="在类的外部定义成员函数"><a href="#在类的外部定义成员函数" class="headerlink" title="在类的外部定义成员函数"></a>在类的外部定义成员函数</h4><p>我们可以在类的外部定义成员函数，这样做的作用可以保持类内代码看起来更加清晰简洁。</p>
-<p>但在外部定义必须在类内提前声明，且与类外函数保持一致。不同之处在于需要加上类名：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> sales_data: :<span class="built_in">avg_price</span> () <span class="keyword">const</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (units_sold)</span><br><span class="line">		<span class="keyword">return</span> revenue/units_sold;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="定义返回this对象的函数"><a href="#定义返回this对象的函数" class="headerlink" title="定义返回this对象的函数"></a>定义返回this对象的函数</h4><p>我们可以把自己这个对象返回，如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Sales_data&amp; Sales_data : :<span class="built_in">combine</span> (<span class="keyword">const</span> Sales_data &amp;rhs)&#123;</span><br><span class="line">	units_sold += rhs.units_sold; <span class="comment">//把rhs的成员加到this对象的成员上</span></span><br><span class="line">	revenue += rhs.revenue;</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;<span class="comment">//返回调用该函数的对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个函数可以把自己一些数据和参数的数据相加，然后以引用的形式返回。</p>
-<h3 id="定义类相关的非成员函数"><a href="#定义类相关的非成员函数" class="headerlink" title="定义类相关的非成员函数"></a>定义类相关的非成员函数</h3><p>类的作者常常需要定义一些辅助函数，比如 add、read和 print等。尽管这些函数定义的操作从概念上来说属于类的接口的组成部分，但它们实际上并不属于类本身。</p>
-<h4 id="类中的输入与输出"><a href="#类中的输入与输出" class="headerlink" title="类中的输入与输出"></a>类中的输入与输出</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//输入的交易信息包括ISBN、售出总数和售出价格</span></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;is, Sales_ data &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> price = <span class="number">0</span>;</span><br><span class="line">	is &gt;&gt; item. bookNo &gt;&gt; item.units_ sold &gt;&gt; price;</span><br><span class="line">	item. revenue = price * item.units_ sold;</span><br><span class="line">	<span class="keyword">return</span> is;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span> <span class="params">(ostream &amp;os，<span class="keyword">const</span> Sales_ data &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	os &lt;&lt; item.<span class="built_in">isbn</span>() &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; item.units_ sold &lt;&lt;<span class="string">&quot; &quot;</span></span><br><span class="line">		&lt;&lt; item.revenue &lt;&lt;” ”&lt;&lt; item.<span class="function">avg_ <span class="title">price</span><span class="params">()</span> </span>;</span><br><span class="line">	<span class="keyword">return</span> OS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>read函数由于将流中数据读到给定对象，print函数将给定对象打印到流中。</p>
-<p>由于与流数据有交互，所以需要将IO类的引用作为参数。</p>
-<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><p>每个类都分别定义了它的对象被初始化的方式，类通过一个或几个特殊的成员函数来，控制其对象的初始化过程，这些函数叫做<strong>构造函数</strong>。构造函数的任务是初始化类对象的数据成员，无论何时只要类的对象被创建，就会执行构造函数。</p>
-<h4 id="合成的默认构造函数"><a href="#合成的默认构造函数" class="headerlink" title="合成的默认构造函数"></a>合成的默认构造函数</h4><p>当没有定义任何构造函数时，创建对象则会执行合成的默认的构造函数：</p>
-<p>●如果存在类内的初始值(参见2.6.1节，第64页)，用它来初始化成员。<br>●否则，默认初始化(参见2.2.1节，第40页)该成员。</p>
-<p>但合成的默认构造知识和简单的类，复杂的类容易出错，所以尽量自己去定义默认构造函数。</p>
-<h4 id="定义的构造函数"><a href="#定义的构造函数" class="headerlink" title="定义的构造函数"></a>定义的构造函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sales_</span> <span class="title">data</span> &#123;</span></span><br><span class="line">	<span class="comment">//新增的构造函数</span></span><br><span class="line">	<span class="function">Sales_ <span class="title">data</span><span class="params">()</span> </span>= <span class="keyword">default</span>;</span><br><span class="line">	<span class="function">Sales_ <span class="title">data</span><span class="params">(<span class="keyword">const</span> std: :string &amp;s)</span> : bookNo(s) &#123;</span>&#125;</span><br><span class="line">	<span class="function">Sales_ <span class="title">data</span> <span class="params">(<span class="keyword">const</span> std: :string &amp;s，<span class="keyword">unsigned</span> n, <span class="keyword">double</span> p)</span> :</span></span><br><span class="line"><span class="function">				bookNo(s)，units_ sold(n), revenue (p*n) &#123;</span> &#125;</span><br><span class="line">	<span class="function">Sales_ <span class="title">data</span><span class="params">(std: :istream &amp;)</span> </span>;</span><br><span class="line">	<span class="comment">//之前已有的其他成员</span></span><br><span class="line">	std: :<span class="function">string <span class="title">isbn</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo; &#125;</span><br><span class="line">	<span class="function">Sales_ data&amp; <span class="title">combine</span> <span class="params">(<span class="keyword">const</span> Sales_ data&amp;)</span> </span>;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> avg_ <span class="title">price</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">	std: :string bookNo;</span><br><span class="line">	<span class="keyword">unsigned</span> units_ sold = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> revenue = <span class="number">0.0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h4><p><code>Sales_ data() = default;</code>这是一个默认的构造函数，他的作用和合成的默认构造函数一样。</p>
-<p><em>上面的默认构造函数之所以对Sales data有效，是因为我们为内置类型的数据成员提供了初始值。如果你的编译器不支持类内初始值，那么你的默认构造函数就应该使用构造函数初始值列表(马上就会介绍)来初始化类的每个成员。</em></p>
-<h4 id="构造函数初始值"><a href="#构造函数初始值" class="headerlink" title="构造函数初始值"></a>构造函数初始值</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Sales_ <span class="title">data</span><span class="params">(<span class="keyword">const</span> std: :string &amp;s)</span> : bookNo(s) &#123;</span> &#125;</span><br><span class="line"><span class="function">Sales_ <span class="title">data</span> <span class="params">(<span class="keyword">const</span> std: :string &amp;s，<span class="keyword">unsigned</span> n, <span class="keyword">double</span> p)</span> :</span></span><br><span class="line"><span class="function">			bookNo(s)，units_ sold(n), revenue (p*n) &#123;</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用初始值列表为一个或几个数据成员赋值，且构造函数不应该轻易覆盖掉类内的初始值，除非新赋的值与原值不同。如果你不能使用类内初始值，则所有构造函数都应该显式地初始化每个内置类型的成员。</p>
-<h4 id="在类外定义构造函数"><a href="#在类外定义构造函数" class="headerlink" title="在类外定义构造函数"></a>在类外定义构造函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Sales_ data::Sales_ <span class="title">data</span><span class="params">(std::istream &amp;is)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">read</span>(is，*<span class="keyword">this</span>); <span class="comment">// read 函数的作用是从is中读取一条交易信息然后</span></span><br><span class="line">					 <span class="comment">//存入this对象中</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>首先它没有返回类型，且必须指定类名，由于这里的初始值列表为空，所以初始化任务交给函数体，没没有被构造函数赋值的成员将执行默认初始化。如string为空string，int为0。</p>
-<p>函数read的第二个形参为该对象的引用。</p>
-<h3 id="拷贝、赋值和析构"><a href="#拷贝、赋值和析构" class="headerlink" title="拷贝、赋值和析构"></a>拷贝、赋值和析构</h3><p>一般来说编译器会默认的合成拷贝、赋值和析构，例如赋值：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">total = trans; <span class="comment">//处理下一本书的信息.</span></span><br><span class="line"><span class="comment">// 它的行为与下面的代码相同</span></span><br><span class="line"><span class="comment">// Sales_ data的默认赋值操作等价于:</span></span><br><span class="line">total .bookNo = trans . bookNo;</span><br><span class="line">total.units_ sold = trans.units sold;</span><br><span class="line">total. revenue = trans. revenue;</span><br></pre></td></tr></table></figure>
-
-<h4 id="不可依赖合成版本"><a href="#不可依赖合成版本" class="headerlink" title="不可依赖合成版本"></a>不可依赖合成版本</h4><p>编译器默认生成的函数常常会出现一些问题，所以后面会了解到如何自定义这些函数。</p>
-<h2 id="访问控制与封装"><a href="#访问控制与封装" class="headerlink" title="访问控制与封装"></a>访问控制与封装</h2><p>可以使用访问说明符加强类的封装性：</p>
-<ul>
-<li><p>定义在public说明符之后的成员在整个程序内可被访问，public成员定义类的接口。</p>
-</li>
-<li><p>定义在private说明符之后的成员可以被类的成员函数访问，但是不能被使用该类的代码访问，private部分封装了( 即隐藏了)类的实现细节。</p>
-</li>
-</ul>
-<p>说明符数量不限，且作用域到下一个访问说明符为止。出于统一编程风格的考虑，当我们希望定义的类的所有成员是public的时，使用struct； 反之，如果希望成员是private的，使用class。</p>
-<h3 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h3><p>若要想某些函数可以访问类内私有成员，我们可以将他声明为友元，只需要增加一条以friend关键字开始的函数声明语句即可：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span> &#123;</span></span><br><span class="line"><span class="comment">//为sales_data的非成员函数所做的友元声明</span></span><br><span class="line"><span class="function"><span class="keyword">friend</span> sales_data <span class="title">add</span> <span class="params">(<span class="keyword">const</span> sales_data&amp;,<span class="keyword">const</span> sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="keyword">friend</span> std: :<span class="function">istream &amp;<span class="title">read</span><span class="params">(std: :istream&amp;，sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="keyword">friend</span> std: :<span class="function">ostream &amp;<span class="title">print</span><span class="params">(std: :ostream&amp;,<span class="keyword">const</span> sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="comment">//其他成员及访问说明符与之前一致</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">sales_data</span>() = <span class="keyword">default</span>;</span><br><span class="line">	<span class="built_in">sales_data</span> (<span class="keyword">const</span> std: :string &amp;s, <span class="keyword">unsigned</span> n,<span class="keyword">double</span> p):</span><br><span class="line">	<span class="built_in">bookNo</span> (s) , <span class="built_in">units_sold</span>(n) , <span class="built_in">revenue</span> (p*n)&#123; &#125;</span><br><span class="line">	<span class="built_in">sales_data</span> (<span class="keyword">const</span> std: :string &amp;s): <span class="built_in">bookNo</span>(s)&#123; &#125;</span><br><span class="line">	<span class="built_in">sales_data</span>(std: :istream&amp;) ;</span><br><span class="line">	std: :<span class="function">string <span class="title">isbn</span> <span class="params">( )</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> bookNo; &#125;</span><br><span class="line">	<span class="function">sales_data &amp;<span class="title">combine</span> <span class="params">(<span class="keyword">const</span> sales_data&amp;)</span> </span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	std: :string bookNo ;</span><br><span class="line">	<span class="keyword">unsigned</span> units_sold = <span class="number">0</span>;<span class="keyword">double</span> revenue = <span class="number">0.0</span>;</span><br><span class="line">&#125; ;</span><br><span class="line"><span class="comment">// sales_data接口的非成员组成部分的声明</span></span><br><span class="line"><span class="function">sales_data <span class="title">add</span> <span class="params">(<span class="keyword">const</span> sales_data&amp;, <span class="keyword">const</span> sales_data&amp;)</span></span>;</span><br><span class="line">std: :<span class="function">istream &amp;<span class="title">read</span><span class="params">(std: :istream&amp;, sales_data&amp; )</span></span>;</span><br><span class="line"><span class="function">std::ostream &amp;<span class="title">print</span><span class="params">(std: :ostream&amp;,<span class="keyword">const</span> Sales_data&amp; )</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p>友元必须在类内声明，最好写在开头和劫为的尾置。</p>
-<h4 id="封装的好处"><a href="#封装的好处" class="headerlink" title="封装的好处"></a>封装的好处</h4><ul>
-<li>确保用户代码不会无意间破坏封装对象的状态。</li>
-<li>被封装的类的具体实现细节可以随时改变，而无须调整用户级别的代码。</li>
-</ul>
-<h4 id="友元的声明"><a href="#友元的声明" class="headerlink" title="友元的声明"></a>友元的声明</h4><p>友元声明相当于给这个函数开通了权限，函数还是需要声明和定义。</p>
-<h2 id="类的其他特性"><a href="#类的其他特性" class="headerlink" title="类的其他特性"></a>类的其他特性</h2><h3 id="类成员再探"><a href="#类成员再探" class="headerlink" title="类成员再探"></a>类成员再探</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">screen</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> std: :string : :size_type pos;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	pos cursor = <span class="number">0</span>;</span><br><span class="line">	pos height = <span class="number">0</span>, width = <span class="number">0</span> ;std: : string contents ;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>定义一个窗口类，其中使用typedef来重命名，其作用等同于：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//使用类型别名等价地声明一个类型名字</span></span><br><span class="line">	<span class="keyword">using</span> pos = std::string::size_type;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Screen类成员函数"><a href="#Screen类成员函数" class="headerlink" title="Screen类成员函数"></a>Screen类成员函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">screen</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> std::string::size_type pos;</span><br><span class="line">	<span class="built_in">Screen</span>() = <span class="keyword">default</span>; <span class="comment">//因为Screen有另一个构造函数，</span></span><br><span class="line">						<span class="comment">//所以本函数是必需的</span></span><br><span class="line">	<span class="comment">//cursor被其类内初始值初始化为0</span></span><br><span class="line">	<span class="built_in">screen</span>(pos ht, pos wd,<span class="keyword">char</span> c) : <span class="built_in">height</span> (ht), <span class="built_in">width</span> (wd)，<span class="built_in">contents</span> (ht * wd, c) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">char</span> <span class="title">get</span> <span class="params">()</span> <span class="keyword">const</span>							<span class="comment">//读取光标处的字符</span></span></span><br><span class="line"><span class="function">		</span>&#123; <span class="keyword">return</span> contents [cursor] ; &#125;			<span class="comment">//隐式内联</span></span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="keyword">char</span> <span class="title">get</span> <span class="params">(pos ht, pos wd)</span><span class="keyword">const</span> </span>;		<span class="comment">//显式内联</span></span><br><span class="line">	<span class="function">screen &amp;<span class="title">move</span><span class="params">(pos r, pos c)</span></span>;					<span class="comment">//能在之后被设为内联</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	pos cursor = <span class="number">0</span>;</span><br><span class="line">	pos height = <span class="number">0</span>, width = <span class="number">0</span>;</span><br><span class="line">	std::string contents;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这里第二个构造函数只接受了三个参数，所以另一个成员采用类内初始值的方式初始化。</p>
-<h4 id="令成员作为内联函数"><a href="#令成员作为内联函数" class="headerlink" title="令成员作为内联函数"></a>令成员作为内联函数</h4><p>类内的函数是固定为内联函数的，当类外函数需要作为类内成员时，可以加上inline声明成内联函数。</p>
-<p>其可以在类内声明（不推荐，因为类内函数就是内联函数），也可以在类外声明，但最好只在类外声明。</p>
-<h4 id="重载成员函数"><a href="#重载成员函数" class="headerlink" title="重载成员函数"></a>重载成员函数</h4><p>成员函数与非成员函数都可以被重载，使用时根据参数数量来决定用哪种函数。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">screen myscreen;</span><br><span class="line"><span class="keyword">char</span> ch = myscreen. <span class="built_in">get</span> ( ) ;				<span class="comment">//调用screen : :get ()</span></span><br><span class="line">ch = myscreen.<span class="built_in">get</span> (<span class="number">0</span> , <span class="number">0</span>);					<span class="comment">//调用screen: :get (pos, pos)</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="可变数据成员"><a href="#可变数据成员" class="headerlink" title="可变数据成员"></a>可变数据成员</h4><p>如何希望一个变量无论什么情况都可以被改变。可以在变量声明时加入mutable关键字。即使他是const对象的成员，或通过const函数赋值，都可以被改变。</p>
-<h4 id="类数据成员初始值"><a href="#类数据成员初始值" class="headerlink" title="类数据成员初始值"></a>类数据成员初始值</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">window_mgr</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//这个window _mgr追踪的Screen</span></span><br><span class="line">	<span class="comment">//默认情况下，一个window_mgr包含一个标准尺寸的空白Screen</span></span><br><span class="line">	std::vector&lt;screen&gt; screens&#123; <span class="built_in">screen</span> (<span class="number">24</span>，<span class="number">80</span>, <span class="string">&#x27; &#x27;</span> )&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>当初始化类类型成员，可以使用列表初始化的方式，类内初始值必须以=或者{}表示。</p>
-<h3 id="返回-this的成员函数"><a href="#返回-this的成员函数" class="headerlink" title="返回*this的成员函数"></a>返回*this的成员函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Screen</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Screen &amp;<span class="title">set</span> <span class="params">(<span class="keyword">char</span>)</span> </span>;</span><br><span class="line">	<span class="function">Screen &amp;<span class="title">set</span> <span class="params">(pos, pos, <span class="keyword">char</span>)</span> </span>;</span><br><span class="line">	<span class="comment">//其他成员和之前的版本一致</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Screen &amp;<span class="title">Screen::set</span> <span class="params">(<span class="keyword">char</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	contents [cursor] = C;			<span class="comment">//设置当前光标所在位置的新值</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;					<span class="comment">//将this对象作为左值返回</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Screen &amp;<span class="title">Screen::set</span><span class="params">(pos r, pos col, <span class="keyword">char</span> ch)</span></span>&#123;</span><br><span class="line">	contents[r*width + col] = ch;	<span class="comment">//设置给定位置的新值</span></span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;					<span class="comment">//将this对象作为左值返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>set函数返回值是调用set的对象的引用，可以作为左值：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把光标移动到一个指定的位置，然后设置该位置的字符值</span></span><br><span class="line">myscreen.<span class="built_in">move</span> ( <span class="number">4</span>,<span class="number">0</span> ) .<span class="built_in">set</span> (<span class="string">&#x27;#’);</span></span><br><span class="line"><span class="string">//上述语句等价于</span></span><br><span class="line"><span class="string">myScreen.move ( 4,0);</span></span><br><span class="line"><span class="string">myscreen.set(&#x27;</span>#’);</span><br></pre></td></tr></table></figure>
-
-<p>若返回值不是引用，则：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果move返回Screen而非screen&amp;</span></span><br><span class="line">screen temp = myscreen . <span class="built_in">move</span> ( <span class="number">4</span> ,o) ;			<span class="comment">//对返回值进行烤贝</span></span><br><span class="line">temp.<span class="built_in">set</span> (<span class="string">&#x27;#’);									//不会改变myscreen的 contents</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="const成员函数返回-this"><a href="#const成员函数返回-this" class="headerlink" title="const成员函数返回*this"></a>const成员函数返回*this</h4><p>若为前面的类定义一个display操作，因为打印不需要改变类中的成员，所以令display为一个const成员，所以*this是一个const对象。返回值是一个const对象的引用，所以：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">screen myScreen;</span><br><span class="line"><span class="comment">//如果display返回常量引用，则调用set将引发错误</span></span><br><span class="line">myScreen.<span class="built_in">display</span> (cout).<span class="built_in">set</span> (<span class="string">&#x27;*&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<h4 id="基于const的重载"><a href="#基于const的重载" class="headerlink" title="基于const的重载"></a>基于const的重载</h4><p>一个函数可以重载为const和非const，分别用在常量对象，和非常量对象的调用：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">screen</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//根据对象是否是const重载了display函数</span></span><br><span class="line">	<span class="function">screen &amp;<span class="title">display</span><span class="params">(std::ostream &amp;os)</span></span>&#123; <span class="built_in">do_display</span>(os) ; <span class="keyword">return</span> *<span class="keyword">this</span>; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> screen &amp;<span class="title">display</span><span class="params">(std::ostream &amp;os)</span> <span class="keyword">const</span></span>&#123; <span class="built_in">do_display</span> (os) ; <span class="keyword">return</span> *<span class="keyword">this</span>; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="comment">//该函数负责显示Screen的内容</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">do_display</span><span class="params">(std: :ostream &amp;os)</span><span class="keyword">const</span> </span>&#123;os &lt;c contents; &#125;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>其中do_display是一个公共代码，他的好处为：</p>
-<ul>
-<li>一个基本的愿望是避免在多处使用同样的代码。</li>
-<li>我们预期随着类的规模发展，display函数有可能变得更加复杂。</li>
-<li>我们很可能在开发过程中给do_display函数添加某些调试信息，而这些信息将在代码的最终产品版本中去掉。显然,只在 do_display一处添加或删除这些信息要更容易一些。</li>
-<li>这个额外的函数调用不会增加任何开销。因为我们在类内部定义了do_display,所以它隐式地被声明成内联函数。</li>
-</ul>
-<h3 id="类类型"><a href="#类类型" class="headerlink" title="类类型"></a>类类型</h3><p>每一个类都是唯一的，即使他们的成员完全一样，所以他们也不可以互相赋值。</p>
-<h4 id="类的声明"><a href="#类的声明" class="headerlink" title="类的声明"></a>类的声明</h4><p>类的声明可以只声明不定义，也被称为<strong>向前声明</strong>，在未定义前他是一个<strong>不完全类型</strong>，不完全类型只能在非常有限的情景下使用:</p>
-<ul>
-<li>可以定义指向这种类型的指针或引用，</li>
-<li>可以声明（但是不能定义）以不完全类型作为参数或者返回类型的函数。</li>
-</ul>
-<p><em>创建它的对象之前他必须被定义过！</em></p>
-<h3 id="友元再探"><a href="#友元再探" class="headerlink" title="友元再探"></a>友元再探</h3><h4 id="类之间的友元"><a href="#类之间的友元" class="headerlink" title="类之间的友元"></a>类之间的友元</h4><p>如果想在A类的成员函数内可以控制另一个B类的成员，可以将A类在B类中声明称友元，如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>&#123;</span></span><br><span class="line">	<span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span>;</span></span><br><span class="line">    <span class="comment">//其他内容...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>则A类的所有成员函数都可以访问B类的私有成员。</p>
-<p>注意：友元关系没有传递性，若A中声明了友元C类，C只可以访问A，而不能访问B。</p>
-<h4 id="成员函数作为友元"><a href="#成员函数作为友元" class="headerlink" title="成员函数作为友元"></a>成员函数作为友元</h4><p>若不需要将整个类作为友元，则可以只为一个函数声明友元，且必须明确属于哪个类。且应注意一定的顺序：</p>
-<ul>
-<li>定义A类，并声明其中的需要改变B类成员的函数（简称C函数吧），但不要定义。</li>
-<li>定义B类，声明友元函数C。</li>
-<li>最后定义C函数。</li>
-</ul>
-<h4 id="函数重载和友元"><a href="#函数重载和友元" class="headerlink" title="函数重载和友元"></a>函数重载和友元</h4><p>若一个函数名存在多个重载，则友元函数需要声明多个，且他们是一一对应的。</p>
-<h4 id="友元声明和作用域"><a href="#友元声明和作用域" class="headerlink" title="友元声明和作用域"></a>友元声明和作用域</h4><p>友元声明不是必须在类或者函数之后，但无论如何一定要在类外声明一次。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">X</span>&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;<span class="comment">/*友元函数可以定义在类的内部*/</span>&#125;</span><br><span class="line">	<span class="built_in">X</span>()&#123; <span class="built_in">f</span>(); &#125;<span class="comment">//错误:f还没有被声明</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> </span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span>;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> x: :<span class="built_in">g</span>() &#123; <span class="keyword">return</span> <span class="built_in">f</span>(); &#125;		<span class="comment">//错误:f还没有被声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>;							<span class="comment">//声明那个定义在中的函数</span></span><br><span class="line"><span class="keyword">void</span> x : :<span class="built_in">h</span>() &#123; <span class="keyword">return</span> <span class="built_in">f</span>(); &#125;		<span class="comment">//正确:现在f的声明在作用域中了</span></span><br></pre></td></tr></table></figure>
-
-<p>根本还是因为友元只是开通了某个人进入这个地方的权限，而这个人需要被承认是一个人。才能使用该权限。</p>
-<h2 id="类的作用域"><a href="#类的作用域" class="headerlink" title="类的作用域"></a>类的作用域</h2><p>类有自己的作用域，在类外必须由对象、引用或指针使用成员。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">screen::pos ht = <span class="number">24</span>, wd = <span class="number">80</span> ;			<span class="comment">//使用screen定义的pos类型</span></span><br><span class="line"><span class="function">screen <span class="title">scr</span> <span class="params">(ht, wd, <span class="string">&#x27; &#x27;</span>)</span> </span>;</span><br><span class="line">Screen *p = &amp;scr;</span><br><span class="line"><span class="keyword">char</span> c = scr.<span class="built_in">get</span> () ;						<span class="comment">//访问scr对象的get成员</span></span><br><span class="line">c = p-&gt;<span class="built_in">get</span> () ;								<span class="comment">//访问p所指对象的get成员</span></span><br></pre></td></tr></table></figure>
-
-<p>类外的成员函数，因为在类外，所以并不知道类内的成员，所以必须加上类名，包括返回值如果是类内的成员也必须加上类名。</p>
-<h3 id="名字查找与类的作用域"><a href="#名字查找与类的作用域" class="headerlink" title="名字查找与类的作用域"></a>名字查找与类的作用域</h3><p>名字查找的大致过程为：</p>
-<ul>
-<li>首先，在名字所在的块中寻找其声明语句，只考虑在名字的使用之前出现的声明。</li>
-<li>如果没找到，继续查找外层作用域。</li>
-<li>如果最终没有找到匹配的声明，则程序报错。</li>
-</ul>
-<p>对于定义在类内部的成员函数：</p>
-<ul>
-<li>首先，编译成员的声明。</li>
-<li>直到类全部可见后才编译函数体。</li>
-</ul>
-<h4 id="类成员声明的名字查找"><a href="#类成员声明的名字查找" class="headerlink" title="类成员声明的名字查找"></a>类成员声明的名字查找</h4><p>声明过程中使用的名字必须在使用前确保可见，如果某个成员的声明使用了类中尚未出现的名字，则编译器将会在类外中继续查找。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line">string bal;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Money <span class="title">balance</span> <span class="params">()</span> </span>&#123; <span class="keyword">return</span> bal; &#125;<span class="comment">//这里的返回值为类外定义的double,</span></span><br><span class="line">    			<span class="comment">//bal在函数体内，所以整个类可见后才处理，所以这里返回的是类内的bal。</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Money bal;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="类型名要特殊处理"><a href="#类型名要特殊处理" class="headerlink" title="类型名要特殊处理"></a>类型名要特殊处理</h4><p>类内可以重新为一个类型定义名字，但如果已经使用过了，就不能在定义它了：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> Money;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">Money <span class="title">balance</span><span class="params">( )</span> </span>&#123; <span class="keyword">return</span> bal; &#125;		<span class="comment">//使用外层作用域的Money</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">double</span> Money;					<span class="comment">//错误:不能重新定义Money</span></span><br><span class="line">	Money bal;								<span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>成员函数使用名字解析</p>
-<ul>
-<li>首先，在成员函数内查找该名字的声明。和前面一样，只有在函数使用之前出现的声明才被考虑。</li>
-<li>如果在成员函数内没有找到,则在类内继续查找,这时类的所有成员都可以被考虑。</li>
-<li>如果类内也没找到该名字的声明，在成员函数定义之前的作用域内继续查找。</li>
-</ul>
-<p>如果成员函数参数名字与类成员名字冲突，那么使用类内的成员最好写成类名::的形式，更加清楚。当然，更好的办法是另起一个名字。</p>
-<h2 id="构造函数再探"><a href="#构造函数再探" class="headerlink" title="构造函数再探"></a>构造函数再探</h2><h3 id="构造函数初始值列表"><a href="#构造函数初始值列表" class="headerlink" title="构造函数初始值列表"></a>构造函数初始值列表</h3><p>定义变量时最好立即对其进行初始化，如没有初始化，则会执行默认初始化。</p>
-<h4 id="初始值有时必不可少"><a href="#初始值有时必不可少" class="headerlink" title="初始值有时必不可少"></a>初始值有时必不可少</h4><p>有时遇到无法默认初始化的类型、常量或者引用，则必须添加初始值。</p>
-<h4 id="初始化顺序"><a href="#初始化顺序" class="headerlink" title="初始化顺序"></a>初始化顺序</h4><p>初始化顺序不是按参数的顺序，而是按照在类内声明的顺序。</p>
-<p><em>建议：构造函数初始化顺序与成员声明最好一致，且不用成员去初始化成员</em></p>
-<h4 id="默认实参和构造函数"><a href="#默认实参和构造函数" class="headerlink" title="默认实参和构造函数"></a>默认实参和构造函数</h4><p>如果一个构造函数为所有参数都提供了默认实参,则它实际上也定义了默认构造函数。</p>
-<p>如果你希望用户给出一个非0实参的同时给处其他的实参，则建议不要给他形参添加默认值。例如图书管理程序，用户提供一本书的名字时，你需要他同时提供书的价格、序列号等，就不应该给形参设置默认值，这样用户就必须输入图书全部信息。</p>
-<h3 id="委托构造函数"><a href="#委托构造函数" class="headerlink" title="委托构造函数"></a>委托构造函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//非委托构造函数使用对应的实参初始化成员</span></span><br><span class="line">	<span class="built_in">Sales_data</span>(std::string s, <span class="keyword">unsigned</span> cnt,<span class="keyword">double</span> price):</span><br><span class="line">			<span class="built_in">bookNo</span>(s), <span class="built_in">units_sold</span>(cnt), <span class="built_in">revenue</span> (cnt*price)&#123; &#125;</span><br><span class="line">	<span class="comment">//其余构造函数全都委托给另一个构造函数</span></span><br><span class="line">	<span class="built_in">sales_data</span>() : <span class="built_in">sales_data</span> (<span class="string">&quot;&quot;</span>,<span class="number">0</span>,<span class="number">0</span>)&#123;&#125;</span><br><span class="line">	<span class="built_in">sales_data</span> (std::string s) : <span class="built_in">sales_data</span>(s， <span class="number">0</span>,<span class="number">0</span>)&#123;&#125;</span><br><span class="line">	<span class="built_in">sales_data</span> (std::istream &amp;is) : <span class="built_in">sales_data</span>()&#123; <span class="built_in">read</span> (is,*<span class="keyword">this</span>) ; &#125;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>它也有成员初始值列表和一个函数体，参数列表须与委托的构造函数匹配。最后一个构造函数委托的是默认构造函数，默认构造执行后，执行read（）函数。</p>
-<p>当一个构造函数委托给另一个构造函数时，受委托的构造函数的初始值列表和函数体被依次执行。在 sales data类中，受委托的构造函数体恰好是空的。假如函数体包含有代码的话，将先执行这些代码，然后控制权才会交还给委托者的函数体。</p>
-<h3 id="默认构造函数的作用"><a href="#默认构造函数的作用" class="headerlink" title="默认构造函数的作用"></a>默认构造函数的作用</h3><p>默认初始化在以下情况发生</p>
-<ul>
-<li>当我们在块作用域内不使用任何初始值定义一个非静态变量或者数组时。</li>
-<li>当一个类本身含有类类型的成员且使用合成的默认构造函数时。</li>
-<li>当类类型的成员没有在构造函数初始值列表中显式地初始化时。</li>
-</ul>
-<p>值初始化在以下情况发生</p>
-<ul>
-<li>在数组初始化的过程中如果我们提供的初始值数量少于数组的大小时。</li>
-<li>当我们不使用初始值定义一个局部静态变量时。</li>
-<li>当我们通过书写形如T( )的表达式显式地请求值初始化时，其中T是类型名(vector的一个构造函数只接受一个实参用于说明vector大小，它就是使用一个这种形式的实参来对它的元素初始化器进行值初始化)。类必须包含一个默认构造函数以便在上述情况下使用，其中的大多数情况非常容易判断。</li>
-</ul>
-<h4 id="一个常犯的错误"><a href="#一个常犯的错误" class="headerlink" title="一个常犯的错误"></a>一个常犯的错误</h4><p>对于C++的新手程序员来说有一种常犯的错误，它们试图以如下的形式声明-一<br>个用默认构造函数初始化的对象:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Sales_ data <span class="title">obj</span><span class="params">()</span> </span>;				<span class="comment">//错误:声明了一个函数而非对象</span></span><br><span class="line">Sales_ data obj2;				<span class="comment">//正确: obj2是一个对象而非函数</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="隐式的类类型转换"><a href="#隐式的类类型转换" class="headerlink" title="隐式的类类型转换"></a>隐式的类类型转换</h3><p>如果构造函数接受一个实参，那么实际上也定义了隐式转换的机制，例如：A类中有一个构造函数只接受一个string类型的参数，那么在需要A类的地方，我们可以由string去代替，编译器会自动的将string转换为A。</p>
-<h4 id="只允许一步类类型的转换"><a href="#只允许一步类类型的转换" class="headerlink" title="只允许一步类类型的转换"></a>只允许一步类类型的转换</h4><p>如果直接把一个常量字符串用在A类的地方，需要先转换成string，再转换为A，所以是错误的。可以先显示的转化为string，如：<code>string(&quot;999&quot;)</code>，再放到需要A的地方。</p>
-<p>这种转换取决于用户对使用它的看法，并不总是有效。</p>
-<h4 id="抑制构造函数隐式转换"><a href="#抑制构造函数隐式转换" class="headerlink" title="抑制构造函数隐式转换"></a>抑制构造函数隐式转换</h4><p>在构造函数前加上explicit用来阻止隐式转换的发生，它只对有一个参数的函数有效：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sales_data</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Sales_data</span> <span class="params">(<span class="keyword">const</span> std::string &amp;s)</span> : bookNo(s) &#123;</span> &#125;</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Sales_data</span> <span class="params">(std::istream&amp;)</span> </span>;</span><br><span class="line">	<span class="comment">//其他成员与之前的版本一致</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h4 id="explicit构造只用于直接初始化"><a href="#explicit构造只用于直接初始化" class="headerlink" title="explicit构造只用于直接初始化"></a>explicit构造只用于直接初始化</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string null_book = <span class="string">&quot;999&quot;</span>;</span><br><span class="line"><span class="function">Sales_ _data <span class="title">item1</span> <span class="params">(null_book)</span> </span>; <span class="comment">// 正确:直接初始化</span></span><br><span class="line"><span class="comment">//错误:不能将explicit构造函数用于拷贝形式的初始化过程</span></span><br><span class="line">Sales_ data item2 = null_book;</span><br></pre></td></tr></table></figure>
-
-<p>使用该关键字后不可用于拷贝。</p>
-<h4 id="显示转换构造函数"><a href="#显示转换构造函数" class="headerlink" title="显示转换构造函数"></a>显示转换构造函数</h4><p>explicit函数会阻止隐式的转换，但是我们依然可以用该函数显示的进行转换：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确:实参是一个显式构造的Sales_ data对象</span></span><br><span class="line">item. <span class="built_in">combine</span> (Sales_ <span class="built_in">data</span> (null_ book)) ;</span><br><span class="line"><span class="comment">//正确: static_ cast可以使用explicit的构造函数</span></span><br><span class="line">item. <span class="built_in">combine</span> (static_ cast&lt;Sales_ data&gt;(cin)) ;</span><br></pre></td></tr></table></figure>
-
-<h4 id="标准库显式的构造函数的类："><a href="#标准库显式的构造函数的类：" class="headerlink" title="标准库显式的构造函数的类："></a>标准库显式的构造函数的类：</h4><p>我们用过的-.些标准库中的类含有单参数的构造函数:</p>
-<ul>
-<li>接受一个单参数的const char*的string构造函数不是explicit的。</li>
-<li>接受一个容量参数的vector构造函数(参见3.3.1节，第87页)是explicit的。</li>
-</ul>
-<h3 id="聚合类"><a href="#聚合类" class="headerlink" title="聚合类"></a>聚合类</h3><p>满足下列条件，可以说它是一个聚合类：</p>
-<ul>
-<li>所有成员都是public的。</li>
-<li>没有定义任何构造函数。</li>
-<li>没有类内初始值。</li>
-<li>没有基类，也没有virtual函数。</li>
-</ul>
-<p>如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Data</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> ival;</span><br><span class="line">	string S;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>聚合类的显示初始化方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// val1. ival= 0; val1.s = string ( &quot;Anna&quot; )</span></span><br><span class="line">Datavall= &#123; <span class="number">0</span>, <span class="string">&quot;Anna&quot;</span> &#125;;</span><br></pre></td></tr></table></figure>
-
-<p>显示初始化的缺点：</p>
-<ul>
-<li>要求类的所有成员都是public的。</li>
-<li>将正确初始化每个对象的每个成员的重任交给了类的用户(而非类的作者)。因为用户很容易忘掉某个初始值，或者提供–个不恰当的初始值，所以这样的初始化过程冗长乏味且容易出错。</li>
-<li>添加或删除-一个成员之后，所有的初始化语句都需要更新。</li>
-</ul>
-<h3 id="字面值常量类"><a href="#字面值常量类" class="headerlink" title="字面值常量类"></a>字面值常量类</h3><p>数据成员都是字面值类型的聚合类就是字面值常量类。不是聚合但符合下列要求也是：</p>
-<ol>
-<li><p>数据成员都必须是字面值类型。</p>
-</li>
-<li><p>类必须至少含有一个constexpr构造函数。</p>
-</li>
-<li><p>如果一个数据成员含有类内初始值，则内置类型成员的初始值必须是一条常量表达式；或者如果成员属于某种类类型，则初始值必须使用成员自己的constexpr构造函数。</p>
-</li>
-<li><p>类必须使用析构函数的默认定义，该成员负责销毁类的对象。</p>
-</li>
-</ol>
-<p>对于条件的理解：</p>
-<p>满足条件1，就可以在编译阶段求值，这一点和聚合类一样。</p>
-<p>满足条件2，就可以创建这个类的constexpr类型的对象。</p>
-<p>满足条件3，就可以保证即使有类内初始化，也可以在编译阶段解决。</p>
-<p>满足条件4，就可以保证析构函数没有不能预期的操作。</p>
-<h4 id="constexpr构造函数"><a href="#constexpr构造函数" class="headerlink" title="constexpr构造函数"></a>constexpr构造函数</h4><p>构造函数不能是const的，但字面值常量类的构造函数可以是constexpr的，且必须至少有一个constexpr构造函数。</p>
-<p>constexpr构造函数函数体一般来说是空的：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Debug</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">constexpr</span> <span class="title">Debug</span> <span class="params">(<span class="keyword">bool</span> b = <span class="literal">true</span>)</span> : hw(b)， io(b)， other(b) &#123;</span> &#125;</span><br><span class="line">	<span class="function"><span class="keyword">constexpr</span> <span class="title">Debug</span> <span class="params">(<span class="keyword">bool</span> h，<span class="keyword">bool</span> i, <span class="keyword">bool</span> o)</span> : hw(h)，io(i), other(o) &#123;</span> &#125;</span><br><span class="line">	<span class="function"><span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="title">any</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> hw || io || other; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> set_ <span class="title">io</span><span class="params">(<span class="keyword">bool</span> b)</span> </span>&#123; io = b; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> set_ <span class="title">hw</span><span class="params">(<span class="keyword">bool</span> b)</span> </span>&#123; hw = b; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> set_ <span class="title">other</span> <span class="params">(<span class="keyword">bool</span> b)</span> </span>&#123; hw = b; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">bool</span> hw;					<span class="comment">//硬件错误，而非IO错误</span></span><br><span class="line">	<span class="keyword">bool</span> io;					<span class="comment">// I0错误</span></span><br><span class="line">	<span class="keyword">bool</span> other;					<span class="comment">//其他错误</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这样声明以后，就可以在使用constexpr表达式或者constexpr函数的地方使用字面值常量类了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2561,7 +2682,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
