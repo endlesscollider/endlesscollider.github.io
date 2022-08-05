@@ -125,7 +125,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">39</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -214,10 +214,10 @@
       <div class="post-body">
           <div class="tag-cloud">
             <div class="tag-cloud-title">
-              目前共计 10 个标签
+              目前共计 11 个标签
             </div>
             <div class="tag-cloud-tags">
-              <a href="/tags/C/" style="font-size: 12px; color: #ccc">C#</a> <a href="/tags/C-C/" style="font-size: 30px; color: #111">C/C++</a> <a href="/tags/git/" style="font-size: 12px; color: #ccc">git</a> <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/leetcode/" style="font-size: 12px; color: #ccc">leetcode</a> <a href="/tags/unity/" style="font-size: 12px; color: #ccc">unity</a> <a href="/tags/%E4%B9%A6%E7%B1%8D/" style="font-size: 18px; color: #8e8e8e">书籍</a> <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" style="font-size: 24px; color: #4f4f4f">光追渲染器</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 12px; color: #ccc">博客</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 12px; color: #ccc">生活</a>
+              <a href="/tags/C/" style="font-size: 12px; color: #ccc">C#</a> <a href="/tags/C-C/" style="font-size: 30px; color: #111">C/C++</a> <a href="/tags/git/" style="font-size: 12px; color: #ccc">git</a> <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/leetcode/" style="font-size: 12px; color: #ccc">leetcode</a> <a href="/tags/unity/" style="font-size: 16.5px; color: #9d9d9d">unity</a> <a href="/tags/%E4%B9%A6%E7%B1%8D/" style="font-size: 21px; color: #6f6f6f">书籍</a> <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" style="font-size: 25.5px; color: #404040">光追渲染器</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 12px; color: #ccc">博客</a> <a href="/tags/%E6%B8%B8%E6%88%8F/" style="font-size: 12px; color: #ccc">游戏</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 12px; color: #ccc">生活</a>
             </div>
           </div>
         
@@ -237,19 +237,19 @@
           
       <div class="tabs tabs-comment">
         <ul class="nav-tabs">
-            <li class="tab"><a href="#comment-valine">valine</a></li>
             <li class="tab"><a href="#comment-livere">livere</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane valine" id="comment-valine">
-              <div class="comments" id="valine-comments"></div>
-            </div>
             <div class="tab-pane livere" id="comment-livere">
               
   <div class="comments">
     <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
   </div>
   
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
             </div>
         </div>
       </div>
@@ -314,7 +314,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -327,7 +327,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -539,6 +539,22 @@
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
 
 <script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
@@ -565,22 +581,6 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       serverURLs : ''
     });
   }, window.Valine);
-});
-</script>
-
-<script>
-NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
-  window.livereOptions = {
-    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
-  };
-  (function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-  })(document, 'script');
 });
 </script>
 

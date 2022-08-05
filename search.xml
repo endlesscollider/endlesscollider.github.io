@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>unity游戏优化</title>
+    <url>/2022/07/01/unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>最近读了一本书，考虑到以后可能会用的到，便想记录下来，供以后使用。</p>
+<h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><h4 id="GetComponent方法"><a href="#GetComponent方法" class="headerlink" title="GetComponent方法"></a>GetComponent方法</h4><p>该函数有三个重载版本，它们对应的速度分别为<code>GetComponent&lt;T&gt;()</code>&gt;<code>GetComponent(typeof(T))</code>&gt;&gt;<code>GetComponent(string)</code>。</p>
+<h4 id="移除空的回调"><a href="#移除空的回调" class="headerlink" title="移除空的回调"></a>移除空的回调</h4><p>Unity会将任何定义好的MonoBehaviour中的回调函数（通常有Start（）和Update（））添加到函数指针列表里，即使它是空的，所以在场景有大量物体时，也会造成性能浪费。</p>
+<h4 id="延时函数"><a href="#延时函数" class="headerlink" title="延时函数"></a>延时函数</h4><ol>
+<li><p>将Update（）函数使用协程代替，但是需要注意的是协程调用的代价约为普通函数的三倍，还会分配内存，且每次调用都会有这些额外开销，所以需要确保降低频率达到好处大于坏处。且协程会随物体变为不活动时停止，即使物体再次进入活动状态也不会启动。且协程代码应尽可能简单且保持独立，以免造成难以察觉的错误。</p>
+</li>
+<li><p>使用InvokeRepeating（），它独立于Monobehaviour和GameObject的状态，只能使用CancelInovke（）暂停或销毁物体。这种方式会略快于协程。</p>
+</li>
+</ol>
+<h4 id="GameObject本机-托管桥接"><a href="#GameObject本机-托管桥接" class="headerlink" title="GameObject本机-托管桥接"></a>GameObject本机-托管桥接</h4><p>与C#对象相比，GameObject和MonoBehaviour是特殊对象，因为它们在内存中有两个表示：一个表示存在于管理C#代码相同系统管理的内存中，C#代码是用户编写的（托管代码），另一个表示存在于另一个单独处理的内存空间中（本机代码）。数据可以再这两个内存之间移动，因此每次移动都会导致额外的CPU开销和 可能的额外内存分配，这种效果一般称为跨越本机-托管的桥接。</p>
+<p>对GameObject空引用检查</p>
+<p>一般我们使用以下方式对GameObject空引用检查：</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span><span class="params">(gameObject!=null)</span></span>&#123;</span><br><span class="line">    <span class="comment">//DoSomething</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>另一种更好地方式是利用System.Object.ReferenceEquals()，其运行速度大约是上边的两倍：</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(!System.Object.<span class="constructor">ReferenceEquals(<span class="params">gameObject</span>,<span class="params">null</span>)</span>)	&#123;</span><br><span class="line">    <span class="comment">//DoSomething</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>以上方式也适用于MonoBehaviour。</p>
+<h4 id="GameObject的字符串属性"><a href="#GameObject的字符串属性" class="headerlink" title="GameObject的字符串属性"></a>GameObject的字符串属性</h4><p>从GameObject中检索字符串属性是另一种意外跨越本机-托管桥接的方式。通常使用的两个属性是tag和name，因此使用这两个属性是不好的，然而GameObject提供了CompareTag()方法，它则完全避免了本机-托管的桥接。</p>
+<p>即使用gameObject.CompareTag(“tag”)而不是使用gameObject.tag==”tag”。除此之外，name属性没有对应方法，因此尽可能使用Tag属性。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4>]]></content>
+      <categories>
+        <category>unity</category>
+      </categories>
+      <tags>
+        <tag>unity</tag>
+        <tag>游戏</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>动态模糊</title>
     <url>/2022/06/13/%E5%85%89%E8%BF%BD2.2/</url>
     <content><![CDATA[<h1 id="动态模糊"><a href="#动态模糊" class="headerlink" title="动态模糊"></a>动态模糊</h1><p>“带时间的光线”划开了新旧篇章的界限，新的维度下，新的可能性在孕育。</p>
@@ -47,31 +81,9 @@
 </li>
 </ol>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1645675175268-5f43f54c-c63d-485c-a244-f818a3609980.png" alt="img"></p>
-<ol>
-<li><ol>
-<li><ol>
-<li><ol>
-<li>进入之后，第一行就是最新的git分支的压缩包，俩个分别是只包含基础功能的以及全部功能的压缩包，随便选一个，因为我还使用ffmpeg做其他项目，所以安装的是full版本，但是应对本项目，essential应该就足够了。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
+<p>进入之后，第一行就是最新的git分支的压缩包，俩个分别是只包含基础功能的以及全部功能的压缩包，随便选一个，因为我还使用ffmpeg做其他项目，所以安装的是full版本，但是应对本项目，essential应该就足够了。</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1645675230186-6e1197a5-b134-4811-b51f-55b241bcf4cf.png" alt="img"></p>
-<ol>
-<li><ol>
-<li><ol>
-<li><ol>
-<li>你会下载到和刚刚我给你的链接里一样的安装包。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
+<p>你会下载到和刚刚我给你的链接里一样的安装包。</p>
 <p>二：把下载的压缩包解压到某个目录，笔者将其解压到了D:\ffmpeg文件夹下。</p>
 <p>三：配置环境变量。我的电脑右键属性-高级系统设置-环境变量-再编辑path-新建一个path为ffmpeg目录下的bin文件夹。（本部分我简单描述，环境变量配置为程序员必修课，如果不会的话去看教程，这里贴一个百度经验教程<a href="https://jingyan.baidu.com/article/a17d5285c9b0c48099c8f26a.html%EF%BC%89%EF%BC%8C%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E4%BD%A0%E7%9A%84path%E5%BA%94%E8%AF%A5%E4%BC%9A%E5%A4%A7%E6%A6%82%E5%A6%82%E4%B8%8B%E5%A4%9A%E5%87%BA%E4%B8%80%E8%A1%8C%EF%BC%9A">https://jingyan.baidu.com/article/a17d5285c9b0c48099c8f26a.html），配置完成你的path应该会大概如下多出一行：</a></p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1645675931404-73c58218-d114-4986-ae81-d68544470348.png" alt="img"></p>
