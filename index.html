@@ -122,7 +122,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">41</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -186,115 +186,6 @@
 
           <div class="content index posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/01/unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/01/unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">unity游戏优化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-01T00:00:00+08:00">2022-07-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-21 19:29:04" itemprop="dateModified" datetime="2022-07-21T19:29:04+08:00">2022-07-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unity/" itemprop="url" rel="index"><span itemprop="name">unity</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/07/01/unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/01/unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近读了一本书，考虑到以后可能会用的到，便想记录下来，供以后使用。</p>
-<h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><h4 id="GetComponent方法"><a href="#GetComponent方法" class="headerlink" title="GetComponent方法"></a>GetComponent方法</h4><p>该函数有三个重载版本，它们对应的速度分别为<code>GetComponent&lt;T&gt;()</code>&gt;<code>GetComponent(typeof(T))</code>&gt;&gt;<code>GetComponent(string)</code>。</p>
-<h4 id="移除空的回调"><a href="#移除空的回调" class="headerlink" title="移除空的回调"></a>移除空的回调</h4><p>Unity会将任何定义好的MonoBehaviour中的回调函数（通常有Start（）和Update（））添加到函数指针列表里，即使它是空的，所以在场景有大量物体时，也会造成性能浪费。</p>
-<h4 id="延时函数"><a href="#延时函数" class="headerlink" title="延时函数"></a>延时函数</h4><ol>
-<li><p>将Update（）函数使用协程代替，但是需要注意的是协程调用的代价约为普通函数的三倍，还会分配内存，且每次调用都会有这些额外开销，所以需要确保降低频率达到好处大于坏处。且协程会随物体变为不活动时停止，即使物体再次进入活动状态也不会启动。且协程代码应尽可能简单且保持独立，以免造成难以察觉的错误。</p>
-</li>
-<li><p>使用InvokeRepeating（），它独立于Monobehaviour和GameObject的状态，只能使用CancelInovke（）暂停或销毁物体。这种方式会略快于协程。</p>
-</li>
-</ol>
-<h4 id="GameObject本机-托管桥接"><a href="#GameObject本机-托管桥接" class="headerlink" title="GameObject本机-托管桥接"></a>GameObject本机-托管桥接</h4><p>与C#对象相比，GameObject和MonoBehaviour是特殊对象，因为它们在内存中有两个表示：一个表示存在于管理C#代码相同系统管理的内存中，C#代码是用户编写的（托管代码），另一个表示存在于另一个单独处理的内存空间中（本机代码）。数据可以再这两个内存之间移动，因此每次移动都会导致额外的CPU开销和 可能的额外内存分配，这种效果一般称为跨越本机-托管的桥接。</p>
-<p>对GameObject空引用检查</p>
-<p>一般我们使用以下方式对GameObject空引用检查：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span><span class="params">(gameObject!=null)</span></span>&#123;</span><br><span class="line">    <span class="comment">//DoSomething</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>另一种更好地方式是利用System.Object.ReferenceEquals()，其运行速度大约是上边的两倍：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!System.Object.<span class="constructor">ReferenceEquals(<span class="params">gameObject</span>,<span class="params">null</span>)</span>)	&#123;</span><br><span class="line">    <span class="comment">//DoSomething</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>以上方式也适用于MonoBehaviour。</p>
-<h4 id="GameObject的字符串属性"><a href="#GameObject的字符串属性" class="headerlink" title="GameObject的字符串属性"></a>GameObject的字符串属性</h4><p>从GameObject中检索字符串属性是另一种意外跨越本机-托管桥接的方式。通常使用的两个属性是tag和name，因此使用这两个属性是不好的，然而GameObject提供了CompareTag()方法，它则完全避免了本机-托管的桥接。</p>
-<p>即使用gameObject.CompareTag(“tag”)而不是使用gameObject.tag==”tag”。除此之外，name属性没有对应方法，因此尽可能使用Tag属性。</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
       
   
   
@@ -1411,10 +1302,142 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/13/%E5%85%89%E8%BF%BD1.10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/13/%E5%85%89%E8%BF%BD1.10/" class="post-title-link" itemprop="url">材质类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-13T00:00:00+08:00">2022-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 16:53:19" itemprop="dateModified" datetime="2022-04-02T16:53:19+08:00">2022-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/03/13/%E5%85%89%E8%BF%BD1.10/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/13/%E5%85%89%E8%BF%BD1.10/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在上一章由于急于实现功能而污染了表层文件，我们需要将它抽象出来，才能继续制作其他材质。</p>
+<h2 id="抽象材质类"><a href="#抽象材质类" class="headerlink" title="抽象材质类"></a>抽象材质类</h2><p>材质类应该干什么？应该能产生反射光线，并且记录诸如光线衰减信息（上一章中的对半衰减）等，总结一句话，它得通过入射光线，得知反射光线的方向和能量大小。</p>
+<p>创建material.h文件，写入”：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> MATERIAL_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MATERIAL_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">material</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">//这个唯一的纯虚函数吃入射光线以及碰撞点信息（我们需要法线以及其他数据），吐物体颜色和反射光线。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in<span class="comment">/*in*/</span>, <span class="keyword">const</span> hit_record&amp; rec<span class="comment">/*in*/</span>, </span></span></span><br><span class="line"><span class="params"><span class="function">            color&amp; attenuation<span class="comment">/*out*/</span>, ray&amp; scattered<span class="comment">/*out*/</span>)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>物体颜色信息指的是物体对于各个红绿蓝三种光线的吸收率，在上一章中，一直使用的是各种光都对半吸收的参数0.5，这一章中，我们要把各个颜色分量给区分开，以创造出更绚烂的色彩变化。</p>
+<p>函数的返回值是bool，留下一个标记，为了在函数出问题的时候让我们有能力进行追踪。</p>
+<p>在hit_record里加入材质信息：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;material.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hit_record</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//依然使用智能指针去管理，这样如果你有多个物体像应用同一种材质，就不需要创建多个一样的材质了。</span></span><br><span class="line">    shared_ptr&lt;material&gt; mat_ptr;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">set_face_normal</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> vec3&amp; outward_normal)</span> </span>&#123;</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这时候我们会发现，程序开始报一些莫名其妙的错误了。</p>
+<p>这是因为material.h和hittable.h文件互相包含了。main函数开始链接各个文件的时候，采取的策略是见一个就包含一个，并且包含所包含文件的头文件。互相包含问题会导致我们的main函数怎么努力包含都无法包含完这些文件，所以直接摆烂了。</p>
+<p>遇到这种情况怎么办呢？我们观察到，hittable.h中虽然定义了一个material的智能指针，但是，它从来没有试图访问过这个指针所指向的对象。所以完全不需要让它包含material.h文件，只需要在使用它之前声明即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// #include &quot;material.h&quot;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">material</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hit_record</span> &#123;</span> ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>sphere.h文件也产生了一些变化，具体如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sphere</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">sphere</span>() &#123;&#125;</span><br><span class="line">        <span class="built_in">sphere</span>(point3 cen, <span class="keyword">double</span> r, shared_ptr&lt;material&gt; m)</span><br><span class="line">            : <span class="built_in">center</span>(cen), <span class="built_in">radius</span>(r), <span class="built_in">mat_ptr</span>(m) &#123;&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        point3 center;</span><br><span class="line">        <span class="keyword">double</span> radius;</span><br><span class="line">    	<span class="comment">//材质是球的属性，所以它理应是球的成员变量</span></span><br><span class="line">        shared_ptr&lt;material&gt; mat_ptr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">sphere::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//碰撞到的话，记得把球的材质也返回出去。</span></span><br><span class="line">    rec.mat_ptr = mat_ptr;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="磨砂材质"><a href="#磨砂材质" class="headerlink" title="磨砂材质"></a>磨砂材质</h2><p>我们只需要模仿main函数中已经写过一遍的代码就可以得到代码。可以把这个类直接写在material.h文件中，这种设计的方式是“<strong>一档多类</strong>”。它对于多个短小的类来说很有用，它可以防止文件数量过多带来的不便。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">lambertian</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">//只允许单参数构造，在创建磨砂材质的时候，请直接传入它的颜色。</span></span><br><span class="line">        <span class="built_in">lambertian</span>(<span class="keyword">const</span> color&amp; a) : <span class="built_in">albedo</span>(a) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//覆写scatter函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 用真实兰伯特模型生随机点。</span></span><br><span class="line">            <span class="keyword">auto</span> scatter_direction = rec.normal + <span class="built_in">random_unit_vector</span>();</span><br><span class="line">            <span class="comment">// 直接对传进来的引用赋值，传出反射光线方向。</span></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, scatter_direction);</span><br><span class="line">            <span class="comment">// 直接对传进来的引用赋值，把本材质的albedo传出去。</span></span><br><span class="line">            attenuation = albedo;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        color albedo;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>和main函数中唯一的不同就是我们可以指定材质的颜色了。</p>
+<p>但作为底层代码，我们应该想到更多，比如在随机选点的时候，我们有可能会选到离碰撞点很近的点，然后进而导致生成的反射方向极度接近于<strong>0</strong>向量。</p>
+<p>从代码鲁棒性的角度来看，这会导致我们在后续的某些计算中——比如球类中光线和球求焦点的代码中，除以一个和0很接近的数，这可能会导致我们最终的值变成infinities或者NaNs等等奇怪的结果（即便现在没有不代表未来不会有）。</p>
+<p>所以我们要剔除零反射向量。先在vec3.h中写一个判断一个向量是否是<strong>0</strong>向量的函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vec3</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 判断本向量是否是0向量。</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">near_zero</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 如果三个分量都极接近于0，则返回true，否则返回false。</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> s = <span class="number">1e-8</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">fabs</span>(e[<span class="number">0</span>]) &lt; s) &amp;&amp; (<span class="built_in">fabs</span>(e[<span class="number">1</span>]) &lt; s) &amp;&amp; (<span class="built_in">fabs</span>(e[<span class="number">2</span>]) &lt; s);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>修改磨砂材质类，消灭零反射向量：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">lambertian</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">lambertian</span>(<span class="keyword">const</span> color&amp; a) : <span class="built_in">albedo</span>(a) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            <span class="keyword">auto</span> scatter_direction = rec.normal + <span class="built_in">random_unit_vector</span>();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果抓到零向量，直接生成一个指向法线方向的反射向量，由于概率不高，所以从简处理</span></span><br><span class="line">            <span class="keyword">if</span> (scatter_direction.<span class="built_in">near_zero</span>())</span><br><span class="line">                scatter_direction = rec.normal;</span><br><span class="line"></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, scatter_direction);</span><br><span class="line">            attenuation = albedo;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        color albedo;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>在main函数所在文件中使用磨砂材质类，除了要包含material头文件之外，还需要在main中定义数个智能指针指向新创建的材质对象，再把原本两个参数的球构造函数改成三个参数的。当然最重要的部分还是我们的光线取色函数中和材质类的交互，.cpp文件中代码修改为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;material.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world, <span class="keyword">int</span> depth)</span> </span>&#123;</span><br><span class="line">    hit_record rec;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (depth &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">color</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (world.<span class="built_in">hit</span>(r, <span class="number">0.001</span>, infinity, rec)) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 两个用于接收结果的容器。</span></span><br><span class="line">        ray scattered;</span><br><span class="line">        color attenuation;</span><br><span class="line">        <span class="comment">// 调用物体材质的scatter函数，传入入射光线和碰撞信息，用容器接收结果。</span></span><br><span class="line">        <span class="keyword">if</span> (rec.mat_ptr-&gt;<span class="built_in">scatter</span>(r, rec, attenuation, scattered))</span><br><span class="line">            <span class="comment">// 使用颜色衰减和新光线进行递归。原来这里是0.5。</span></span><br><span class="line">            <span class="comment">// 现在我们使用vec3的乘法，可以对三个通道分别指定衰减比率。</span></span><br><span class="line">            <span class="keyword">return</span> attenuation * <span class="built_in">ray_color</span>(scattered, world, depth<span class="number">-1</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果scatter函数返回了false（目前看不可能），直接返回黑色。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">color</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vec3 unit_direction = <span class="built_in">unit_vector</span>(r.<span class="built_in">direction</span>());</span><br><span class="line">    <span class="keyword">auto</span> t = <span class="number">0.5</span>*(unit_direction.<span class="built_in">y</span>() + <span class="number">1.0</span>);</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1.0</span>-t)*<span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>) + t*<span class="built_in">color</span>(<span class="number">0.5</span>, <span class="number">0.7</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   	</span><br><span class="line">    ...</span><br><span class="line">        </span><br><span class="line">    hittable_list world;</span><br><span class="line">    <span class="comment">//定义两个智能指针指向原地构造的匿名对象。</span></span><br><span class="line">    <span class="keyword">auto</span> material_ground = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.0</span>));</span><br><span class="line">    <span class="keyword">auto</span> material_center = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.7</span>, <span class="number">0.3</span>, <span class="number">0.3</span>));</span><br><span class="line">    <span class="comment">//替换成三参数构造。</span></span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">-1</span>), <span class="number">0.5</span>, material_center));</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, <span class="number">-100.5</span>, <span class="number">-1</span>), <span class="number">100</span>, material_ground))</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就可以得到有颜色的磨砂材质了：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220310085318545.png"></p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><ol>
+<li><p>材质属性可以放在hittable中吗？</p>
+<p>我认为是可以的，但是这样做目前看来并没有什么好处。在没有出现其他形状的物体之前，把它放在球类中，我们可以清晰的看到该类的所有成员，是目前的最优解。</p>
+</li>
+<li><p>材质类与hitable可解耦吗？</p>
+<p>我认为是不可以的，材质类本就不是一个很独立的模块，碰撞点信息里包含物体材质信息，而材质类依托碰撞点信息（如法线）才能计算反射方向。我们从学习代码最初就被叮嘱要进行代码解耦，但是解耦并不代表着类与类之间一定不能有半点交际。材质和物体本就是关系极为紧密的两个事物。只有有了物体，我们才会讨论物体的材质，而且没了材质，我们也就无法知晓物体的外观。把它们分成两个类，是为了能更好的实现代码复用，是为了以后有了多种物体和多种材质之后，能由我们自己随心所欲的进行“连连看”配对。 </p>
+</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
+<p>参考自《RayTracingInOneWeekend》第9.1节到9.3节。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1482,7 +1505,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1495,7 +1518,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
