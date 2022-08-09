@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我们开开心心的讲完了中篇的前两章，渲染出了炫酷的动态模糊效果，它简单而且漂亮。但是，该来的总归还是要来，下面的几章会给大伙儿整些头疼的：包围盒。 光线碰撞中的重复冗余现在回顾一下我们发射光线到回收颜色的全过程，我们就会明白，我们的代码有哪些不合理的地方： 相机朝虚拟视口中的像素格子发出光线，这跟光线会尝试调用场景中所有物体（本项目中一个名为world的物体列表）的hit函数——会按物体插入物体列表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="包围盒（上）">
+<meta property="og:url" content="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD2.3/index.html">
+<meta property="og:site_name" content="祥瑞客栈">
+<meta property="og:description" content="我们开开心心的讲完了中篇的前两章，渲染出了炫酷的动态模糊效果，它简单而且漂亮。但是，该来的总归还是要来，下面的几章会给大伙儿整些头疼的：包围盒。 光线碰撞中的重复冗余现在回顾一下我们发射光线到回收颜色的全过程，我们就会明白，我们的代码有哪些不合理的地方： 相机朝虚拟视口中的像素格子发出光线，这跟光线会尝试调用场景中所有物体（本项目中一个名为world的物体列表）的hit函数——会按物体插入物体列表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/31ae9c334f3c47daac82d08f80c0a96b.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646477603061-2d3fc2ee-9316-414c-b911-72b25014180f.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646539589363-daec5150-6cc0-45db-8aad-8222c6717e88.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064464317-099412bb-3163-4426-a4e4-bb19920e8b88.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/4974822c92d19605bcd18bf7fdf478b0.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/c36f7ad9930be00ac943fdf62adee947.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064714114-9991e2f8-794b-473b-bd89-ad8480fc8c0e.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/48d05334b5b0710d63edb6b4b3ac631c.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/0e8831d88c93179dbe6c8b5e3678ca20.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/626aeee8e7ac4fa7933d7400f02ead03.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8b5d8216af9ea05bfc8c35fb3e54f441.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/bce9659878ed8e8581ba4708410d8fec.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/02d0d3620f1610730048fed887bc6b18.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647270555009-073512e0-d9cc-4f73-b5d1-bc1f2b43372b.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/029bb2c1832b843ce66867ac49f1db71.svg">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/c8811b213e2cf2356b0395ce5e85f807.svg">
+<meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/359c47e9adb148f44b2583aed8513818.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg">
+<meta property="article:published_time" content="2022-06-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T01:08:24.201Z">
+<meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="光追渲染器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/__latex/31ae9c334f3c47daac82d08f80c0a96b.svg">
+
+<link rel="canonical" href="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD2.3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>包围盒（上） | 祥瑞客栈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">祥瑞客栈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录点滴的成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">43</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD2.3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          包围盒（上）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-01T00:00:00+08:00">2022-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-09 09:08:24" itemprop="dateModified" datetime="2022-08-09T09:08:24+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/07/01/%E5%85%89%E8%BF%BD2.3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/01/%E5%85%89%E8%BF%BD2.3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们开开心心的讲完了中篇的前两章，渲染出了炫酷的动态模糊效果，它简单而且漂亮。但是，该来的总归还是要来，下面的几章会给大伙儿整些头疼的：包围盒。</p>
+<h4 id="光线碰撞中的重复冗余"><a href="#光线碰撞中的重复冗余" class="headerlink" title="光线碰撞中的重复冗余"></a>光线碰撞中的重复冗余</h4><p>现在回顾一下我们发射光线到回收颜色的全过程，我们就会明白，我们的代码有哪些不合理的地方：</p>
+<p>相机朝虚拟视口中的像素格子发出光线，这跟光线会尝试调用场景中所有物体（本项目中一个名为world的物体列表）的hit函数——会按物体<strong>插入物体列表时候的顺序</strong>对物体进行逐一调用它们自己的hit函数。这些子物体要不还是物体列表，或者是球、移动的球之类的实体物体。</p>
+<p>我们再来看看球和移动的球是如何处理光线碰撞的，我们通过解一个二元一次方程来判断球是否和光线碰撞，返回碰撞时刻以及碰撞点信息等等（具体见第五章《球》）。这意味着对于每一次射出光线（无论是相机射出的，还是材质表面反射得来的）都要和场景中所有的球进行一次判断。如果场景中有100个物体，意味着，每一次hit之后反射的光线，就要解100个二元一次方程。假设平均每根光线会在场景中弹射5次，对于每一根光线我们要解500个方程，采样数会把这个数字拉到50000（假设每个像素采样100次），而像素数量会把这个数字拉到亿级别（假设我们的场景是400*300），现在看看我们球类代码中的hit函数，那么一大坨，能想象每次在命令行中点击回车，电脑运行了几亿次这部分的代码吗？</p>
+<p>不合理的地方在哪里呢？假设我们有一个光线朝西边径直而去，在光线射过去的方向的相反方向有99颗球，这九十九颗球也都逃不过碰撞检测函数。这分莫名其妙的开销应该是可以通过某种方式避免的。</p>
+<p>总结一下：<strong>光线-物体交集是光线追踪器中的主要时间瓶颈，时间与物体数量成线性关系。这是对同一模型的重复搜索，有没有什么办法可以使之复杂度降低呢？比如通过某种二分法让其的复杂度降低到对数等级？</strong></p>
+<h4 id="空间划分与八叉树"><a href="#空间划分与八叉树" class="headerlink" title="空间划分与八叉树"></a>空间划分与八叉树</h4><p>刚提到了二分法，但二分法必须针对已排序的数据才有作用，也就是说，我们必须让场景中的物体依照某种规则变得有序，才可以使用二分法的思想降低复杂度。</p>
+<p>假设我们的物体都集中在以原点为中心的单位立方体里面，很容易可以想到一种划分方式：先通过三个坐标轴把空间划分为八个小立方体。</p>
+<p>如果把任意一个数带入t，光线的公式<img src="https://cdn.nlark.com/yuque/__latex/31ae9c334f3c47daac82d08f80c0a96b.svg" alt="img">，最终得到的坐标点的x,y,z都不会大于0，那我们就没有必要检查位于第Ⅰ象限的物体了。如果x,y,z有全大于0的情况，说明光线与第Ⅰ象限有交点，我们就对第一象限中的小立方体继续划分——划分成八个更小的立方体，再检查光线是否与它们有交点，位于和光线无交点的小立方体内的物体，我们就无需检查了。这种思想叫<strong>空间划分</strong>。</p>
+<p>整个搜索链条就如同树一样，先看有没有和大立方体有交集，如果有交集就再看其中的小立方体，然后一直往下看，直到我们人为规定的某个大小的立方体内不再有更小的立方体，就直接查看该立方体内的物体即可。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646477603061-2d3fc2ee-9316-414c-b911-72b25014180f.png" alt="img"></p>
+<p><strong>八叉树</strong>——这种结构有一个浅显易懂的名字。很容易可以写出关于八叉树的伪代码（这个八叉树只有两层，第三层就是物体层）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (光线碰到了某个立方体)</span><br><span class="line">    <span class="keyword">if</span>(光线碰到了子立方体<span class="number">1</span>号)&#123;</span><br><span class="line">        <span class="keyword">if</span>(光线碰到了子立方体<span class="number">1</span>号内的某个物体)&#123;</span><br><span class="line">            处理碰撞信息。</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(光线碰到了子立方体<span class="number">2</span>号)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(光线碰到了子立方体<span class="number">7</span>号)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>我们没有讨论如何判断光线和立方体求交，也没有讨论物体在两个立方体的边界上我们要如何处理，篇幅有限。我们不会在项目中使用八叉树，但是它确实是一个可行的方案，并且很容易被图形工程师们提起。</p>
+<p>我们并不准备使用空间划分的八叉树来管理我们场景中的物体，因为还有另一个备选方案可以使用——<strong>对象划分</strong>。这种空间划分比空间划分使用更为广泛。</p>
+<h4 id="对象划分简述"><a href="#对象划分简述" class="headerlink" title="对象划分简述"></a>对象划分简述</h4><p>现在假设空间中有15个对象，我们按照某种规律把它们分成俩个部分，如下图所示：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646539589363-daec5150-6cc0-45db-8aad-8222c6717e88.png" alt="img"></p>
+<p>至于划分对象的算法我们之后再说。</p>
+<p>这是三维空间的某种对象划分在二维上的投影示意图。可见对象划分之后的各个区域是很可能会重叠的，但是也就不再存在一个物体处于区域边界的情况。</p>
+<p>当然这里也依然存在一个树状结构。光线先和最外层和紫色部分算交点，如果存在交点才会查看红蓝两个区域的交点情况。</p>
+<h4 id="AABB"><a href="#AABB" class="headerlink" title="AABB"></a>AABB</h4><p>我们已经决定使用对象划分来加速光线碰撞，这里有很多问题待解决：具体如何划分物体？树状结构如何搭建？新的场景物体又该如何管理（物体列表显然已经不满足要求了）？</p>
+<p>这些问题先靠一边，我们先来把目光瞄准到所谓“区域”，也就是包围盒。</p>
+<p>包围盒应该是什么样的？我们又如何计算光线与盒子求交呢？</p>
+<p>如果不考虑性能，包围盒可以是任何形状，它可以是一个大球，包裹住内部的小球，这样我们只需要算一次一元二次方程就可以得到光线和大球碰撞的结果，如果有碰撞再计算光线和内部小球的碰撞情况。而且我们计算光线和大球求交的时候不需要计算具体反射光线，完全不需要调用材质代码，只需要返回是否碰撞到信息，以便我们去判断需不需要和内部小球进一步计算碰撞即可。</p>
+<p>但是光线和球的碰撞计算复杂度还是高了一点，有一种结构最擅长处理和光线求交，这就是轴向立方体。使用轴向立方体作为包围盒的形状，这就是<strong>轴向包围盒（****Axis-Aligned Bounding Boxes</strong> <strong>）</strong>，又叫<strong>AABB</strong>。</p>
+<p>轴向立方体就是所有的边都和坐标轴平行的立方体，它和光线求交的计算复杂度低，且易于理解。</p>
+<p>先不看Z轴，在平面上的轴向包围盒如下图所示，空间中的包围盒和其原理相同，可以通过推广得到：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064464317-099412bb-3163-4426-a4e4-bb19920e8b88.png" alt="img"></p>
+<p>平面上的AABB（2D-AABB）即是四条直线<img src="https://cdn.nlark.com/yuque/__latex/4974822c92d19605bcd18bf7fdf478b0.svg" alt="img">围成的区域。对于这对平行线<img src="https://cdn.nlark.com/yuque/__latex/c36f7ad9930be00ac943fdf62adee947.svg" alt="img">，光线会和它们产生两个交点，当然，另外一对平行线同理：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064714114-9991e2f8-794b-473b-bd89-ad8480fc8c0e.png" alt="img"></p>
+<p>看看光线传播到<img src="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg" alt="img">分量为<img src="https://cdn.nlark.com/yuque/__latex/48d05334b5b0710d63edb6b4b3ac631c.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/0e8831d88c93179dbe6c8b5e3678ca20.svg" alt="img">时，时间<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">是多少，只要把光线原点位置坐标向量A的x分量和方向向量b的x分量带入公式<img src="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg" alt="img">即可：</p>
+<p><img src="https://cdn.nlark.com/yuque/__latex/626aeee8e7ac4fa7933d7400f02ead03.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/8b5d8216af9ea05bfc8c35fb3e54f441.svg" alt="img"></p>
+<p>同理，在y轴上你同样可以得到两个时间：</p>
+<p><img src="https://cdn.nlark.com/yuque/__latex/bce9659878ed8e8581ba4708410d8fec.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/02d0d3620f1610730048fed887bc6b18.svg" alt="img"></p>
+<p>好，有了这四个时间值，我们如何判断这根光线有没有和2D-AABB相交呢？看下图： </p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647270555009-073512e0-d9cc-4f73-b5d1-bc1f2b43372b.png" alt="img"></p>
+<p>对于上图中上方的光线，其(t0,t1)和(t2,t3)两个时间区域并无交集，在图中的表现即是蓝色和绿色的线段并无重合处，那就可以断言，这根光线和盒子并无交集。而下面的光线可见明显蓝绿重合，它一定是一根穿过盒子的光线。</p>
+<p>很容易就能把这个原理推广到三维的情形下：</p>
+<p><strong>3D-AABB由三对面组成，假设光线传播到与XoY面平行的那一对面上的时间是t0,t1，传播到YoZ面上的时间t2,t3，ZoX则是t4,t5。则一定有：光线和盒子相交 &lt;==&gt; (t0,t1)、(t2,t3)和(t4,t5)两两有交集。</strong></p>
+<p>伪码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">compute</span> (tx0, tx1)</span><br><span class="line"><span class="built_in">compute</span> (ty0, ty1)</span><br><span class="line"><span class="built_in">compute</span> (tz0, tz1)</span><br><span class="line"><span class="comment">//返回这三个时间段有无重叠</span></span><br><span class="line"><span class="keyword">return</span> overlap?( (tx0, tx1), (ty0, ty1), (tz0, tz1))</span><br></pre></td></tr></table></figure>
+
+<p>对于坐标轴上的两个区间(a,b)和(c,d)，判断区间有无重叠，只需要取a和c较大的那一个和b与d中较小的那一个比较，如果前者小于后者，说明有重叠，这部分的伪码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">overlap</span><span class="params">(a, b, c, d)</span></span></span><br><span class="line"><span class="function">    f </span>= <span class="built_in">max</span>(a, c)</span><br><span class="line">    F = <span class="built_in">min</span>(b, d)</span><br><span class="line">    <span class="built_in"><span class="keyword">return</span></span> (f &lt; F)</span><br></pre></td></tr></table></figure>
+
+<p>铺垫完成，接下来我们来从代码层面构造AABB。</p>
+<h4 id="编写AABB类"><a href="#编写AABB类" class="headerlink" title="编写AABB类"></a>编写AABB类</h4><p>创建aabb.h文件，敲入如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AABB_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> AABB_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">aabb</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">aabb</span>() &#123;&#125;</span><br><span class="line">        <span class="comment">// 如何唯一确定一个3D-AABB？只需要两个点即可！</span></span><br><span class="line">        <span class="built_in">aabb</span>(<span class="keyword">const</span> point3&amp; a, <span class="keyword">const</span> point3&amp; b) &#123; minimum = a; maximum = b;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回三个分量都较小的那一个点。</span></span><br><span class="line">        <span class="function">point3 <span class="title">min</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> minimum; &#125;</span><br><span class="line">        <span class="comment">//返回minimum点在盒子上的对角点，即三个分量都较大的那个点。</span></span><br><span class="line">        <span class="function">point3 <span class="title">max</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> maximum; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//光线和AABB求交代码，注意这个hit和物体类的hit没有一毛钱关系。</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="comment">//for循环判断三个轴向的三对面和光线碰撞的时间。</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt; <span class="number">3</span>; a++) &#123;</span><br><span class="line">                <span class="comment">//见解析。</span></span><br><span class="line">                <span class="keyword">auto</span> t0 = <span class="built_in">fmin</span>((minimum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a],</span><br><span class="line">                               (maximum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a]);</span><br><span class="line">                <span class="keyword">auto</span> t1 = <span class="built_in">fmax</span>((minimum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a],</span><br><span class="line">                               (maximum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a]);</span><br><span class="line">                t_min = <span class="built_in">fmax</span>(t0, t_min);</span><br><span class="line">                t_max = <span class="built_in">fmin</span>(t1, t_max);</span><br><span class="line">                <span class="keyword">if</span> (t_max &lt;= t_min)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">        point3 minimum;</span><br><span class="line">        point3 maximum;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​    我们使用两个point3来唯一确定一个3D-AABB，就如同我们可以在平面直角坐标系上用左下角和右上角两个点确定一个2D-AABB一样。</p>
+<p>我们来看看hit函数里的for循环中做了什么？</p>
+<p>首先，我们把minmum和maximum点的<img src="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg" alt="img">分量都带入了公式<img src="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg" alt="img">来计算光线穿过这一对面的时间值<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">，注意，这里的fmin和fmax函数是为了确保<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">小于<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">。因为minmum[0]一定是小于maximum[0]的，但是无法确定<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/029bb2c1832b843ce66867ac49f1db71.svg" alt="img">就一定比<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/c8811b213e2cf2356b0395ce5e85f807.svg" alt="img">小，想想光线从x轴无穷大处朝x变小的方向射过来，这时候<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/359c47e9adb148f44b2583aed8513818.svg" alt="img">，我们就需要调换存储<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">。</p>
+<p>紧接着，我们开始对区间求交集。hit函数传进来的t_min和t_max代表我们认可的t的范围，这个与物体类的hit函数的参数中的t_min和t_max是一个道理，用来给我们切去不必要的碰撞（如负值t）的。现在把(<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">,<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">)和(t_min,t_max)求交，得到的值如果是一个不存在的区间，则表示“在您认可的t的区间内，不存在一个t让光线传播到AABB的x轴同向对面中”。</p>
+<p>紧接着对y和z轴上的对面做同样的操作，期间一旦发现求交后区间不存在，便可断定“光线在给定的时间区间内不曾跨过指定对面”，对三个对面进行这样的操作之后，求交的结果存在与否则代表了“光线是否在某一时刻同时在三个对面之间，即是否曾射入AABB之中”。</p>
+<h4 id="优化hit函数"><a href="#优化hit函数" class="headerlink" title="优化hit函数"></a>优化hit函数</h4><p>我们换一种方式描述hit代码中的逻辑，下面的代码比起原先的hit函数冗长的逻辑显得更为清晰。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">aabb::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt; <span class="number">3</span>; a++) &#123;</span><br><span class="line">        <span class="keyword">auto</span> invD = <span class="number">1.0f</span> / r.<span class="built_in">direction</span>()[a];</span><br><span class="line">        <span class="keyword">auto</span> t0 = (<span class="built_in">min</span>()[a] - r.<span class="built_in">origin</span>()[a]) * invD;</span><br><span class="line">        <span class="keyword">auto</span> t1 = (<span class="built_in">max</span>()[a] - r.<span class="built_in">origin</span>()[a]) * invD;</span><br><span class="line">        <span class="comment">//如果光线的方向向量某个分量为负，则光线一定会逆向穿过本轴上的对面。</span></span><br><span class="line">        <span class="keyword">if</span> (invD &lt; <span class="number">0.0f</span>)</span><br><span class="line">            std::<span class="built_in">swap</span>(t0, t1);</span><br><span class="line">        t_min = t0 &gt; t_min ? t0 : t_min;</span><br><span class="line">        t_max = t1 &lt; t_max ? t1 : t_max;</span><br><span class="line">        <span class="keyword">if</span> (t_max &lt;= t_min)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="给物体绑定包围盒"><a href="#给物体绑定包围盒" class="headerlink" title="给物体绑定包围盒"></a>给物体绑定包围盒</h4><p>AABB类已经被构造出来了，我们现在得把它和物体类联系起来了，因为包围盒子终归是要包裹住物体的。</p>
+<p>先来修改底层，给物体类添加一个纯虚函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;aabb.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hittable</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//制造包围盒子的函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>来看看这个新的函数，首先，它的返回值是bool类型，这是因为我们得给无法被包围盒包裹的物体一个解释，比如一个无限大的平面（以后可能会有），如果返回true，则表示包围盒生成失败。</p>
+<p>生成的包围盒通过参数中的引用传递出去 ：<code>aabb&amp; output_box</code>。</p>
+<p>至于另外两个参数time0和time1，它对于移动的球类以及后续所有动态的物体都是必要的，因为如果不给定一个时间区间，物体运动的轨迹将会无限长，无法被包围盒包裹。</p>
+<p>很容易可以写出球类的包围盒生成函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sphere</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//override包围盒生成函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">sphere::bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//这是一个球的外切立方体。它是能包裹住球且体积最小的AABB。</span></span><br><span class="line">    output_box = <span class="built_in">aabb</span>(</span><br><span class="line">        center - <span class="built_in">vec3</span>(radius, radius, radius),</span><br><span class="line">        center + <span class="built_in">vec3</span>(radius, radius, radius));</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    下面是移动的球类的包围盒生成函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;aabb.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">moving_sphere</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//override包围盒生成函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">double</span> _time0, <span class="keyword">double</span> _time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">moving_sphere::bounding_box</span><span class="params">(<span class="keyword">double</span> _time0, <span class="keyword">double</span> _time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//我们先生成移动的球在两个极端时间下的包围盒。</span></span><br><span class="line">    <span class="function">aabb <span class="title">box0</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time0) - vec3(radius, radius, radius),</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time0) + vec3(radius, radius, radius))</span></span>;</span><br><span class="line">    <span class="function">aabb <span class="title">box1</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time1) - vec3(radius, radius, radius),</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time1) + vec3(radius, radius, radius))</span></span>;</span><br><span class="line">    <span class="comment">//然后再求这两个包围盒的包围盒。这个surrounding_box函数会在之后给出。</span></span><br><span class="line">    output_box = <span class="built_in">surrounding_box</span>(box0, box1);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    下面添加两个包围盒的包围盒函数<code>surrounding_box(box0, box1)</code>到aabb.h中，它的本质是通过比较去筛选包围盒中的两个point3的分量，使得minimum的各个分量取两个盒子的minimum分量的较小值，maximum的所有分量都取两个盒子的maximum分量的较大值，如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">aabb <span class="title">surrounding_box</span><span class="params">(aabb box0, aabb box1)</span> </span>&#123;</span><br><span class="line">    <span class="function">point3 <span class="title">small</span><span class="params">(fmin(box0.min().x(), box1.min().x()),</span></span></span><br><span class="line"><span class="params"><span class="function">                 fmin(box0.min().y(), box1.min().y()),</span></span></span><br><span class="line"><span class="params"><span class="function">                 fmin(box0.min().z(), box1.min().z()))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">point3 <span class="title">big</span><span class="params">(fmax(box0.max().x(), box1.max().x()),</span></span></span><br><span class="line"><span class="params"><span class="function">               fmax(box0.max().y(), box1.max().y()),</span></span></span><br><span class="line"><span class="params"><span class="function">               fmax(box0.max().z(), box1.max().z()))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">aabb</span>(small,big);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>aabb对于本章开头提到的树状结构来说相当于叶子节点，本章基本完成了叶子节点的构造，但对于整个树状结构的搭建来说，才是刚刚开始。</p>
+<h4 id="课后实践"><a href="#课后实践" class="headerlink" title="课后实践"></a>课后实践</h4><p>尝试编写物体列表类的包围盒生成函数（这个函数会在下一章给出）。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingTheNextWeek.html">https://raytracing.github.io/books/RayTracingTheNextWeek.html</a></p>
+<p>参考自《Ray Tracing: The Next Week》第3.1节到第3.7节。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="tag"># 光追渲染器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/13/%E5%85%89%E8%BF%BD2.2/" rel="prev" title="动态模糊">
+      <i class="fa fa-chevron-left"></i> 动态模糊
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/07/18/%E5%85%89%E8%BF%BD2.4/" rel="next" title="包围盒（下）">
+      包围盒（下） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-livere">livere</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane livere" id="comment-livere">
+              
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
+  </div>
+  
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%BA%BF%E7%A2%B0%E6%92%9E%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%86%97%E4%BD%99"><span class="nav-number">1.</span> <span class="nav-text">光线碰撞中的重复冗余</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%88%92%E5%88%86%E4%B8%8E%E5%85%AB%E5%8F%89%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text">空间划分与八叉树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%92%E5%88%86%E7%AE%80%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">对象划分简述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AABB"><span class="nav-number">4.</span> <span class="nav-text">AABB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E5%86%99AABB%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">编写AABB类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96hit%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">优化hit函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%99%E7%89%A9%E4%BD%93%E7%BB%91%E5%AE%9A%E5%8C%85%E5%9B%B4%E7%9B%92"><span class="nav-number">7.</span> <span class="nav-text">给物体绑定包围盒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BE%E5%90%8E%E5%AE%9E%E8%B7%B5"><span class="nav-number">8.</span> <span class="nav-text">课后实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">9.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Collider"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Collider</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/endlesscollider" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;endlesscollider" rel="noopener" target="_blank"><i class="GitHub fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1652737065@qq.com" title="E-Mail → mailto:1652737065@qq.com" rel="noopener" target="_blank"><i class="E-Mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Collider</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz","app_key":"6k9HROMoqf6vzPadEMksx26r","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+  
+  
+    <script src="/js/cursor/cherry.js"></script>
+  
+
+</body>
+</html>

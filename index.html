@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">43</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -186,6 +186,122 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/08/09/%E5%85%89%E8%BF%BD2.5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/09/%E5%85%89%E8%BF%BD2.5/" class="post-title-link" itemprop="url">简单纹理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-09 00:00:00 / 修改时间：11:39:16" itemprop="dateCreated datePublished" datetime="2022-08-09T00:00:00+08:00">2022-08-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/08/09/%E5%85%89%E8%BF%BD2.5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/09/%E5%85%89%E8%BF%BD2.5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="内容梳理"><a href="#内容梳理" class="headerlink" title="内容梳理"></a>内容梳理</h4><p>上一章我们引入包围盒的概念后，大大缩短了我们运行时间，但整体逻辑开始变的复杂起来，没关系，让我我们来一起梳理一下之前的内容。</p>
+<p>首先我们把man函数当成一个raycast类，他除了需要一些长宽比，分辨率、采样数、反射深度等变量外，还需要一个自由相机、一个bvh_node构成的世界，有了这些，它就可以给我们呈现一张”美丽”的图片了，让我们先来看看bvh_node。</p>
+<p>首先看看相机，它由很多参数构造而成，但构造完成后，我们就不必管那么多，我们只需要在main函数传入一个0-1内的u、v值就可以得到我们想到的光线，再由ray_color函数来获得该光线带回的颜色。ray_color函数只需要光线，世界和深度就可以得到颜色，这个过程就是所谓的碰撞。</p>
+<p>world是bvh_node类型，由一个hittable_list和两个时间构造而成，在构造函数中，对物体按随机轴进行二分直到只有一个物体或物体列表，为它们套上各自的包围盒后，回溯为每个节点的左右孩子一起套上更大的包围盒。目前的这种方式也代表了虽然我们可以在hitable_list里面包含hittable_list但是该函数并不会打开列表将里面的物体拿出来进行二分，所以当下为了更快的速度不建议这么做。</p>
+<p>再回到我们的ray_color函数，光线首先会world这个最大包围盒检测，如果通过，继续检测左右孩子，当所有包围盒检测都通过之后，那么它便会和我们具体物体进行碰撞检测，由于我们的bvh的排序仅仅是通过比较每个节点最小值得到，所以是可能同时通过所有检测来到多个不同的物体进行碰撞，所以hit函数中深度检测也是必不可少的一环，将碰撞带回反射率和新的光线带回的颜色相乘就得到了这一次采样的结果，上述过程是一个递归的过程，反射光线回再一次与世界”碰撞“，直到反射的光线什么都没有碰到或者是碰到了光源。</p>
+<p>这里还有一个非常重要的点，就是怎么得到的新的反射（折射光线）呢？这就是材质存在的意义了，每个物体中都包含一个材质，通过hit函数调用材质内的方法得到就可以得到一根新的光线！</p>
+<p>将这样的采样重复一定次数取平均就得到这了这个像素点的颜色了，填满它们就得到我们的图片了。为了更加方便的理解这里放上他们的类图：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B1%BB%E5%9B%BE.png" alt="光线追踪类图"></p>
+<p>最后谈谈我们是如何管理这个world，一切还得从hittable说起，它有我们最最最重要的碰撞函数hit，以及刚刚引入的bounding_box包围盒生成函数，还有四个继承者分别是球、移动球、物体列表以及bvh_node，继承者们自然需要实现基类的各自的碰撞及包围盒函数。</p>
+<p>让我们来看看这些继承者们，首先最简单球和移动球，他们是抽象模型中最底层最具体的类，无论上层如何处理，最后的任务都要落到他们的头上，当然以后也会增加更多的物体（打工人），进行扩充，物体对hittable的继承也让我们可以通过容器统一进行管理实现多态。</p>
+<p>物体列表可以看成一个总经理，他可以把分配任务和部门或是编号给手底下的底层打工人和小经理，也就是可以对列表内每一个物体执行碰撞检测和生成包围盒</p>
+<p>bvh_node那就得是董事长了，给他一个经理，董事长给经理手底下的人排序编号，到时候有任务来了，就看看适合哪个部门的哪个编号的人干，这样公司，是光线就可以找到对应的物体进行碰撞了。</p>
+<p>好了，现在暂时忘掉它们。接下来几章的内容和包围盒、动态模糊以及时空光追都没有什么关系。换句话说，丢弃掉之前的那些代码也不影响这几章程序的运行。</p>
+<p>我们将目光重新移回物体表面。回顾一下我们的三大材质：磨砂、金属和玻璃——难道我们的世界仅限于此吗？渲染器还不能描述陶瓷的纹路，又或是婴儿细腻的皮肤，甚至这个世界上的所有物体表面！世界上所有的东西都是不完美的，你见过没有划痕的金属和不沾上人类指纹的玻璃球么？</p>
+<p>换句话来说，这个世界上不存在仅仅使用材质就可以完美模拟的物体表面。是时候请出材质最好的搭档——“纹理”了！</p>
+<h4 id="纹理简谈"><a href="#纹理简谈" class="headerlink" title="纹理简谈"></a>纹理简谈</h4><p>纹理，在图形学领域通常表示程序化的物体表面颜色。比如，通过一些参数和数据，来计算得到物体表面某一点的颜色。根据具体计算方式不同可以大致分为两种：</p>
+<p>①：找一张图，对于这个物体表面上的任意一点，都赋予其一个二维坐标，通过这个二维坐标在这个二维平面图上去找，找到的那一点是什么颜色，那物体表面该处就是什么颜色。这个二维坐标如何找到呢？一般来说是由建模师进行安排，建模师在制作模型的时候会为模型上的一些点指定一个二维坐标，其他的点的二维坐标就由这些给定点的插值进行计算——当然我们的渲染器到目前为止尚未引入三角面片的概念，这里不多谈。</p>
+<p>这种方式得到的纹理看上去就好像是把这张二维图片贴到三维表面上一样，所以这又叫做贴图纹理。它的应用相当的广泛。</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1651803841431-cf8bc296-b384-4de9-9300-b05c1816e02f.png" alt="img"></p>
+<p>②：另一种获取各点的颜色的方式就显得比较理科生了：利用某种数学函数直接得到某点的颜色。这种纹理我们已经接触过了。还记得“元气弹”么？这就是一种纹理，我们把物体表面的法线信息映射到颜色区间并显示出来，当然这种纹理还有很多，利用法线只是其中的一种。</p>
+<h4 id="纹理基类"><a href="#纹理基类" class="headerlink" title="纹理基类"></a>纹理基类</h4><p>每次引入一个新事物必定要先完成基类的编写，新建文件texture.h，并敲入如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEXTURE_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEXTURE_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">texture</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> color <span class="title">value</span><span class="params">(<span class="keyword">double</span> u, <span class="keyword">double</span> v)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>本纹理基类基于上小节中的第一种纹理类型：他只有一个函数，这个函数需要一个二维坐标u和v，返回一个颜色。当然，我们提到的拿着这个坐标去贴图中找颜色等等，这些都放到子类的value函数里来处理。从这个基类建立完成之后，如何得到颜色也就被规范化了，无论你是拿这个uv进行某种函数计算得到颜色，还是拿到某张图里去查找，这些都是子类该干的事情。</p>
+<p>当然，仅仅传入uv并不能得到诸如“元气弹”之类的纹理，如果你需要通过纹理类创建元气弹，我们可以在之后再改造这个基类，加入诸如法线等等的参数。</p>
+<p>至于这个u,v坐标从何而来，不是纹理类该管的事情，uv的计算不该放在这个类里，这个我们之后介绍。</p>
+<p>uv坐标作为引入纹理之后碰撞中最重要的信息之一，需要把它写进record结构体：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hit_record</span> &#123;</span></span><br><span class="line">    vec3 p;</span><br><span class="line">    vec3 normal;</span><br><span class="line">    shared_ptr&lt;material&gt; mat_ptr;</span><br><span class="line">    <span class="keyword">double</span> t;</span><br><span class="line">    <span class="comment">//uv坐标。</span></span><br><span class="line">    <span class="keyword">double</span> u;</span><br><span class="line">    <span class="keyword">double</span> v;</span><br><span class="line">    <span class="keyword">bool</span> front_face;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h4 id="纯色纹理"><a href="#纯色纹理" class="headerlink" title="纯色纹理"></a>纯色纹理</h4><p>我们的金属和磨砂类都有名为albedo的变量来控制最终颜色。其实纯色也可以被当作一种纹理，就好像我们把<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/276f208c260ee34aab2ec24423417272.svg" alt="img">也当作一种函数（常值函数）一样。</p>
+<p>并不是所有的渲染器都会把纯色当作一种纹理，但在本渲染器中，我推荐这么做。这样意味着纹理类搭建完毕之后，对物体表面颜色的所有的解释都会被放到一个类里面。这会使代码架构变得更加易懂。</p>
+<p>当然，把纯色解释为纹理会使得纯色材质会比过去更加耗时，因为有更多需要维护的变量，但不会比过去慢多少。</p>
+<p>继续把这个类写在texture.h文件里</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TEXTURE_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEXTURE_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">texture</span> &#123;</span></span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">solid_color</span> :</span> <span class="keyword">public</span> texture &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">solid_color</span>() &#123;&#125;</span><br><span class="line">        <span class="built_in">solid_color</span>(color c) : <span class="built_in">color_value</span>(c) &#123;&#125;</span><br><span class="line">        <span class="built_in">solid_color</span>(<span class="keyword">double</span> red, <span class="keyword">double</span> green, <span class="keyword">double</span> blue)</span><br><span class="line">          : <span class="built_in">solid_color</span>(<span class="built_in">color</span>(red,green,blue)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//纯色纹理的uv参数仅仅是个摆设，无论吃到什么样的uv，直接吐颜色值就行，毕竟就一种颜色。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> color <span class="title">value</span><span class="params">(<span class="keyword">double</span> u, <span class="keyword">double</span> v)</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> color_value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="comment">//纯色纹理的颜色值</span></span><br><span class="line">        color color_value;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -310,6 +426,305 @@
 <p><a href="">shader入门精要第11章让画面动起来</a></p>
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2058427">Unity Shader 一 激光特效Shader[通俗易懂]</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bboyxu/article/details/88897214#comments_9431743">Shader smoothstep实现线条渐变色</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/18/%E5%85%89%E8%BF%BD2.4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/18/%E5%85%89%E8%BF%BD2.4/" class="post-title-link" itemprop="url">包围盒（下）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-18 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-18T00:00:00+08:00">2022-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-09 09:39:09" itemprop="dateModified" datetime="2022-08-09T09:39:09+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/07/18/%E5%85%89%E8%BF%BD2.4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/18/%E5%85%89%E8%BF%BD2.4/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="物体列表的AABB"><a href="#物体列表的AABB" class="headerlink" title="物体列表的AABB"></a>物体列表的AABB</h4><p>上一章中基本讲完了各个类的aabb写法，还剩最后一个，物体列表类的aabb生成，下面给出：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;aabb.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hittable_list</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//包围盒生成函数</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">hittable_list::bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//如果物体列表为空，我们无法为空物体生成包围盒，直接返回false。</span></span><br><span class="line">    <span class="keyword">if</span> (objects.<span class="built_in">empty</span>()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    aabb temp_box;</span><br><span class="line">    <span class="comment">//设定一个flag用来初始化一个包围盒。</span></span><br><span class="line">    <span class="keyword">bool</span> first_box = <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">//遍历列表内物体。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; object : objects) &#123;</span><br><span class="line">        <span class="comment">//如果遍历刀列表内有物体无法建立包围盒（返回fasle），那对不起，物体列表也无能为力了，直接返回。</span></span><br><span class="line">        <span class="comment">//注意，这个if中的bounding_box函数把这个子物体的包围盒赋给了temp_box。</span></span><br><span class="line">        <span class="keyword">if</span> (!object-&gt;<span class="built_in">bounding_box</span>(time0, time1, temp_box)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">//如果是第一次建立包围盒，那直接使用temp_box。</span></span><br><span class="line">        <span class="comment">//否则要求本循环子物体的aabb和之前包围盒的包围盒，使用surrounding_box函数。</span></span><br><span class="line">        output_box = first_box ? temp_box : <span class="built_in">surrounding_box</span>(output_box, temp_box);</span><br><span class="line">        <span class="comment">//在首次建立包围盒成功之后，把first_box置false。</span></span><br><span class="line">        first_box = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    物体列表的aabb的求法就是逐个子物体遍历，求它们这些物体共同的包围盒。其中使用到了上一章中提到的计算两个包围盒的包围盒的函数surrounding_box。</p>
+<p>自此，我们已有的物体类：球类、移动的球类和物体列表类都接入了生成包围盒的函数。</p>
+<h4 id="BVH类"><a href="#BVH类" class="headerlink" title="BVH类"></a>BVH类</h4><p>是时候把这一切组织起来了，记得上一章中提到的对象划分已经对象划分下的树状结构吗？我们还没有给它起名字呢：我们将创建一个树状结构，树的每一个节点都是一个包围盒或者一个物体，包围盒一层层的嵌套，物体作为叶子节点被一层一层的包裹着，这种结构叫<strong>层次包围盒</strong>（Bounding Volume Hierarchies），或称<strong>BVH</strong>。</p>
+<p>BVH既然是一棵树，我们首先得创建它的节点，和其他所有树结构一样，它的节点得储存孩子信息。如果我们把事情再想得简单一点，每个大包围盒内部包着两个子包围盒，那BVH结构就变成了一个二叉树，看代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> BVH_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BVH_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable_list.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这个节点类是物体类的子类，我们还是得依靠多态的便利性。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bvh_node</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">bvh_node</span>();</span><br><span class="line">        <span class="comment">//这是传入物体列表的构造，直接调用下面的有vector的构造。</span></span><br><span class="line">        <span class="built_in">bvh_node</span>(<span class="keyword">const</span> hittable_list&amp; list, <span class="keyword">double</span> time0, <span class="keyword">double</span> time1)</span><br><span class="line">            : <span class="built_in">bvh_node</span>(list.objects, <span class="number">0</span>, list.objects.<span class="built_in">size</span>(), time0, time1)</span><br><span class="line">        &#123;&#125;</span><br><span class="line">        <span class="comment">//这个构造函数非常复杂，之后再说。</span></span><br><span class="line">        <span class="built_in">bvh_node</span>(</span><br><span class="line">            <span class="keyword">const</span> std::vector&lt;shared_ptr&lt;hittable&gt;&gt;&amp; src_objects,</span><br><span class="line">            <span class="keyword">size_t</span> start, <span class="keyword">size_t</span> end, <span class="keyword">double</span> time0, <span class="keyword">double</span> time1);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//override hit函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//生成包围盒的函数</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="comment">//本节点的左右子节点指针，它们都是物体类型的指针。</span></span><br><span class="line">        shared_ptr&lt;hittable&gt; left;</span><br><span class="line">        shared_ptr&lt;hittable&gt; right;</span><br><span class="line">        <span class="comment">//本节点的包围盒，会在构造函数里生成。</span></span><br><span class="line">        aabb box;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//注意，bvh节点类的包围盒我们会在构造函数里生成，这里直接赋值即可。</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">bvh_node::bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    output_box = box;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​    来看一下hit函数，在这里你会看到包围盒是如何减少计算的——你连我的盒子都碰不到，那我们就没有继续看下去的必要了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">bvh_node::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//你连我的盒子都碰不到，那我们就没有继续看下去的必要了。</span></span><br><span class="line">    <span class="keyword">if</span> (!box.<span class="built_in">hit</span>(r, t_min, t_max))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//继续遍历左右物体。</span></span><br><span class="line">    <span class="keyword">bool</span> hit_left = left-&gt;<span class="built_in">hit</span>(r, t_min, t_max, rec);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//见下方讲解。</span></span><br><span class="line">    <span class="keyword">bool</span> hit_right = right-&gt;<span class="built_in">hit</span>(r, t_min, hit_left ? rec.t : t_max, rec);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//遍历过程中只要不是所有的子物体都没碰到，就算产生了碰撞。</span></span><br><span class="line">    <span class="keyword">return</span> hit_left || hit_right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    注意上面的代码中有一个剪枝操作，在第十行中，遍历右子树节点的时候先检查了左子树返回值是否为true，即光线有无和左子树碰撞，如果有，那么在判断右子树的时候就又有一个参照物了：“右子树上的物体是否是先被光线碰到的？或者它被左子树上的物体遮挡了？改变t的范围，只在右子树物体离光源更近的情况下，才认可这次碰撞，其他的直接剪掉。”</p>
+<p>我们现在来理一下思路，我们写这样的hit函数会发生什么，假设一个bvh在场景中构造完毕（虽然我们暂时没有给出用来构造bvh的构造函数），即，现在main函数中那个world物体不再是一个物体列表，换做是一个已经构建好的bvh，现在有一根光线自相机或者某处发射过来：</p>
+<p>既然有光线，我们就得调用场景中所有物体的hit，现在只有一个物体那就是bvh，我们只需要调用它的hit即可。如果这根光线没有碰到最外层的盒子，那上述代码中的第四行<code>return false</code>就是整个碰撞检测的最后一句代码，在这之前我们只调用了一个aabb的hit函数，无论场景中有多少物体，也只需要调用这一个函数即可。再想想如果我们没有bvh，而是使用物体列表来管理场景中的物体，那我们会做哪些工作——如果t的范围不考虑进去的话，即便这根光线没有碰到任何一个物体，我们也需要调用每个物体的hit函数，其中就包括一些球，每个球意味着要求一次一元二次方程的求根公式。</p>
+<p>要知道，场景是无限大的，物体只占了场景中微不足道的某个角落，我们创建的大部分光线实际上都是没有和物体发生碰撞的光线，光考虑这部分光线，bvh就比传统的物体列表要快上几个数量级了。</p>
+<h4 id="构造BVH"><a href="#构造BVH" class="headerlink" title="构造BVH"></a>构造BVH</h4><p>到此为止，核心问题还没有解决，如何构造一棵bvh树呢？</p>
+<p>先来讲一讲上一课的遗留问题，对象划分的依据是什么？首先，必须要明确一个概念：我们现在不需要任何规律的把bvh里的所有物体粗暴的分成两堆，代码也能很好的工作，即便包围盒内部的包围盒比外面的盒子还要大，也不影响代码的运行，充其量只是慢了一点。我们要找的对象划分的依据，是能让程序运行更快，更发挥bvh优势的一种划分方式，它可以是这样一个划分：</p>
+<p>先随便找一个轴，x、y或者z轴，把物体列表里的物体按照这个轴从小到大的顺序进行排序并划分成两堆，对于左右子树，用这两堆分别再次进行递归。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">bvh_node::<span class="built_in">bvh_node</span>(</span><br><span class="line">    <span class="keyword">const</span> std::vector&lt;shared_ptr&lt;hittable&gt;&gt;&amp; src_objects,</span><br><span class="line">    <span class="keyword">size_t</span> start, <span class="keyword">size_t</span> end, <span class="keyword">double</span> time0, <span class="keyword">double</span> time1</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="comment">//创建一个指针指向形参中的物体列表，增加代码可读性。</span></span><br><span class="line">    <span class="keyword">auto</span> objects = src_objects; </span><br><span class="line">    <span class="comment">//随机一个int值，0，1，2分别代表x，y，z轴，这个函数之后会给出。</span></span><br><span class="line">    <span class="keyword">int</span> axis = <span class="built_in">random_int</span>(<span class="number">0</span>,<span class="number">2</span>);</span><br><span class="line">    <span class="comment">//通过选定的是哪个坐标轴选到特定的比较器，注意，这个comparator是一个函数指针</span></span><br><span class="line">    <span class="comment">//之后会给出box_x_compare等三个函数的签名即具体函数体。</span></span><br><span class="line">    <span class="keyword">auto</span> comparator = (axis == <span class="number">0</span>) ? box_x_compare</span><br><span class="line">                    : (axis == <span class="number">1</span>) ? box_y_compare</span><br><span class="line">                                  : box_z_compare;</span><br><span class="line">    <span class="comment">//本列表中有多少物体？</span></span><br><span class="line">    <span class="keyword">size_t</span> object_span = end - start;</span><br><span class="line">    <span class="comment">//如果发现这个列表中只有一个物体了，那令本节点的左右孩子指针都指向这个物体。</span></span><br><span class="line">    <span class="keyword">if</span> (object_span == <span class="number">1</span>) &#123;</span><br><span class="line">        left = right = objects[start];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果有俩物体，按照给定轴信息，看看谁在左，谁在右。</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (object_span == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">comparator</span>(objects[start], objects[start+<span class="number">1</span>])) &#123;</span><br><span class="line">            left = objects[start];</span><br><span class="line">            right = objects[start+<span class="number">1</span>];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            left = objects[start+<span class="number">1</span>];</span><br><span class="line">            right = objects[start];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果本段物体列表有超过两个物体，直接对其进行排序，并且二分之后，开启下一轮递归。</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        std::<span class="built_in">sort</span>(objects.<span class="built_in">begin</span>() + start, objects.<span class="built_in">begin</span>() + end, comparator);</span><br><span class="line">        <span class="comment">//二分找中值。</span></span><br><span class="line">        <span class="keyword">auto</span> mid = start + object_span/<span class="number">2</span>;</span><br><span class="line">        left = make_shared&lt;bvh_node&gt;(objects, start, mid, time0, time1);</span><br><span class="line">        right = make_shared&lt;bvh_node&gt;(objects, mid, end, time0, time1);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//注意，代码运行到这里，说明本节点的左右孩子递归代码都已经执行完毕。是时候给他们套上包围盒了。</span></span><br><span class="line">    aabb box_left, box_right;</span><br><span class="line">    <span class="comment">//给左右节点分别套盒子，并且利用返回信息来判断盒子是否成功生成。</span></span><br><span class="line">    <span class="keyword">if</span> (  !left-&gt;<span class="built_in">bounding_box</span> (time0, time1, box_left)</span><br><span class="line">       || !right-&gt;<span class="built_in">bounding_box</span>(time0, time1, box_right)</span><br><span class="line">    )</span><br><span class="line">        <span class="comment">//进入这个if表示左右孩子的某个盒子没有生成成功。</span></span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;No bounding box in bvh_node constructor.\n&quot;</span>;</span><br><span class="line">    <span class="comment">//注意，这里有一个bug，如果bouding_box返回false,其box一定是没有被赋值的，即为空。</span></span><br><span class="line">    <span class="comment">//空box调用下面的surrounding_box函数是会出错的，因为访问了空物体。</span></span><br><span class="line">    <span class="comment">//我们暂时没有无法生成包围盒的物体，如：无限大的平面。所以这个问题我们先不要管。</span></span><br><span class="line">    box = <span class="built_in">surrounding_box</span>(box_left, box_right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随机范围内的int值的函数如下所示，工具函数都写到rtweekend.h里：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">random_int</span><span class="params">(<span class="keyword">int</span> min, <span class="keyword">int</span> max)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 返回[min,max]范围内int值。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="built_in">random_double</span>(min, max+<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    最后，我们给出比较器的函数代码，注意把它写在上述构造函数的前面，让编译器可以成功的找到他们：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比较两个物体的盒子“大小”的主要函数，第三个参数axis表示比较的是哪个轴。</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">box_compare</span><span class="params">(<span class="keyword">const</span> shared_ptr&lt;hittable&gt; a, <span class="keyword">const</span> shared_ptr&lt;hittable&gt; b, <span class="keyword">int</span> axis)</span> </span>&#123;</span><br><span class="line">    aabb box_a;</span><br><span class="line">    aabb box_b;</span><br><span class="line">    <span class="comment">//先求两个物体的盒子。</span></span><br><span class="line">    <span class="keyword">if</span> (!a-&gt;<span class="built_in">bounding_box</span>(<span class="number">0</span>,<span class="number">0</span>, box_a) || !b-&gt;<span class="built_in">bounding_box</span>(<span class="number">0</span>,<span class="number">0</span>, box_b))</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">&quot;No bounding box in bvh_node constructor.\n&quot;</span>;</span><br><span class="line">    <span class="comment">//比较两个盒子的较小的边，谁的给定轴分量越大，谁就越大。</span></span><br><span class="line">    <span class="keyword">return</span> box_a.<span class="built_in">min</span>().e[axis] &lt; box_b.<span class="built_in">min</span>().e[axis];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面是三个轴比较函数，都是调用上面的比较函数。这三个函数存在的意义是方便构造函数中的函数指针。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">box_x_compare</span> <span class="params">(<span class="keyword">const</span> shared_ptr&lt;hittable&gt; a, <span class="keyword">const</span> shared_ptr&lt;hittable&gt; b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">box_compare</span>(a, b, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">box_y_compare</span> <span class="params">(<span class="keyword">const</span> shared_ptr&lt;hittable&gt; a, <span class="keyword">const</span> shared_ptr&lt;hittable&gt; b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">box_compare</span>(a, b, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">box_z_compare</span> <span class="params">(<span class="keyword">const</span> shared_ptr&lt;hittable&gt; a, <span class="keyword">const</span> shared_ptr&lt;hittable&gt; b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">box_compare</span>(a, b, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试包围盒"><a href="#测试包围盒" class="headerlink" title="测试包围盒*"></a>测试包围盒*</h4><p>现在回到动态模糊那一章的最后一个场景，我们分别使用物体列表和BVH来装载场景物体，并运行光追器，来对比一下两者的耗时，首先，给main函数打个时间戳：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !MULTITHREAD</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">//需要引用此头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//这个函数可以获取当前时间，并转换成某种基于毫秒的整数。</span></span><br><span class="line">    <span class="keyword">auto</span> start = <span class="built_in">GetTickCount64</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//main中的全部代码都要被包进来。</span></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;\nDone.\n&quot;</span>;</span><br><span class="line">    <span class="comment">//再次获得当前时间，并且减去main函数开头时记录的时间，便得到了毫秒差。</span></span><br><span class="line">    <span class="keyword">int</span> time = <span class="built_in">GetTickCount64</span>() - start;</span><br><span class="line">    time = time / <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">auto</span> minute = time / <span class="number">60</span>;</span><br><span class="line">    <span class="keyword">auto</span> second = time % <span class="number">60</span>;</span><br><span class="line">    <span class="comment">//简单转换一下，并输出出去。</span></span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;took &quot;</span> &lt;&lt; minute &lt;&lt; <span class="string">&quot;m &quot;</span> &lt;&lt; second &lt;&lt;<span class="string">&quot;s  to complete. \n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>紧接着，用bvh提到程序中的物体列表，在main函数中调用random_scene的地方，直接把物体列表传到bvh_node类的构造函数里，创建一个bvh即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//调用函数生成一个有着许多随机小球的场景！！！</span></span><br><span class="line"><span class="comment">//auto world = random_scene();</span></span><br><span class="line"><span class="keyword">auto</span> world = <span class="built_in">bvh_node</span>(<span class="built_in">random_scene</span>(),<span class="number">0</span>,<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>传入构造函数的两个时刻值0和1是和相机的快门打开时间和关闭时间保持一致的。这决定了我们程序中所有的移动的球对象的包围盒都是通过这两个时间值来计算的。对于直线运动的球来说，在两个极端情况下的包围盒的包围盒，即是最终的包围盒。</p>
+<p>运行程序，可见命令行中的运行时间（release-x86）：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1651405102043-9a34d32d-2fef-4880-9196-5a97a9d00308.png" alt="img"></p>
+<p>对比前者——物体列表作为容器下的运行时间，后者bvh容器下的运行时间快了好几倍。</p>
+<h4 id="课后实践"><a href="#课后实践" class="headerlink" title="课后实践"></a>课后实践</h4><ol>
+<li><p>在脑海中构建一个少量物体的bvh，按顺序阅读bvh的构造函数，体会物体被二分和生成包围盒的过程。接下来思考hit函数中包围盒是如何和光线求交的，这有助于理解整体架构。</p>
+</li>
+<li><p>将bvh应用于多线程模式，并生成一个视频，比较使用包围盒前后的序列帧生成时间。</p>
+</li>
+<li><p>将之前所有的关键类的关系做出一个类图，并梳理他们之间的调用过程。回想一下我们是怎么得到一张图片的。</p>
+</li>
+</ol>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingTheNextWeek.html">https://raytracing.github.io/books/RayTracingTheNextWeek.html</a></p>
+<p>参考自《Ray Tracing: The Next Week》第3.8节到第3.10节。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD2.3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/01/%E5%85%89%E8%BF%BD2.3/" class="post-title-link" itemprop="url">包围盒（上）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-01T00:00:00+08:00">2022-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-09 09:08:24" itemprop="dateModified" datetime="2022-08-09T09:08:24+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/07/01/%E5%85%89%E8%BF%BD2.3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/01/%E5%85%89%E8%BF%BD2.3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们开开心心的讲完了中篇的前两章，渲染出了炫酷的动态模糊效果，它简单而且漂亮。但是，该来的总归还是要来，下面的几章会给大伙儿整些头疼的：包围盒。</p>
+<h4 id="光线碰撞中的重复冗余"><a href="#光线碰撞中的重复冗余" class="headerlink" title="光线碰撞中的重复冗余"></a>光线碰撞中的重复冗余</h4><p>现在回顾一下我们发射光线到回收颜色的全过程，我们就会明白，我们的代码有哪些不合理的地方：</p>
+<p>相机朝虚拟视口中的像素格子发出光线，这跟光线会尝试调用场景中所有物体（本项目中一个名为world的物体列表）的hit函数——会按物体<strong>插入物体列表时候的顺序</strong>对物体进行逐一调用它们自己的hit函数。这些子物体要不还是物体列表，或者是球、移动的球之类的实体物体。</p>
+<p>我们再来看看球和移动的球是如何处理光线碰撞的，我们通过解一个二元一次方程来判断球是否和光线碰撞，返回碰撞时刻以及碰撞点信息等等（具体见第五章《球》）。这意味着对于每一次射出光线（无论是相机射出的，还是材质表面反射得来的）都要和场景中所有的球进行一次判断。如果场景中有100个物体，意味着，每一次hit之后反射的光线，就要解100个二元一次方程。假设平均每根光线会在场景中弹射5次，对于每一根光线我们要解500个方程，采样数会把这个数字拉到50000（假设每个像素采样100次），而像素数量会把这个数字拉到亿级别（假设我们的场景是400*300），现在看看我们球类代码中的hit函数，那么一大坨，能想象每次在命令行中点击回车，电脑运行了几亿次这部分的代码吗？</p>
+<p>不合理的地方在哪里呢？假设我们有一个光线朝西边径直而去，在光线射过去的方向的相反方向有99颗球，这九十九颗球也都逃不过碰撞检测函数。这分莫名其妙的开销应该是可以通过某种方式避免的。</p>
+<p>总结一下：<strong>光线-物体交集是光线追踪器中的主要时间瓶颈，时间与物体数量成线性关系。这是对同一模型的重复搜索，有没有什么办法可以使之复杂度降低呢？比如通过某种二分法让其的复杂度降低到对数等级？</strong></p>
+<h4 id="空间划分与八叉树"><a href="#空间划分与八叉树" class="headerlink" title="空间划分与八叉树"></a>空间划分与八叉树</h4><p>刚提到了二分法，但二分法必须针对已排序的数据才有作用，也就是说，我们必须让场景中的物体依照某种规则变得有序，才可以使用二分法的思想降低复杂度。</p>
+<p>假设我们的物体都集中在以原点为中心的单位立方体里面，很容易可以想到一种划分方式：先通过三个坐标轴把空间划分为八个小立方体。</p>
+<p>如果把任意一个数带入t，光线的公式<img src="https://cdn.nlark.com/yuque/__latex/31ae9c334f3c47daac82d08f80c0a96b.svg" alt="img">，最终得到的坐标点的x,y,z都不会大于0，那我们就没有必要检查位于第Ⅰ象限的物体了。如果x,y,z有全大于0的情况，说明光线与第Ⅰ象限有交点，我们就对第一象限中的小立方体继续划分——划分成八个更小的立方体，再检查光线是否与它们有交点，位于和光线无交点的小立方体内的物体，我们就无需检查了。这种思想叫<strong>空间划分</strong>。</p>
+<p>整个搜索链条就如同树一样，先看有没有和大立方体有交集，如果有交集就再看其中的小立方体，然后一直往下看，直到我们人为规定的某个大小的立方体内不再有更小的立方体，就直接查看该立方体内的物体即可。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646477603061-2d3fc2ee-9316-414c-b911-72b25014180f.png" alt="img"></p>
+<p><strong>八叉树</strong>——这种结构有一个浅显易懂的名字。很容易可以写出关于八叉树的伪代码（这个八叉树只有两层，第三层就是物体层）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (光线碰到了某个立方体)</span><br><span class="line">    <span class="keyword">if</span>(光线碰到了子立方体<span class="number">1</span>号)&#123;</span><br><span class="line">        <span class="keyword">if</span>(光线碰到了子立方体<span class="number">1</span>号内的某个物体)&#123;</span><br><span class="line">            处理碰撞信息。</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(光线碰到了子立方体<span class="number">2</span>号)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(光线碰到了子立方体<span class="number">7</span>号)&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>我们没有讨论如何判断光线和立方体求交，也没有讨论物体在两个立方体的边界上我们要如何处理，篇幅有限。我们不会在项目中使用八叉树，但是它确实是一个可行的方案，并且很容易被图形工程师们提起。</p>
+<p>我们并不准备使用空间划分的八叉树来管理我们场景中的物体，因为还有另一个备选方案可以使用——<strong>对象划分</strong>。这种空间划分比空间划分使用更为广泛。</p>
+<h4 id="对象划分简述"><a href="#对象划分简述" class="headerlink" title="对象划分简述"></a>对象划分简述</h4><p>现在假设空间中有15个对象，我们按照某种规律把它们分成俩个部分，如下图所示：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1646539589363-daec5150-6cc0-45db-8aad-8222c6717e88.png" alt="img"></p>
+<p>至于划分对象的算法我们之后再说。</p>
+<p>这是三维空间的某种对象划分在二维上的投影示意图。可见对象划分之后的各个区域是很可能会重叠的，但是也就不再存在一个物体处于区域边界的情况。</p>
+<p>当然这里也依然存在一个树状结构。光线先和最外层和紫色部分算交点，如果存在交点才会查看红蓝两个区域的交点情况。</p>
+<h4 id="AABB"><a href="#AABB" class="headerlink" title="AABB"></a>AABB</h4><p>我们已经决定使用对象划分来加速光线碰撞，这里有很多问题待解决：具体如何划分物体？树状结构如何搭建？新的场景物体又该如何管理（物体列表显然已经不满足要求了）？</p>
+<p>这些问题先靠一边，我们先来把目光瞄准到所谓“区域”，也就是包围盒。</p>
+<p>包围盒应该是什么样的？我们又如何计算光线与盒子求交呢？</p>
+<p>如果不考虑性能，包围盒可以是任何形状，它可以是一个大球，包裹住内部的小球，这样我们只需要算一次一元二次方程就可以得到光线和大球碰撞的结果，如果有碰撞再计算光线和内部小球的碰撞情况。而且我们计算光线和大球求交的时候不需要计算具体反射光线，完全不需要调用材质代码，只需要返回是否碰撞到信息，以便我们去判断需不需要和内部小球进一步计算碰撞即可。</p>
+<p>但是光线和球的碰撞计算复杂度还是高了一点，有一种结构最擅长处理和光线求交，这就是轴向立方体。使用轴向立方体作为包围盒的形状，这就是<strong>轴向包围盒（****Axis-Aligned Bounding Boxes</strong> <strong>）</strong>，又叫<strong>AABB</strong>。</p>
+<p>轴向立方体就是所有的边都和坐标轴平行的立方体，它和光线求交的计算复杂度低，且易于理解。</p>
+<p>先不看Z轴，在平面上的轴向包围盒如下图所示，空间中的包围盒和其原理相同，可以通过推广得到：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064464317-099412bb-3163-4426-a4e4-bb19920e8b88.png" alt="img"></p>
+<p>平面上的AABB（2D-AABB）即是四条直线<img src="https://cdn.nlark.com/yuque/__latex/4974822c92d19605bcd18bf7fdf478b0.svg" alt="img">围成的区域。对于这对平行线<img src="https://cdn.nlark.com/yuque/__latex/c36f7ad9930be00ac943fdf62adee947.svg" alt="img">，光线会和它们产生两个交点，当然，另外一对平行线同理：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647064714114-9991e2f8-794b-473b-bd89-ad8480fc8c0e.png" alt="img"></p>
+<p>看看光线传播到<img src="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg" alt="img">分量为<img src="https://cdn.nlark.com/yuque/__latex/48d05334b5b0710d63edb6b4b3ac631c.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/0e8831d88c93179dbe6c8b5e3678ca20.svg" alt="img">时，时间<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">是多少，只要把光线原点位置坐标向量A的x分量和方向向量b的x分量带入公式<img src="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg" alt="img">即可：</p>
+<p><img src="https://cdn.nlark.com/yuque/__latex/626aeee8e7ac4fa7933d7400f02ead03.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/8b5d8216af9ea05bfc8c35fb3e54f441.svg" alt="img"></p>
+<p>同理，在y轴上你同样可以得到两个时间：</p>
+<p><img src="https://cdn.nlark.com/yuque/__latex/bce9659878ed8e8581ba4708410d8fec.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/02d0d3620f1610730048fed887bc6b18.svg" alt="img"></p>
+<p>好，有了这四个时间值，我们如何判断这根光线有没有和2D-AABB相交呢？看下图： </p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1647270555009-073512e0-d9cc-4f73-b5d1-bc1f2b43372b.png" alt="img"></p>
+<p>对于上图中上方的光线，其(t0,t1)和(t2,t3)两个时间区域并无交集，在图中的表现即是蓝色和绿色的线段并无重合处，那就可以断言，这根光线和盒子并无交集。而下面的光线可见明显蓝绿重合，它一定是一根穿过盒子的光线。</p>
+<p>很容易就能把这个原理推广到三维的情形下：</p>
+<p><strong>3D-AABB由三对面组成，假设光线传播到与XoY面平行的那一对面上的时间是t0,t1，传播到YoZ面上的时间t2,t3，ZoX则是t4,t5。则一定有：光线和盒子相交 &lt;==&gt; (t0,t1)、(t2,t3)和(t4,t5)两两有交集。</strong></p>
+<p>伪码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">compute</span> (tx0, tx1)</span><br><span class="line"><span class="built_in">compute</span> (ty0, ty1)</span><br><span class="line"><span class="built_in">compute</span> (tz0, tz1)</span><br><span class="line"><span class="comment">//返回这三个时间段有无重叠</span></span><br><span class="line"><span class="keyword">return</span> overlap?( (tx0, tx1), (ty0, ty1), (tz0, tz1))</span><br></pre></td></tr></table></figure>
+
+<p>对于坐标轴上的两个区间(a,b)和(c,d)，判断区间有无重叠，只需要取a和c较大的那一个和b与d中较小的那一个比较，如果前者小于后者，说明有重叠，这部分的伪码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">overlap</span><span class="params">(a, b, c, d)</span></span></span><br><span class="line"><span class="function">    f </span>= <span class="built_in">max</span>(a, c)</span><br><span class="line">    F = <span class="built_in">min</span>(b, d)</span><br><span class="line">    <span class="built_in"><span class="keyword">return</span></span> (f &lt; F)</span><br></pre></td></tr></table></figure>
+
+<p>铺垫完成，接下来我们来从代码层面构造AABB。</p>
+<h4 id="编写AABB类"><a href="#编写AABB类" class="headerlink" title="编写AABB类"></a>编写AABB类</h4><p>创建aabb.h文件，敲入如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> AABB_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> AABB_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">aabb</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">aabb</span>() &#123;&#125;</span><br><span class="line">        <span class="comment">// 如何唯一确定一个3D-AABB？只需要两个点即可！</span></span><br><span class="line">        <span class="built_in">aabb</span>(<span class="keyword">const</span> point3&amp; a, <span class="keyword">const</span> point3&amp; b) &#123; minimum = a; maximum = b;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//返回三个分量都较小的那一个点。</span></span><br><span class="line">        <span class="function">point3 <span class="title">min</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> minimum; &#125;</span><br><span class="line">        <span class="comment">//返回minimum点在盒子上的对角点，即三个分量都较大的那个点。</span></span><br><span class="line">        <span class="function">point3 <span class="title">max</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> maximum; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//光线和AABB求交代码，注意这个hit和物体类的hit没有一毛钱关系。</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="comment">//for循环判断三个轴向的三对面和光线碰撞的时间。</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt; <span class="number">3</span>; a++) &#123;</span><br><span class="line">                <span class="comment">//见解析。</span></span><br><span class="line">                <span class="keyword">auto</span> t0 = <span class="built_in">fmin</span>((minimum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a],</span><br><span class="line">                               (maximum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a]);</span><br><span class="line">                <span class="keyword">auto</span> t1 = <span class="built_in">fmax</span>((minimum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a],</span><br><span class="line">                               (maximum[a] - r.<span class="built_in">origin</span>()[a]) / r.<span class="built_in">direction</span>()[a]);</span><br><span class="line">                t_min = <span class="built_in">fmax</span>(t0, t_min);</span><br><span class="line">                t_max = <span class="built_in">fmin</span>(t1, t_max);</span><br><span class="line">                <span class="keyword">if</span> (t_max &lt;= t_min)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">        point3 minimum;</span><br><span class="line">        point3 maximum;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​    我们使用两个point3来唯一确定一个3D-AABB，就如同我们可以在平面直角坐标系上用左下角和右上角两个点确定一个2D-AABB一样。</p>
+<p>我们来看看hit函数里的for循环中做了什么？</p>
+<p>首先，我们把minmum和maximum点的<img src="https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg" alt="img">分量都带入了公式<img src="https://cdn.nlark.com/yuque/__latex/8f8c605714efea092050d60d61b9ce49.svg" alt="img">来计算光线穿过这一对面的时间值<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">，注意，这里的fmin和fmax函数是为了确保<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">小于<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">。因为minmum[0]一定是小于maximum[0]的，但是无法确定<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/029bb2c1832b843ce66867ac49f1db71.svg" alt="img">就一定比<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/c8811b213e2cf2356b0395ce5e85f807.svg" alt="img">小，想想光线从x轴无穷大处朝x变小的方向射过来，这时候<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/359c47e9adb148f44b2583aed8513818.svg" alt="img">，我们就需要调换存储<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">和<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">。</p>
+<p>紧接着，我们开始对区间求交集。hit函数传进来的t_min和t_max代表我们认可的t的范围，这个与物体类的hit函数的参数中的t_min和t_max是一个道理，用来给我们切去不必要的碰撞（如负值t）的。现在把(<img src="https://cdn.nlark.com/yuque/__latex/120ecc98af8b35809bffc3741ac52f86.svg" alt="img">,<img src="https://cdn.nlark.com/yuque/__latex/a67f549adc92ae7ed58082ebbbc38d50.svg" alt="img">)和(t_min,t_max)求交，得到的值如果是一个不存在的区间，则表示“在您认可的t的区间内，不存在一个t让光线传播到AABB的x轴同向对面中”。</p>
+<p>紧接着对y和z轴上的对面做同样的操作，期间一旦发现求交后区间不存在，便可断定“光线在给定的时间区间内不曾跨过指定对面”，对三个对面进行这样的操作之后，求交的结果存在与否则代表了“光线是否在某一时刻同时在三个对面之间，即是否曾射入AABB之中”。</p>
+<h4 id="优化hit函数"><a href="#优化hit函数" class="headerlink" title="优化hit函数"></a>优化hit函数</h4><p>我们换一种方式描述hit代码中的逻辑，下面的代码比起原先的hit函数冗长的逻辑显得更为清晰。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">aabb::hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">0</span>; a &lt; <span class="number">3</span>; a++) &#123;</span><br><span class="line">        <span class="keyword">auto</span> invD = <span class="number">1.0f</span> / r.<span class="built_in">direction</span>()[a];</span><br><span class="line">        <span class="keyword">auto</span> t0 = (<span class="built_in">min</span>()[a] - r.<span class="built_in">origin</span>()[a]) * invD;</span><br><span class="line">        <span class="keyword">auto</span> t1 = (<span class="built_in">max</span>()[a] - r.<span class="built_in">origin</span>()[a]) * invD;</span><br><span class="line">        <span class="comment">//如果光线的方向向量某个分量为负，则光线一定会逆向穿过本轴上的对面。</span></span><br><span class="line">        <span class="keyword">if</span> (invD &lt; <span class="number">0.0f</span>)</span><br><span class="line">            std::<span class="built_in">swap</span>(t0, t1);</span><br><span class="line">        t_min = t0 &gt; t_min ? t0 : t_min;</span><br><span class="line">        t_max = t1 &lt; t_max ? t1 : t_max;</span><br><span class="line">        <span class="keyword">if</span> (t_max &lt;= t_min)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="给物体绑定包围盒"><a href="#给物体绑定包围盒" class="headerlink" title="给物体绑定包围盒"></a>给物体绑定包围盒</h4><p>AABB类已经被构造出来了，我们现在得把它和物体类联系起来了，因为包围盒子终归是要包裹住物体的。</p>
+<p>先来修改底层，给物体类添加一个纯虚函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;aabb.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hittable</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//制造包围盒子的函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>来看看这个新的函数，首先，它的返回值是bool类型，这是因为我们得给无法被包围盒包裹的物体一个解释，比如一个无限大的平面（以后可能会有），如果返回true，则表示包围盒生成失败。</p>
+<p>生成的包围盒通过参数中的引用传递出去 ：<code>aabb&amp; output_box</code>。</p>
+<p>至于另外两个参数time0和time1，它对于移动的球类以及后续所有动态的物体都是必要的，因为如果不给定一个时间区间，物体运动的轨迹将会无限长，无法被包围盒包裹。</p>
+<p>很容易可以写出球类的包围盒生成函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sphere</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//override包围盒生成函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">sphere::bounding_box</span><span class="params">(<span class="keyword">double</span> time0, <span class="keyword">double</span> time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//这是一个球的外切立方体。它是能包裹住球且体积最小的AABB。</span></span><br><span class="line">    output_box = <span class="built_in">aabb</span>(</span><br><span class="line">        center - <span class="built_in">vec3</span>(radius, radius, radius),</span><br><span class="line">        center + <span class="built_in">vec3</span>(radius, radius, radius));</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    下面是移动的球类的包围盒生成函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;aabb.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">moving_sphere</span> :</span> <span class="keyword">public</span> hittable &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        ...</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hit</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r, <span class="keyword">double</span> t_min, <span class="keyword">double</span> t_max, hit_record&amp; rec)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//override包围盒生成函数。</span></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">bounding_box</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">double</span> _time0, <span class="keyword">double</span> _time1, aabb&amp; output_box)</span> <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">        ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">moving_sphere::bounding_box</span><span class="params">(<span class="keyword">double</span> _time0, <span class="keyword">double</span> _time1, aabb&amp; output_box)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">//我们先生成移动的球在两个极端时间下的包围盒。</span></span><br><span class="line">    <span class="function">aabb <span class="title">box0</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time0) - vec3(radius, radius, radius),</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time0) + vec3(radius, radius, radius))</span></span>;</span><br><span class="line">    <span class="function">aabb <span class="title">box1</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time1) - vec3(radius, radius, radius),</span></span></span><br><span class="line"><span class="params"><span class="function">        center(_time1) + vec3(radius, radius, radius))</span></span>;</span><br><span class="line">    <span class="comment">//然后再求这两个包围盒的包围盒。这个surrounding_box函数会在之后给出。</span></span><br><span class="line">    output_box = <span class="built_in">surrounding_box</span>(box0, box1);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    下面添加两个包围盒的包围盒函数<code>surrounding_box(box0, box1)</code>到aabb.h中，它的本质是通过比较去筛选包围盒中的两个point3的分量，使得minimum的各个分量取两个盒子的minimum分量的较小值，maximum的所有分量都取两个盒子的maximum分量的较大值，如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">aabb <span class="title">surrounding_box</span><span class="params">(aabb box0, aabb box1)</span> </span>&#123;</span><br><span class="line">    <span class="function">point3 <span class="title">small</span><span class="params">(fmin(box0.min().x(), box1.min().x()),</span></span></span><br><span class="line"><span class="params"><span class="function">                 fmin(box0.min().y(), box1.min().y()),</span></span></span><br><span class="line"><span class="params"><span class="function">                 fmin(box0.min().z(), box1.min().z()))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">point3 <span class="title">big</span><span class="params">(fmax(box0.max().x(), box1.max().x()),</span></span></span><br><span class="line"><span class="params"><span class="function">               fmax(box0.max().y(), box1.max().y()),</span></span></span><br><span class="line"><span class="params"><span class="function">               fmax(box0.max().z(), box1.max().z()))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">aabb</span>(small,big);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>aabb对于本章开头提到的树状结构来说相当于叶子节点，本章基本完成了叶子节点的构造，但对于整个树状结构的搭建来说，才是刚刚开始。</p>
+<h4 id="课后实践"><a href="#课后实践" class="headerlink" title="课后实践"></a>课后实践</h4><p>尝试编写物体列表类的包围盒生成函数（这个函数会在下一章给出）。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingTheNextWeek.html">https://raytracing.github.io/books/RayTracingTheNextWeek.html</a></p>
+<p>参考自《Ray Tracing: The Next Week》第3.1节到第3.7节。</p>
 
       
     </div>
@@ -526,7 +941,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-30 14:52:15" itemprop="dateModified" datetime="2022-06-30T14:52:15+08:00">2022-06-30</time>
+                <time title="修改时间：2022-08-09 09:47:26" itemprop="dateModified" datetime="2022-08-09T09:47:26+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -563,11 +978,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="时空光追"><a href="#时空光追" class="headerlink" title="时空光追"></a>时空光追</h1><h2 id="康奈尔盒子"><a href="#康奈尔盒子" class="headerlink" title="康奈尔盒子"></a>康奈尔盒子</h2><p>图形学领域有很多经典的场景和模型，就好像刚学习语言的时候都在学习怎么输出HelloWorld一样。图形学领域中，检验渲染器是否强大的标准就是康奈尔盒子(Cornell Box）。</p>
-<p>它其实是计算机图形学专业最牛x的高校之一——康奈尔大学里的一间真实存在的房间，如下图是其某一视角真实照片的缩略图：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1645002921665-1dcf1503-556f-4f79-8efd-e055bc2536d5.png" alt="img"></p>
-<p>1984年它被提出以来，就被当作对世界上所有的图形工作人员的一个必经考验——你的渲染器渲染出来的场景和它越像，说明算法越准确，渲染效果越逼真。</p>
-<h2 id="曝光时间"><a href="#曝光时间" class="headerlink" title="曝光时间"></a>曝光时间</h2><p>初篇的最后我们一直在和相机较劲，一个拥有景深（散焦模糊）的相机也并不是我们相机进化的终点，在本篇的开始，我们将让相机进化为完全形态。这将是本系列最后一次改动相机类，在本篇之后，相机类将不会再有任何改动——当然，你自己可以对其进行一些个性化改动或者添加你认为需要的功能，但是对于我们介绍的所有功能中，相机将进化为完全体。</p>
+          <h2 id="曝光时间"><a href="#曝光时间" class="headerlink" title="曝光时间"></a>曝光时间</h2><p>初篇的最后我们一直在和相机较劲，一个拥有景深（散焦模糊）的相机也并不是我们相机进化的终点，在本篇的开始，我们将让相机进化为完全形态。这将是本系列最后一次改动相机类，在本篇之后，相机类将不会再有任何改动——当然，你自己可以对其进行一些个性化改动或者添加你认为需要的功能，但是对于我们介绍的所有功能中，相机将进化为完全体。</p>
 <p>真实的相机，有一个概念叫做曝光时间：它表示镜头打开的时间，在这段时间内射到相机的光线都会被相机捕捉。</p>
 <p>但是我们当前的相机，曝光时间是趋于无穷小的，也就意味着，<strong>任何高速移动的物体，在相机镜头打开的这一瞬间里，移动的距离都为0</strong>。</p>
 <p>依照我们在散焦模糊那一章的处理思路，我们得自断一臂，通过某些方式让我们的相机产生缺陷去迎合真实的相机。</p>
@@ -1034,417 +1445,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/25/%E5%85%89%E8%BF%BD1.13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" class="post-title-link" itemprop="url">自由相机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-25T00:00:00+08:00">2022-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:52:55" itemprop="dateModified" datetime="2022-04-02T16:52:55+08:00">2022-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/03/25/%E5%85%89%E8%BF%BD1.13/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/25/%E5%85%89%E8%BF%BD1.13/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="球为什么会被拉长"><a href="#球为什么会被拉长" class="headerlink" title="球为什么会被拉长"></a>球为什么会被拉长</h2><p>在以前的图片中可以发现越靠近边缘位置越会被拉伸的厉害，现在我来尝试解释一下这个问题：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131416140.png" alt="image-20220313131416140"></p>
-<p>上图是y = 0的情况下，场景的 XoZ面截面。O为相机位置，也是发射光线的原点，横线为Z = -1 位置上的虚拟视口，在空间中有三个大小一样的球，三个球的球心都在y = 0平面上，中间的那颗球处在虚拟视口的正中心，即它的位置是(0,0,-1)。现在开始往虚拟视口上发射光线，来看看每颗球x轴上的宽度是多大。</p>
-<p>可以清楚的看到，A点虽然在虚拟视口上来看，和球还是有点距离，但是往A点发射光线来确定这一点的颜色的时候，发现它正好处于球的边界上，即在最终渲染的2D图片上，AB才是这颗球与x轴平行的直径，它显然比2D图片上处于中间的球的直径BD要长的多。</p>
-<p>那如何对抗图片边缘变形问题呢？有两个解决方法：让虚拟视口变得非常小，或者让虚拟视口离相机位置足够远。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131438632.png" alt="image-20220313131438632">如图所示，把虚拟视口缩小，这样图中的三个球在最终显示的图片上来看就不会有非常明显的长度不一的问题了。因为视口变小，视口中的像素数量不变，所以每个像素在三维空间中的大小也变小了，所以图片的最终质量并不会有任何改变。</p>
-<h2 id="可调节视野"><a href="#可调节视野" class="headerlink" title="可调节视野"></a>可调节视野</h2><p>虚拟视口的长宽比不应该被限制，同时虚拟视口的高度也不应该恒定为2，假设有一个物体在我们的面前但是高度很高，比如它在(0,10,-1)的位置，它不会被相机捕捉到，我们得赋予它自由度，让它想看多高看多高。</p>
-<p>对于方形的照片，在真实的摄影技术中，有一个数据叫视场(field of view)，简写为fov，一般使用的是竖直fov，它表示相机处到视野最高处和视野最低处连线的夹角，如果是水平fov的话就是相机处和视野中最左最右处连线的夹角。如果知道长宽比的话，竖直和水平的fov就可以进行简单换算。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313132406568.png" alt="image-20220313132406568"></p>
-<p>如图所示，θ就是fov，我们就使用指定fov的方式来让视口高度变得可自定义。</p>
-<p>还有一点纯属个人设计风格：传入角度值，再由类内转为弧度制进行后续计算。修改camera.h中的camera类代码如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">camera</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">camera</span>(<span class="keyword">double</span> vfov <span class="comment">/*竖直fov（vertical field of view）*/</span> </span><br><span class="line">               ,<span class="keyword">double</span> aspect_ratio <span class="comment">/*长宽比，把它暴露出去使之可自定义*/</span> ) &#123;</span><br><span class="line">          </span><br><span class="line">            <span class="comment">//角度转弧度制，我们好久之前写的工具函数。</span></span><br><span class="line">            <span class="keyword">auto</span> theta = <span class="built_in">degrees_to_radians</span>(vfov);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//虚拟视口还是放在z = -1的地方。</span></span><br><span class="line">            <span class="keyword">auto</span> focal_length = <span class="number">1.0</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//通过换算得到上图中的h。</span></span><br><span class="line">            <span class="keyword">auto</span> h = focal_length * <span class="built_in">tan</span>(theta/<span class="number">2</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//这样虚拟视口就一步一步由fov换算得来了。</span></span><br><span class="line">            <span class="keyword">auto</span> viewport_height = <span class="number">2.0</span> * h;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">auto</span> viewport_width = aspect_ratio * viewport_height;</span><br><span class="line">            origin = <span class="built_in">point3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            horizontal = <span class="built_in">vec3</span>(viewport_width, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">            vertical = <span class="built_in">vec3</span>(<span class="number">0.0</span>, viewport_height, <span class="number">0.0</span>);</span><br><span class="line">            lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - <span class="built_in">vec3</span>(<span class="number">0</span>, <span class="number">0</span>, focal_length);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function">ray <span class="title">get_ray</span><span class="params">(<span class="keyword">double</span> u, <span class="keyword">double</span> v)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">ray</span>(origin, lower_left_corner + u*horizontal + v*vertical - origin);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        point3 origin;</span><br><span class="line">        point3 lower_left_corner;</span><br><span class="line">        vec3 horizontal;</span><br><span class="line">        vec3 vertical;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>现在来测试一下，在main函数中更换场景，并用新的构造函数创建相机：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 指定视场大小</span></span><br><span class="line">    <span class="keyword">double</span> vfov = <span class="number">10.0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更改物体信息。</span></span><br><span class="line">    hittable_list world;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">auto</span> material_up = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">auto</span> material_bottom = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 我们想创造两个球心在边界上的球。</span></span><br><span class="line">    <span class="keyword">auto</span> R = <span class="built_in">tan</span>(<span class="built_in">degrees_to_radians</span>(vfov) / <span class="number">2</span>);</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, R, <span class="number">-1</span>), R, material_up));</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, -R, <span class="number">-1</span>), R, material_bottom));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义一个vfov是10度的相机，并且传入我们之前定义在main中长宽比。</span></span><br><span class="line">    <span class="function">camera <span class="title">cam</span><span class="params">(vfov, aspect_ratio)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 渲染循环</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;P3\n&quot;</span> &lt;&lt; image_width &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; image_height &lt;&lt; <span class="string">&quot;\n255\n&quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height<span class="number">-1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-
-<p>会得到两个图片边缘的球，它们没有再被明显的拉长了，因为fov = 10° 的情况下，虚拟视口的大小比原来小得多（之前我们的高度h恒定为2的情况，fov按照反向换算应该为90°）。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313132539787.png" alt="image-20220313132539787"></p>
-<h2 id="完全自由的相机"><a href="#完全自由的相机" class="headerlink" title="完全自由的相机"></a>完全自由的相机</h2><p>在视野大小和长宽比可以调整之后，相机身上的五个枷锁中的后两个已经解开，现在还有三个固定死的桎梏。接下来只要让相机的位置和朝向可以自由选定，就可以让相机彻底解放。</p>
-<p>另外，虚拟视口大小可以通过fov自由控制之后，我们就没有必要再改变虚拟视口离相机的远近了，这不会给场景带来更多新的变化。可以缩小虚拟视口，实际上和把虚拟视口拉远得到的效果是完全一样的，所以固定死这个距离，假设这个距离恒定为1。</p>
-<p>我们需要自由指定相机的位置，也就是说我们要暴露出一个point3(vec3的别名)变量来表示位置，这很容易想到。</p>
-<p>那要如何指定相机看向的方向呢？有两个策略，给一个方向向量或者给定一个点表示看向的目标点，这样就可以通过和相机位置的连线得到同样方向向量，这里选择后者。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313132829324.png" alt="image-20220313132829324"></p>
-<p>相机放在lookfrom点上，看的目标点是lookat。</p>
-<p>fov也已经有了，现在能开始构建相机了吗？不能，还有一个东西我们没法确定。想想看，你站在某个地方，望着桌子上的苹果，苹果一定会处在你视角的正中心，但是，我无法确定你有没有以你的鼻子为中心左右旋转你的头——在lookfrom所在的面和lookat-lookfrom向量垂直的向量有无数多条，我们不知道，相机的“头顶”是哪个方向。</p>
-<p>这个问题，业界比较青睐的解决方案是确定一个vup（view up）方向，一般来说，只要不歪头，这个vup的值都是(0,1,0)，即y轴正方向。但是搞不好就有一些特殊的要求，比如说，从墙角伸出一杆狙击枪，我们需要歪头去看瞄准镜，这时候，瞄准镜内的世界就是歪斜的，vup就会指向斜上方。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313133058687.png" alt="image-20220313133058687"></p>
-<p>看上左图，lookfrom、lookat和vup向量唯一确定了一个相机。</p>
-<p>左图中的uv两个坐标轴，也就是我们的老相机里面的horizontal和vertical向量。</p>
-<p>老相机是朝-z方向看的，而新的相机是朝-w（上右图中的向量）方向看的。右图中w,v和vup三个向量在同一个面上。最终相机代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">camera</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">camera</span>(</span><br><span class="line">            <span class="comment">// 相机位置。</span></span><br><span class="line">            point3 lookfrom,</span><br><span class="line">			<span class="comment">// 相机看向的目标点。</span></span><br><span class="line">            point3 lookat,</span><br><span class="line">            <span class="comment">// 相机正上方方向向量（通常为(0,1,0)）。</span></span><br><span class="line">            vec3   vup,</span><br><span class="line">            <span class="comment">// 视场大小。</span></span><br><span class="line">            <span class="keyword">double</span> vfov,</span><br><span class="line">            <span class="comment">// 长宽比。</span></span><br><span class="line">            <span class="keyword">double</span> aspect_ratio</span><br><span class="line">        ) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">auto</span> theta = <span class="built_in">degrees_to_radians</span>(vfov);</span><br><span class="line">            <span class="keyword">auto</span> h = <span class="built_in">tan</span>(theta/<span class="number">2</span>);</span><br><span class="line">            <span class="keyword">auto</span> viewport_height = <span class="number">2.0</span> * h;</span><br><span class="line">            <span class="keyword">auto</span> viewport_width = aspect_ratio * viewport_height;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// w向量是从lookat指向lookfrom的向量。</span></span><br><span class="line">            <span class="keyword">auto</span> w = <span class="built_in">unit_vector</span>(lookfrom - lookat);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// u向量与vup和w都垂直，我们可以直接叉乘得到它。</span></span><br><span class="line">            <span class="comment">// 叉乘注意两个变量的前后顺序，注意叉乘结果向量的方向满足右手定则。</span></span><br><span class="line">            <span class="keyword">auto</span> u = <span class="built_in">unit_vector</span>(<span class="built_in">cross</span>(vup, w));</span><br><span class="line">            <span class="comment">// v向量与w及u向量都垂直，叉乘得到。</span></span><br><span class="line">            <span class="keyword">auto</span> v = <span class="built_in">cross</span>(w, u);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 赋值原点。</span></span><br><span class="line">            origin = lookfrom;</span><br><span class="line">			<span class="comment">// horizontal方向不再是(1,0,0)，而是u。</span></span><br><span class="line">            horizontal = viewport_width * u;</span><br><span class="line">            <span class="comment">// vertical方向不再是(0,1,0)，而是v。</span></span><br><span class="line">            vertical = viewport_height * v;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 虚拟视口左下角的坐标位置，原本减去vec3(0, 0, focal_length)的位置改成了w。</span></span><br><span class="line">            lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - w;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function">ray <span class="title">get_ray</span><span class="params">(<span class="keyword">double</span> s, <span class="keyword">double</span> t)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">ray</span>(origin, lower_left_corner + s*horizontal + t*vertical - origin);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        point3 origin;</span><br><span class="line">        point3 lower_left_corner;</span><br><span class="line">        vec3 horizontal;</span><br><span class="line">        vec3 vertical;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>虚拟视口离相机的距离由w决定，它是个单位向量，永远是1。我们不需要动他，改变fov能达到相同的效果。</p>
-<p>在main函数中改变场景物体和相机参数，来测试一下这个自由的相机。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">hittable_list world;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> material_ground = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.0</span>));</span><br><span class="line"><span class="keyword">auto</span> material_center = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.5</span>));</span><br><span class="line"><span class="keyword">auto</span> material_left   = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line"><span class="keyword">auto</span> material_right  = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.6</span>, <span class="number">0.2</span>), <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>( <span class="number">0.0</span>, <span class="number">-100.5</span>, <span class="number">-1.0</span>), <span class="number">100.0</span>, material_ground));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>( <span class="number">0.0</span>,    <span class="number">0.0</span>, <span class="number">-1.0</span>),   <span class="number">0.5</span>, material_center));</span><br><span class="line"><span class="comment">//空心玻璃球不要紧贴其他物体，否则会产生黑点。</span></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-1.001</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-1.001</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">-0.45</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>( <span class="number">1.0</span>,    <span class="number">0.0</span>, <span class="number">-1.0</span>),   <span class="number">0.5</span>, material_right));</span><br><span class="line"></span><br><span class="line"><span class="function">camera <span class="title">cam</span><span class="params">(point3(<span class="number">-2</span>,<span class="number">2</span>,<span class="number">1</span>), point3(<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>), vec3(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>), <span class="number">90</span>, aspect_ratio)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p>相机原点放在(-2,2,1)上，这离场景中的这些球很远，所以我们会得到：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643953627319-650ae52a-effb-42d8-a5ea-d407c56fdbe9.png" alt="image.png"></p>
-<p>fov为90的情况下，虚拟视口的高度为2，球处在我们图片的正中心，但很小.</p>
-<p>如果想得到近景，只需要把fov改小，比如改成20，就可以得到清晰的细节，就好像使用了望远镜一样。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">camera <span class="title">cam</span><span class="params">(point3(<span class="number">-2</span>,<span class="number">2</span>,<span class="number">1</span>), point3(<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>), vec3(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>), <span class="number">20</span>, aspect_ratio)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643953583323-2fbaf10f-719c-4d89-a1b7-2c746b02719c.png" alt="image.png"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
-<p>参考自《RayTracingInOneWeekend》第11节。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/21/%E5%85%89%E8%BF%BD1.12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/21/%E5%85%89%E8%BF%BD1.12/" class="post-title-link" itemprop="url">玻璃</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-21T00:00:00+08:00">2022-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:53:02" itemprop="dateModified" datetime="2022-04-02T16:53:02+08:00">2022-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/03/21/%E5%85%89%E8%BF%BD1.12/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/21/%E5%85%89%E8%BF%BD1.12/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="斯涅尔定律"><a href="#斯涅尔定律" class="headerlink" title="斯涅尔定律"></a>斯涅尔定律</h2><p>折射光线会遵循以下的法则进行折射，这个定律叫折射定律，或者是斯涅尔定律（Snell’s law）：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084827719.png" alt="image-20220311084827719"></p>
-<p>公式中，<em>θ</em> 和 <em>θ′</em> 是入射光线和折射光线和法线的夹角，η 和 η′ 则是折射率，它表示入射光线所在的介质和折射光线所在的介质的一种性质，是光在真空中的传播速度与光在该介质中的传播速度之比（空气的折射率为1.00029，近似为1，玻璃是1.3-1.7，钻石则是2.4），如下图所示：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311084845727.png" alt="image-20220311084845727"></p>
-<h2 id="折射方向向量"><a href="#折射方向向量" class="headerlink" title="折射方向向量"></a>折射方向向量</h2><p>已知入射向量为R，如何求折射后向量R’呢？直接求是非常困难的，我们对它做一个分解，把目标向量分解到法线和与法线垂直方向这两个互相垂直的方向上，有</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/cf310eaeaee8d5ab0d8eccce3dd0ae79.svg" alt="img"></p>
-<p>先求R’，它是R’中与法线方向垂直的分量。我们清楚的知道它的模是sinθ′​ ，但我们得找到一个和法线方向垂直的向量x(上图中指向正右方)作为它的向量表示，即最终的结果就是sinθ′ * unit_vector(x)。</p>
-<p>我们可以从入射角那里找到一个这样的向量 x=R+cosθn，它是一个和同$R’⊥​向，并且模为sinθ的向量，我们要的向量的模是sinθ′ ，不过没关系，再利用斯涅尔定律转换一下就可以了，解析式如下：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/460fe563abab2e132078781a81476ded.svg" alt="img"></p>
-<p>到这一步还不够，我们已知的东西是入射向量和法线向量，θ不应该出现在最终的解析式里。因为R和法线向量n都是单位向量，我们可以用一个点乘去消灭这个碍事的cosθ，即：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/a6424b57028276075f706a39b052c960.svg" alt="img"></p>
-<p>知道R’⊥之后，R’∥可以通过一个简单的公式推算得到。首先，是和R’∥和n同向的，它的长度是cosθ′ ，通过三角函数中最基础的公式：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/59a26492b77262b3fc8a47499b49dbbf.svg" alt="img"></p>
-<p>我们就可以得到如下最终解析式：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/f2d9195a8023333c2e868c9720e098c9.svg" alt="img"></p>
-<p>一切都准备妥当了，在vec3.h中创建一个类外函数，来描述折射这一过程：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//折射函数，吃单位化的入射和法线向量以及两种介质折射率的比值，吐折射方向向量。</span></span><br><span class="line"><span class="function">vec3 <span class="title">refract</span><span class="params">(<span class="keyword">const</span> vec3&amp; uv<span class="comment">/*入射向量*/</span>, <span class="keyword">const</span> vec3&amp; n<span class="comment">/*法线*/</span>, <span class="keyword">double</span> etai_over_etat<span class="comment">/*η和η′的比值*/</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> cos_theta = <span class="built_in">dot</span>(-uv, n);</span><br><span class="line">    <span class="comment">//垂直于法线的分量</span></span><br><span class="line">    vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);</span><br><span class="line">    <span class="comment">//平行于法线的分量</span></span><br><span class="line">    vec3 r_out_parallel = -<span class="built_in">sqrt</span>(<span class="built_in">fabs</span>(<span class="number">1.0</span> - r_out_perp.<span class="built_in">length_squared</span>())) * n;</span><br><span class="line">    <span class="keyword">return</span> r_out_perp + r_out_parallel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总是折射的玻璃"><a href="#总是折射的玻璃" class="headerlink" title="总是折射的玻璃"></a>总是折射的玻璃</h2><p>有了折射函数，就先写一个总是折射的透明材质，看代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dielectric</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">dielectric</span>(<span class="keyword">double</span> index_of_refraction) : <span class="built_in">ir</span>(index_of_refraction) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//理论上的透明玻璃不会引起能量的损耗。</span></span><br><span class="line">            attenuation = <span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//曾经记录过的看碰撞面是否是物体外面的bool变量&gt;</span></span><br><span class="line">            <span class="comment">//我们使用这个变量来控制物体射入和射出此材质时候η和η′分子分母调换。</span></span><br><span class="line">            <span class="keyword">double</span> refraction_ratio = rec.front_face ? (<span class="number">1.0</span>/ir) : ir;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//单位化入射方向。</span></span><br><span class="line">            vec3 unit_direction = <span class="built_in">unit_vector</span>(r_in.<span class="built_in">direction</span>());</span><br><span class="line">            <span class="comment">//调用折射函数。</span></span><br><span class="line">            vec3 refracted = <span class="built_in">refract</span>(unit_direction, rec.normal, refraction_ratio);</span><br><span class="line">			<span class="comment">//制造光线。</span></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, refracted);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="keyword">double</span> ir; <span class="comment">// 这种透明材质的折射率。</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>main函数中看一下什么样吧</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> material_ground = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.0</span>));</span><br><span class="line"><span class="keyword">auto</span> material_left = make_shared &lt;metal&gt; (<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.8</span>),<span class="number">0.3</span>);</span><br><span class="line"><span class="comment">//玻璃的折射率在1.3-1.7之间。</span></span><br><span class="line"><span class="keyword">auto</span> material_right = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line"></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.0</span>, <span class="number">-100.5</span>, <span class="number">-1.0</span>), <span class="number">100.0</span>, material_ground));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_right));</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311092348533.png" alt="image-20220311092348533"></p>
-<h2 id="全内反射"><a href="#全内反射" class="headerlink" title="全内反射"></a>全内反射</h2><p>上面的结果是不正确的，如果认真观察斯涅尔定律你会发现，这个公式是有失效的时候的。</p>
-<p>光线从较高折射率的介质进入到较低折射率的介质时，如果入射角大于某一临界角θc（光线远离法线）时，折射光线将会消失，所有的入射光线将被反射而不进入低折射率的介质，这种现象叫做全内反射，或称全反射。</p>
-<p>拿玻璃举例子，对于光线从玻璃中射入空气的情况，带入<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/83e6114c771f29b4d7c5113b0e859a61.svg" alt="img">，有：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/06a7e04a12b30a33dcc3fe5433877f05.svg" alt="img"></p>
-<p>对于如上的公式，当sinθ大于某特定角度时，sinθ′会大于1，但是sin函数是永远不会大于1的，也就是说，对于这样的角度来说，上述公式会失效。</p>
-<p>也就是说，代码得甄别这样的情况，在这种情况下，我们得让光线反射而不是折射。也就是说会有如下的结构：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> cos_theta = <span class="built_in">dot</span>(-unit_direction, rec.normal);</span><br><span class="line"><span class="keyword">double</span> sin_theta = <span class="built_in">sqrt</span>(<span class="number">1.0</span> - cos_theta*cos_theta);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (refraction_ratio * sin_theta &gt; <span class="number">1.0</span>) &#123;</span><br><span class="line">    <span class="comment">// 折射</span></span><br><span class="line">    ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 反射</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>那么只能能折射就折射的代码时是：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dielectric</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">dielectric</span>(<span class="keyword">double</span> index_of_refraction) : <span class="built_in">ir</span>(index_of_refraction) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            attenuation = <span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">            <span class="keyword">double</span> refraction_ratio = rec.front_face ? (<span class="number">1.0</span>/ir) : ir;</span><br><span class="line"></span><br><span class="line">            vec3 unit_direction = <span class="built_in">unit_vector</span>(r_in.<span class="built_in">direction</span>());</span><br><span class="line">            <span class="keyword">double</span> cos_theta = <span class="built_in">fmin</span>(<span class="built_in">dot</span>(-unit_direction, rec.normal), <span class="number">1.0</span>);</span><br><span class="line">            <span class="keyword">double</span> sin_theta = <span class="built_in">sqrt</span>(<span class="number">1.0</span> - cos_theta*cos_theta);</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//是否达到全反射的临界值。</span></span><br><span class="line">            <span class="keyword">bool</span> cannot_refract = refraction_ratio * sin_theta &gt; <span class="number">1.0</span>;</span><br><span class="line">            vec3 direction;</span><br><span class="line">            <span class="keyword">if</span> (cannot_refract)</span><br><span class="line">                <span class="comment">//全反射</span></span><br><span class="line">                direction = <span class="built_in">reflect</span>(unit_direction, rec.normal);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="comment">//折射</span></span><br><span class="line">                direction = <span class="built_in">refract</span>(unit_direction, rec.normal, refraction_ratio);</span><br><span class="line"></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, direction);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="keyword">double</span> ir;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="施利克近似"><a href="#施利克近似" class="headerlink" title="施利克近似"></a>施利克近似</h2><p>一个正确的透明材质会反射部分光线的，入射光线和面的夹角越大，它就越倾向于反射光线。这也就是为什么我们越从掠射角去观察窗户，我们越难看清窗外的景色，而越容易从其上看到自己的脸的原因。</p>
-<p>入射光线和法线的夹角和反射率之间的关系是有一个巨大且丑陋的等式所决定的，几乎所有的人都会使用克里斯托弗·施利克（Christophe Schlick）的简单且令人惊讶的精确多项式去近似这个等式。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dielectric</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">dielectric</span>(<span class="keyword">double</span> index_of_refraction) : <span class="built_in">ir</span>(index_of_refraction) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            attenuation = <span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">            <span class="keyword">double</span> refraction_ratio = rec.front_face ? (<span class="number">1.0</span>/ir) : ir;</span><br><span class="line"></span><br><span class="line">            vec3 unit_direction = <span class="built_in">unit_vector</span>(r_in.<span class="built_in">direction</span>());</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//为了防止因为失误传入了非单位向量导致cosθ大于1，进而导致下面根号内有负值使程序崩溃，我们加一层保险。</span></span><br><span class="line">            <span class="keyword">double</span> cos_theta = <span class="built_in">fmin</span>(<span class="built_in">dot</span>(-unit_direction, rec.normal), <span class="number">1.0</span>);</span><br><span class="line">            <span class="keyword">double</span> sin_theta = <span class="built_in">sqrt</span>(<span class="number">1.0</span> - cos_theta*cos_theta);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">bool</span> cannot_refract = refraction_ratio * sin_theta &gt; <span class="number">1.0</span>;</span><br><span class="line">            vec3 direction;</span><br><span class="line">            <span class="comment">//如果全反射了，或者反射概率通过了随机数测试。</span></span><br><span class="line">            <span class="keyword">if</span> (cannot_refract || <span class="built_in">reflectance</span>(cos_theta, refraction_ratio) &gt; <span class="built_in">random_double</span>())</span><br><span class="line">                <span class="comment">//反射</span></span><br><span class="line">                direction = <span class="built_in">reflect</span>(unit_direction, rec.normal);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="comment">//折射</span></span><br><span class="line">                direction = <span class="built_in">refract</span>(unit_direction, rec.normal, refraction_ratio);</span><br><span class="line"></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, direction);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="keyword">double</span> ir; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">double</span> <span class="title">reflectance</span><span class="params">(<span class="keyword">double</span> cosine, <span class="keyword">double</span> ref_idx)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 使用施利克近似来计算反射概率。</span></span><br><span class="line">            <span class="keyword">auto</span> r0 = (<span class="number">1</span>-ref_idx) / (<span class="number">1</span>+ref_idx);</span><br><span class="line">            r0 = r0*r0;</span><br><span class="line">            <span class="keyword">return</span> r0 + (<span class="number">1</span>-r0)*<span class="built_in">pow</span>((<span class="number">1</span> - cosine),<span class="number">5</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>施利克近似到底为何物，它到底是如何影响光线选择反射或折射的，先写下它的具体公式：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/a58bf13043ff567c9946ddb9318caba2.svg" alt="img"></p>
-<p>最终概率落于0到1之间。</p>
-<p>公式中只有两个变量：1.两种物质的折射率之比，即<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/008eda5e41e717ed92a93922f5ea2285.svg" alt="img">     2.夹角的余弦值cosθ。</p>
-<p>它们是怎么影响结果的呢？首先，显而易见的是，θ越小，cosθ越大，反射的概率就越小。也就是说，<strong>反射率随着入射光线和法线的夹角增大而增大</strong>，这是符合规律的。</p>
-<p>其次， 一个容易发现的规律——我们用<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/a107ef0beaad8f76a0ec774dfcfd7391.svg" alt="img">去代替公式中的<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/008eda5e41e717ed92a93922f5ea2285.svg" alt="img">，最终结果不会有变化，也就是说，<strong>对于特定的两种介质，无论哪个是入射光线所在的介质，反射率都遵循一样的规律</strong>。</p>
-<p>还有一个规律，那就是如果<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/008eda5e41e717ed92a93922f5ea2285.svg" alt="img">越靠近1，最终解析式中的第二项就越大。即，<strong>对于折射率越接近的两种介质，反射概率受θ的影响就越剧烈，反之，θ对于最终反射概率的影响就越小</strong>。</p>
-<p>最后一个规律，<strong>对于折射率差距巨大的两种介质</strong>，<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/2b05cd73b712830589e5a333cf66684b.svg" alt="img">接近1，第二项接近0，<strong>光线极度倾向于反射，罕有折射</strong>。</p>
-<p>在我们的代码中，reflectance(cos_theta, refraction_ratio) 越大，则它越容易大于random_double()，即越容易反射，这是一个经典的利用已知概率和随机数配合进行随机采样的例子。你会得到：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311092852355.png" alt="image-20220311092852355"></p>
-<p>看起来不太像我们见到的玻璃，这是有多种原因决定的：</p>
-<ol>
-<li><p>场景过于简单，在现实世界中，不可能处于这样的场景中，也就不存在对于这种环境下的玻璃材质的视觉直觉。</p>
-</li>
-<li><p>广角相机，与我们看到的不同，它把远离视角中心的一切物体都拉变形了。</p>
-</li>
-</ol>
-<h2 id="空心玻璃"><a href="#空心玻璃" class="headerlink" title="空心玻璃"></a>空心玻璃</h2><p>我们还实现一个空心的玻璃，不需要新的材质，空心玻璃的实现远比你想象的要简单。只需在玻璃球的同样位置放一个稍微小一点的，半径为负值的球即可。半径为负值代表着球的外表面的法线指向球心。通过已经实现的功能，做一个简单的改变就实现了一个玻璃球内“空气泡泡”。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.0</span>, <span class="number">-100.5</span>, <span class="number">-1.0</span>), <span class="number">100.0</span>, material_ground));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_right));</span><br><span class="line"><span class="comment">// 负半径的玻璃球，作为空心球的内胆。</span></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">-0.4</span>, material_right));</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311093223889.png" alt="image-20220311093223889"></p>
-<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p>1.空心玻璃球得到的太过简单梦幻，推导后发现，负半径使得这句代码<code>vec3 outward_normal = (rec.p - center) / radius;</code>得到的法线是向内的，之后经过<code>rec.set_face_normal(r, outward_normal);</code>函数后因为入射光与法线相反，rec结构体认为光线撞到了物体内部，于是把front_face设置为false，虽然依然得到了向外的法线，但是却为之后的材质判断埋下伏笔。</p>
-<p>在材质判断中，是由<code>double refraction_ratio = rec.front_face ? (1.0 / ir) : ir;</code>这句代码判断内外的材质，而front_face为负也导致折射率之比为原来的倒数，则恰好构成由空气进入玻璃的情况。到这里不禁想问作者一句：”这也在你的掌握之中吗？“。</p>
-<p>2.注意到空心玻璃球左侧有一个小黑点，我认为这主要是由于光线打到这个点上由于入射角很大而容易发生镜面反射，所以金属球上，而金属也会反射光线并吸收一部分能量，最后在多次弹射中耗尽了能量而呈现为黑色。可以看到在拉远它们之间的距离后就没有黑点了</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131152062.png" alt="image-20220313131152062"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
-<p>参考自《RayTracingInOneWeekend》第10节。</p>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Refraction">https://en.wikipedia.org/wiki/Refraction</a></p>
-<p>维基百科中对于折射相关的光学知识。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/16/%E5%85%89%E8%BF%BD1.11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/16/%E5%85%89%E8%BF%BD1.11/" class="post-title-link" itemprop="url">金属</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-16T00:00:00+08:00">2022-03-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:53:08" itemprop="dateModified" datetime="2022-04-02T16:53:08+08:00">2022-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/03/16/%E5%85%89%E8%BF%BD1.11/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/16/%E5%85%89%E8%BF%BD1.11/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>一个顺滑的金属的表面并不会随机反射射来的光线，而是会镜面反射光线。在现实中很难看到完美的金属，但金属的物质有一个基本的视觉直觉，那就是镜面反射可以制造物体的金属感。</p>
-<p>要如何生成镜面反射的光线呢，在已知入射光线方向和法线方向之后，一个简单的向量运算即可得到反射光线方向。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311082447549.png" alt="image-20220311082447549">如图是一个平面，光线从上方射到平面上，法线方向朝上，红色的向量即是我们要求的向量。我们可以把入射向量的起点放到碰撞点，这样不难看出向量之间的关系：<strong>V</strong>+ 2<strong>B</strong> 即是反射光线方向。B可以看作是V在N上的投影的逆向量，又N在我们的设计中是单位向量，我们可以在vec3.h中加入如下类外函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vec3 <span class="title">reflect</span><span class="params">(<span class="keyword">const</span> vec3&amp; v, <span class="keyword">const</span> vec3&amp; n)</span> </span>&#123;</span><br><span class="line">   	<span class="comment">// 即 V - 2 *|B|* N</span></span><br><span class="line">    <span class="keyword">return</span> v - <span class="number">2</span>*<span class="built_in">dot</span>(v,n)*n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="金属类"><a href="#金属类" class="headerlink" title="金属类"></a>金属类</h2><p>在material.h中添加金属类，如下所示：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">metal</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">metal</span>(<span class="keyword">const</span> color&amp; a) : <span class="built_in">albedo</span>(a) &#123;&#125;。</span><br><span class="line">		</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            <span class="comment">//通过reflect函数生成反射方向，对v的单位化保证了最终生成的方向向量也是单位向量。</span></span><br><span class="line">            vec3 reflected = <span class="built_in">reflect</span>(<span class="built_in">unit_vector</span>(r_in.<span class="built_in">direction</span>()), rec.normal);</span><br><span class="line">            <span class="comment">//从碰撞点射出反射光线。</span></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, reflected);</span><br><span class="line">            attenuation = albedo;</span><br><span class="line">            <span class="comment">//或许会有用处的保险。但是对于我们的球来说，反射光线和N的夹角不会大于90°。</span></span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">dot</span>(scattered.<span class="built_in">direction</span>(), rec.normal) &gt; <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        color albedo;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>在世界中，我们就可以放一个金属球了</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hittable_list world;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> material_ground = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.0</span>));</span><br><span class="line"><span class="keyword">auto</span> material_left = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.7</span>, <span class="number">0.3</span>, <span class="number">0.3</span>));</span><br><span class="line"><span class="keyword">auto</span> material_right = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.6</span>, <span class="number">0.2</span>));</span><br><span class="line"></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.0</span>, <span class="number">-100.5</span>, <span class="number">-1.0</span>), <span class="number">100.0</span>, material_ground));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_right));</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311082857687.png" alt="image-20220311082857687"></p>
-<h2 id="亚光金属"><a href="#亚光金属" class="headerlink" title="亚光金属"></a>亚光金属</h2><p>在现实世界中很多情况下无法从金属平面上看到自己清晰的脸的原因是金属会哑光，现代社会中为了防止光污染，很多金属表面都会做哑光处理。</p>
-<p>哑光实际上就是把金属表面做成凹凸不平，一定程度上削弱镜面反射把所有光线都反射到同一个方向的讨厌特性，有效避免光污染。</p>
-<p>在技术实现的角度上，我们可以通过对镜面反射的最终结果加上一个随机的向量来使光线变得更加混乱，从而模拟哑光的效果。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311082950838.png" alt="image-20220311082950838"></p>
-<p>这里使用之前的球面随机向量生成函数，来对最后的结果进行扰动。反映到最终的代码里，有：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">metal</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">// 增加一个变量f表示扰动的幅度，对成员变量fuzz进行参数列表赋值的时候，限制扰动程度的上限。</span></span><br><span class="line">        <span class="built_in">metal</span>(<span class="keyword">const</span> color&amp; a, <span class="keyword">double</span> f) : <span class="built_in">albedo</span>(a), <span class="built_in">fuzz</span>(f &lt; <span class="number">1</span> ? f : <span class="number">1</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">        )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">            vec3 reflected = <span class="built_in">reflect</span>(<span class="built_in">unit_vector</span>(r_in.<span class="built_in">direction</span>()), rec.normal);</span><br><span class="line">            <span class="comment">// 对最终的反射光线加上一个球面随机向量，至于这个球的大小，由fuzz决定，它最大可以是1。</span></span><br><span class="line">            scattered = <span class="built_in">ray</span>(rec.p, reflected + fuzz*<span class="built_in">random_in_unit_sphere</span>());</span><br><span class="line">            attenuation = albedo;</span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">dot</span>(scattered.<span class="built_in">direction</span>(), rec.normal) &gt; <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        color albedo;</span><br><span class="line">    	<span class="comment">// 扰动幅度</span></span><br><span class="line">        <span class="keyword">double</span> fuzz;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>同样在世界中加入它，看看效果吧：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> material_left = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.8</span>, <span class="number">0.8</span>), <span class="number">0.3</span>);</span><br><span class="line"><span class="keyword">auto</span> material_right = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.8</span>, <span class="number">0.4</span>, <span class="number">0.2</span>), <span class="number">0.4</span>);</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311083217092.png" alt="image-20220311083217092"></p>
-<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><ol>
-<li><p>某些金属艺术品的表面是凹凸不平的鳞片状，这种形状的金属表面光线弹射的法则同样遵循镜面反射原则，但表面的法线会依据某种周期性进行变换，这样的金属材质，构造的时候除了颜色，哑光程度之外，还能改变鳞片的大小。<img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311125157869.png" alt="image-20220311125157869"></p>
-<p>代码为</p>
-</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tmetal</span> :</span> <span class="keyword">public</span> material &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Tmetal</span>(<span class="keyword">const</span> color&amp; a, <span class="keyword">double</span> f) : <span class="built_in">albedo</span>(a), <span class="built_in">fuzz</span>(f &lt; <span class="number">1</span> ? f : <span class="number">1</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">scatter</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="keyword">const</span> ray&amp; r_in, <span class="keyword">const</span> hit_record&amp; rec, color&amp; attenuation, ray&amp; scattered</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span> <span class="keyword">const</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        vec3 reflected = <span class="built_in">reflect</span>(r_in.<span class="built_in">direction</span>(), rec.normal);</span><br><span class="line">        attenuation = albedo;</span><br><span class="line">        <span class="comment">//取法线的第一位小数后的部分，通过控制乘10还是乘更大的数可以控制鳞片大小</span></span><br><span class="line">        vec3 x = rec.normal * <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">int</span> a = x.<span class="built_in">x</span>();</span><br><span class="line">        <span class="keyword">int</span> b = x.<span class="built_in">y</span>();</span><br><span class="line">        <span class="keyword">int</span> c = x.<span class="built_in">z</span>();</span><br><span class="line">        vec3 re = <span class="built_in">vec3</span>(x.<span class="built_in">x</span>() - a, x.<span class="built_in">y</span>() - b, <span class="number">0</span>);</span><br><span class="line">        <span class="comment">//将反射光线加上使用偏移量乘以上面得到的向量，周期为0.1（取决于前面法向量乘以的数）。</span></span><br><span class="line">        scattered = <span class="built_in">ray</span>(rec.p, reflected + fuzz * <span class="built_in">vec3</span>(re.<span class="built_in">x</span>(), re.<span class="built_in">y</span>(), re.<span class="built_in">z</span>()));</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">dot</span>(scattered.<span class="built_in">direction</span>(), rec.normal) &gt; <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    color albedo;</span><br><span class="line">    <span class="comment">//光线偏向法线的程度，越大越偏离镜面反射。</span></span><br><span class="line">    <span class="keyword">double</span> fuzz;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
-<p>参考自《RayTracingInOneWeekend》第9.4节到9.6节。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1512,7 +1516,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1738,6 +1742,7 @@
   
 
 
+
 <script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
@@ -1765,7 +1770,6 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   }, window.Valine);
 });
 </script>
-
 
 
   
