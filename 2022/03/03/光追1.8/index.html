@@ -27,18 +27,17 @@
 <meta property="og:site_name" content="祥瑞客栈">
 <meta property="og:description" content="之前我们一直在画一些看起来完全不真实的东西，但从现在开始我们可以来实现更加真实的物体了。 漫反射原理例如土墙、手机壳、木制桌面等等这些表面有很多微小凹凸的材质叫做漫反射材质，它们会吸收一部分光线，并且把剩余的光线朝随机方向反射出去，因为光线被反射到了不同的方向，自然不会出现某一个方向能接收到很亮的光线，也就不会有高光点存在。它们一般会吸收特定颜色的光，比如红色的砖块，它会吸收不是红色的光线，而把红">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://cdn.jsdelivr.net/gh/endlesscollider/imageBed/image-20220307205949767.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/bb01c00e8b77357ff3732c4f3f3eb9bb.svg">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307211216029.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307213818888.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307214423049.png">
 <meta property="article:published_time" content="2022-03-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T08:54:26.088Z">
+<meta property="article:modified_time" content="2022-08-11T07:20:42.849Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://cdn.jsdelivr.net/gh/endlesscollider/imageBed/image-20220307205949767.png">
+<meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/bb01c00e8b77357ff3732c4f3f3eb9bb.svg">
 
 <link rel="canonical" href="http://mackrui.com/2022/03/03/%E5%85%89%E8%BF%BD1.8/">
 
@@ -233,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 16:54:26" itemprop="dateModified" datetime="2022-04-02T16:54:26+08:00">2022-04-02</time>
+                <time title="修改时间：2022-08-11 15:20:42" itemprop="dateModified" datetime="2022-08-11T15:20:42+08:00">2022-08-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,7 +278,6 @@
       
         <p>之前我们一直在画一些看起来完全不真实的东西，但从现在开始我们可以来实现更加真实的物体了。</p>
 <h3 id="漫反射原理"><a href="#漫反射原理" class="headerlink" title="漫反射原理"></a>漫反射原理</h3><p>例如土墙、手机壳、木制桌面等等这些表面有很多微小凹凸的材质叫做漫反射材质，它们会吸收一部分光线，并且把剩余的光线朝随机方向反射出去，因为光线被反射到了不同的方向，自然不会出现某一个方向能接收到很亮的光线，也就不会有高光点存在。它们一般会吸收特定颜色的光，比如红色的砖块，它会吸收不是红色的光线，而把红色的光线按照随机方向反弹回去。</p>
-<p><img src="http://cdn.jsdelivr.net/gh/endlesscollider/imageBed/image-20220307205949767.png" alt="image-20220307205949767"></p>
 <h2 id="编程思路"><a href="#编程思路" class="headerlink" title="编程思路"></a>编程思路</h2><p>现在暂时还没有光源，我们不妨假设<strong>“蓝天”就是光源</strong>，光的能量都是从蓝天上来的。</p>
 <p>我们再假设任何物体对各种颜色光线的吸收率都是一样的，是<strong>1：1</strong>。光线碰撞到物体后，都会吸收掉每种光的一半的能量，然后反射一半。</p>
 <p>又因为我们是逆光路取色，有以下n种情况：</p>
@@ -299,22 +297,18 @@
 <p><strong>r</strong>向量是相机观察方向，因为我们的漫反射和视角方向无关，不用去管它。</p>
 <p>在vec3文件中写入：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vec3</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> vec3 <span class="title">random</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">vec3</span>(<span class="built_in">random_double</span>(), <span class="built_in">random_double</span>(), <span class="built_in">random_double</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> vec3 <span class="title">random</span><span class="params">(<span class="keyword">double</span> min, <span class="keyword">double</span> max)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">vec3</span>(<span class="built_in">random_double</span>(min,max), <span class="built_in">random_double</span>(min,max), <span class="built_in">random_double</span>(min,max));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里函数都是static的，就表示它属于整个类而不属于某个特定的对象，我们可以使用上面的函数直接调用vec3类构造生成一个三个分量都在[0,1)或者[min,max)内随机的随机vec3。</p>
 <p>random() 函数生成的vec3可不是在单位球内的，它的XYZ轴都是在[0,1)之间的，它是一个在<strong>单位立方体</strong>内的点或者向量，我们得做一个简单的处理，让它的随机值最终落于单位球内。</p>
 <p>再在vec3.h文件中vec3的类外写一个<strong>全局</strong>函数，它只有四句代码。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vec3 <span class="title">random_in_unit_sphere</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="comment">// 先来个中心在原点，边长为2的立方体内的点。</span></span><br><span class="line">        <span class="keyword">auto</span> p = vec3::<span class="built_in">random</span>(<span class="number">-1</span>,<span class="number">1</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果发现这个vec3的长度（它离原点的距离）大于1，即表示它是落于立方体内且落于球外的。</span></span><br><span class="line">        <span class="comment">// 直接让他暴力再随机一次。</span></span><br><span class="line">        <span class="keyword">if</span> (p.<span class="built_in">length_squared</span>() &gt;= <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 返回一个位于单位球内的点。</span></span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里用了一个很暴力的方法：<strong>拒绝算法（rejection method）</strong>，直接让他疯狂的循环，只要点不落于单位球内，我们就让他一直随机到单位球内为止。</p>
 <p>接着更新着色代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world)</span> </span>&#123;</span><br><span class="line">    hit_record rec;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (world.<span class="built_in">hit</span>(r, <span class="number">0</span>, infinity, rec)) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//由三部分组成的S点坐标。</span></span><br><span class="line">        point3 target = rec.p + rec.normal + <span class="built_in">random_in_unit_sphere</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创造新的光线并开启下一轮递归。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.5</span> * <span class="built_in">ray_color</span>(<span class="built_in">ray</span>(rec.p, target - rec.p), world);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vec3 unit_direction = <span class="built_in">unit_vector</span>(r.<span class="built_in">direction</span>());</span><br><span class="line">    <span class="keyword">auto</span> t = <span class="number">0.5</span>*(unit_direction.<span class="built_in">y</span>() + <span class="number">1.0</span>);</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1.0</span>-t)*<span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>) + t*<span class="built_in">color</span>(<span class="number">0.5</span>, <span class="number">0.7</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>至于为什么将它写在这里，有一个原则就是<strong>对于不自信的内容，先写到表层实现需求，再抽象到底层维护框架</strong>。所以这里不要在意它污染了main函数（对所有的物体都采用了漫反射）。</p>
 <h2 id="递归终止条件"><a href="#递归终止条件" class="headerlink" title="递归终止条件"></a>递归终止条件</h2><p>到这里运行程序法线根本无法运行：</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307213818888.png" alt="image-20220307213818888"></p>
 <p>之前设置的递归终止条件是光线射入蓝天，但是如果光线没有射到蓝天而是一直在夹缝里不停的弹跳，就会导致系统栈溢出。为此因为引入一个光线弹射次数的上限值：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world, <span class="keyword">int</span> depth)</span> </span>&#123;</span><br><span class="line">    hit_record rec;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果次数消耗殆尽，直接终止递归，我们的系统栈可耗不起了！</span></span><br><span class="line">    <span class="keyword">if</span> (depth &lt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">color</span>(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (world.<span class="built_in">hit</span>(r, <span class="number">0</span>, infinity, rec)) &#123;</span><br><span class="line">        point3 target = rec.p + rec.normal + <span class="built_in">random_in_unit_sphere</span>();</span><br><span class="line">        <span class="comment">//每一轮新的递归，我们把光线可弹射次数减一。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.5</span> * <span class="built_in">ray_color</span>(<span class="built_in">ray</span>(rec.p, target - rec.p), world, depth<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vec3 unit_direction = <span class="built_in">unit_vector</span>(r.<span class="built_in">direction</span>());</span><br><span class="line">    <span class="keyword">auto</span> t = <span class="number">0.5</span>*(unit_direction.<span class="built_in">y</span>() + <span class="number">1.0</span>);</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1.0</span>-t)*<span class="built_in">color</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>) + t*<span class="built_in">color</span>(<span class="number">0.5</span>, <span class="number">0.7</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">100</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//给定光线最大弹射次数。</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span> (...) &#123;</span><br><span class="line"></span><br><span class="line">        ...            </span><br><span class="line">        <span class="comment">//更改ray_color调用代码。</span></span><br><span class="line">        pixel_color += <span class="built_in">ray_color</span>(r, world, max_depth);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>至此我们应该可以得到一张带有漫反射材质的图了：<br><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307214423049.png" alt="image-20220307214423049"></p>
 <p>非常的暗的图片，但确实可以看到漫反射的细节，如果我们只看上方小球的球顶，常识告诉我们，光线打到这里，很大概率能反弹到蓝天上，也就是说，它的颜色应该趋向于蓝天的颜色衰减了一半之后的某种蓝色。而图像并非如此。</p>
 <p>另一种方法也可以佐证，用文本模式打开ppm文件，可以看到上边右图中的RGB值，它们都是很靠近黑色的值，我们的程序似乎就没生成过只弹射一次就碰到蓝天的光线，这个问题在下一章得到一个非常巧妙且完美的解决办法。</p>
@@ -350,12 +344,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/01/%E5%85%89%E8%BF%BD1.7/" rel="prev" title="抗锯齿">
-      <i class="fa fa-chevron-left"></i> 抗锯齿
+    <a href="/2022/02/28/%E5%85%89%E8%BF%BD1.6/" rel="prev" title="物体列表">
+      <i class="fa fa-chevron-left"></i> 物体列表
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" rel="next" title="磨砂（下）">
-      磨砂（下） <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/07/%E5%85%89%E8%BF%BD1.7/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
