@@ -20,25 +20,27 @@
     var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="layout: _poststitle: 抗锯齿date: 2022-3-1tags:   C&#x2F;C++ 光追渲染器categories: 光线追踪  仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如： 1const int image_width &#x3D; 1600; 得到这样的图像  放大边缘，可以看到依然如此，为了解决这个问题，先看抗锯齿的本质。  本质其实这个问题之前讨">
+  <meta name="description" content="仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如： 1const int image_width &#x3D; 1600; 得到这样的图像  放大边缘，可以看到依然如此，为了解决这个问题，先看抗锯齿的本质。  本质其实这个问题之前讨论过，相机只对着每个像素的左上角发射光线，那左上的带回的颜色可以代表整个像素吗？当然不行，所以最好的解决办法就是在这个像素内多发射几次光线，然后取颜色">
 <meta property="og:type" content="article">
-<meta property="og:title" content="祥瑞客栈">
-<meta property="og:url" content="http://mackrui.com/2022/03/07/%E5%85%89%E8%BF%BD1.7/index.html">
+<meta property="og:title" content="七：抗锯齿">
+<meta property="og:url" content="http://mackrui.com/2022/03/01/%E5%85%89%E8%BF%BD1.7/index.html">
 <meta property="og:site_name" content="祥瑞客栈">
-<meta property="og:description" content="layout: _poststitle: 抗锯齿date: 2022-3-1tags:   C&#x2F;C++ 光追渲染器categories: 光线追踪  仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如： 1const int image_width &#x3D; 1600; 得到这样的图像  放大边缘，可以看到依然如此，为了解决这个问题，先看抗锯齿的本质。  本质其实这个问题之前讨">
+<meta property="og:description" content="仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如： 1const int image_width &#x3D; 1600; 得到这样的图像  放大边缘，可以看到依然如此，为了解决这个问题，先看抗锯齿的本质。  本质其实这个问题之前讨论过，相机只对着每个像素的左上角发射光线，那左上的带回的颜色可以代表整个像素吗？当然不行，所以最好的解决办法就是在这个像素内多发射几次光线，然后取颜色">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307193903032.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307193945194.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307194536541.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1641055023853-5ad8e5c5-7671-4f8e-935c-e3cb0cb46544.png">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1641054959394-b2494392-8f05-402d-8d58-fa3482970136.png">
-<meta property="article:published_time" content="2022-03-07T11:36:07.947Z">
-<meta property="article:modified_time" content="2022-08-11T07:19:46.164Z">
+<meta property="article:published_time" content="2022-02-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-12T09:27:00.085Z">
 <meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="光追渲染器">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307193903032.png">
 
-<link rel="canonical" href="http://mackrui.com/2022/03/07/%E5%85%89%E8%BF%BD1.7/">
+<link rel="canonical" href="http://mackrui.com/2022/03/01/%E5%85%89%E8%BF%BD1.7/">
 
 
 <script id="page-configurations">
@@ -51,7 +53,7 @@
   };
 </script>
 
-  <title> | 祥瑞客栈</title>
+  <title>七：抗锯齿 | 祥瑞客栈</title>
   
 
 
@@ -201,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/07/%E5%85%89%E8%BF%BD1.7/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/01/%E5%85%89%E8%BF%BD1.7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -214,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          七：抗锯齿
         </h1>
 
         <div class="post-meta">
@@ -224,15 +226,24 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-07 19:36:07" itemprop="dateCreated datePublished" datetime="2022-03-07T19:36:07+08:00">2022-03-07</time>
+              <time title="创建时间：2022-03-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-01T00:00:00+08:00">2022-03-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-11 15:19:46" itemprop="dateModified" datetime="2022-08-11T15:19:46+08:00">2022-08-11</time>
+                <time title="修改时间：2022-08-12 17:27:00" itemprop="dateModified" datetime="2022-08-12T17:27:00+08:00">2022-08-12</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -250,8 +261,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/03/07/%E5%85%89%E8%BF%BD1.7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/07/%E5%85%89%E8%BF%BD1.7/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/03/01/%E5%85%89%E8%BF%BD1.7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/01/%E5%85%89%E8%BF%BD1.7/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -266,12 +277,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>layout: _posts<br>title: 抗锯齿<br>date: 2022-3-1<br>tags: </p>
-<ul>
-<li>C/C++</li>
-<li>光追渲染器<br>categories: 光线追踪</li>
-</ul>
-<p>仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如：</p>
+        <p>仔细观察前面生成的图片，在物体的交界处呈现的是锯齿状，哪怕分辨率非常大，比如：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">1600</span>;</span><br></pre></td></tr></table></figure>
 <p>得到这样的图像</p>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220307193903032.png" alt="image-20220307193903032"></p>
@@ -309,6 +315,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="tag"># 光追渲染器</a>
+          </div>
 
         
 
@@ -316,12 +326,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/03/%E5%85%89%E8%BF%BD1.8/" rel="prev" title="磨砂（上）">
-      <i class="fa fa-chevron-left"></i> 磨砂（上）
+    <a href="/2022/02/28/%E5%85%89%E8%BF%BD1.6/" rel="prev" title="六：物体列表">
+      <i class="fa fa-chevron-left"></i> 六：物体列表
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/09/%E5%85%89%E8%BF%BD1.9/" rel="next" title="磨砂（下）">
-      磨砂（下） <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/03/%E5%85%89%E8%BF%BD1.8/" rel="next" title="八：磨砂（上）">
+      八：磨砂（上） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
