@@ -4337,10 +4337,10 @@ t^2b\cdot b+2tb\cdot(A-C)+(A-C)\cdot(A-C)-r^2 =0</script><p>变成了一个t的�
 <li><p>广角相机，与我们看到的不同，它把远离视角中心的一切物体都拉变形了。</p>
 </li>
 </ol>
-<h2 id="空心玻璃"><a href="#空心玻璃" class="headerlink" title="空心玻璃"></a>空心玻璃</h2><p>我们还实现一个空心的玻璃，不需要新的材质，空心玻璃的实现远比你想象的要简单。只需在玻璃球的同样位置放一个稍微小一点的，半径为负值的球即可。半径为负值代表着球的外表面的法线指向球心。通过已经实现的功能，做一个简单的改变就实现了一个玻璃球内“空气泡泡”。</p>
+<h4 id="空心玻璃"><a href="#空心玻璃" class="headerlink" title="空心玻璃"></a>空心玻璃</h4><p>我们还实现一个空心的玻璃，不需要新的材质，空心玻璃的实现远比你想象的要简单。只需在玻璃球的同样位置放一个稍微小一点的，半径为负值的球即可。半径为负值代表着球的外表面的法线指向球心。通过已经实现的功能，做一个简单的改变就实现了一个玻璃球内“空气泡泡”。</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.0</span>, <span class="number">-100.5</span>, <span class="number">-1.0</span>), <span class="number">100.0</span>, material_ground));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_left));</span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">0.5</span>, material_right));</span><br><span class="line"><span class="comment">// 负半径的玻璃球，作为空心球的内胆。</span></span><br><span class="line">world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">-1.0</span>), <span class="number">-0.4</span>, material_right));</span><br></pre></td></tr></table></figure>
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220311093223889.png" alt="image-20220311093223889"></p>
-<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p>1.空心玻璃球得到的太过简单梦幻，请推导实现原理。</p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>1.空心玻璃球得到的太过简单梦幻，请推导实现原理。</p>
 <p>推导后发现，负半径使得这句代码<code>vec3 outward_normal = (rec.p - center) / radius;</code>得到的法线是向内的，之后经过<code>rec.set_face_normal(r, outward_normal);</code>函数后因为入射光与法线相反，rec结构体认为光线撞到了物体内部，于是把front_face设置为false，虽然依然得到了向外的法线，但是却为之后的材质判断埋下伏笔。</p>
 <p>在材质判断中，是由<code>double refraction_ratio = rec.front_face ? (1.0 / ir) : ir;</code>这句代码判断内外的材质，而front_face为负也导致折射率之比为原来的倒数，则恰好构成由空气进入玻璃的情况。到这里不禁想问作者一句：”这也在你的掌握之中吗？“。</p>
 <p>2.注意到空心玻璃球左侧有一个小黑点，是如何来的呢？</p>
@@ -4348,8 +4348,9 @@ t^2b\cdot b+2tb\cdot(A-C)+(A-C)\cdot(A-C)-r^2 =0</script><p>变成了一个t的�
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20220313131152062.png" alt="image-20220313131152062"></p>
 <ol>
 <li>事实上，玻璃也不可能完全透明，也就是说，光线碰撞到玻璃材质物体时，会即反射又折射，想想如何实现该材质。</li>
+<li>了解光栅化中如何实现玻璃材质</li>
 </ol>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
 <p>参考自《RayTracingInOneWeekend》第10节。</p>
 <p><a href="https://en.wikipedia.org/wiki/Refraction">https://en.wikipedia.org/wiki/Refraction</a></p>
 <p>维基百科中对于折射相关的光学知识。</p>
