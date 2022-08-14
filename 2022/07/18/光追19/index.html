@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1651405102043-9a34d32d-2fef-4880-9196-5a97a9d00308.png">
 <meta property="article:published_time" content="2022-07-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-12T09:38:28.035Z">
+<meta property="article:modified_time" content="2022-08-14T06:35:46.690Z">
 <meta property="article:author" content="Collider">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="光追渲染器">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-12 17:38:28" itemprop="dateModified" datetime="2022-08-12T17:38:28+08:00">2022-08-12</time>
+                <time title="修改时间：2022-08-14 14:35:46" itemprop="dateModified" datetime="2022-08-14T14:35:46+08:00">2022-08-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -303,11 +303,10 @@
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1651405102043-9a34d32d-2fef-4880-9196-5a97a9d00308.png" alt="img"></p>
 <p>对比前者——物体列表作为容器下的运行时间，后者bvh容器下的运行时间快了好几倍。</p>
 <h4 id="课后实践"><a href="#课后实践" class="headerlink" title="课后实践"></a>课后实践</h4><ol>
-<li><p>在脑海中构建一个少量物体的bvh，按顺序阅读bvh的构造函数，体会物体被二分和生成包围盒的过程。接下来思考hit函数中包围盒是如何和光线求交的，这有助于理解整体架构。</p>
-</li>
-<li><p>将bvh应用于多线程模式，并生成一个视频，比较使用包围盒前后的序列帧生成时间。</p>
-</li>
-<li>将之前所有的关键类的关系做出一个类图，并梳理他们之间的调用过程。回想一下我们是怎么得到一张图片的。</li>
+<li>在脑海中构建一个少量物体的bvh，按顺序阅读bvh的构造函数，体会物体被二分和生成包围盒的过程。接下来思考hit函数中包围盒是如何和光线求交的，这有助于理解整体架构。</li>
+<li>将bvh应用于多线程模式，并生成一个视频，比较使用包围盒前后的序列帧生成时间。</li>
+<li>倘若使用八叉树包围盒，我们该如何设计？并了解另外两种包围盒KD-Tree和BSP-Tree。</li>
+<li>将之前所有的关键类的关系做出一个类图，并梳理他们之间的调用过程，回想一下我们是怎么得到一张图片的。</li>
 </ol>
 <h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingTheNextWeek.html">https://raytracing.github.io/books/RayTracingTheNextWeek.html</a></p>
 <p>参考自《Ray Tracing: The Next Week》第3.8节到第3.10节。</p>
