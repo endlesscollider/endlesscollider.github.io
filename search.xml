@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>大话设计模式（一）</title>
+    <url>/2022/09/09/%E5%A4%A7%E8%AF%9D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%80/</url>
+    <content><![CDATA[<h2 id="工厂"><a href="#工厂" class="headerlink" title="工厂"></a>工厂</h2><h4 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h4><p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82.png" alt="简单工厂"></p>
+<p>简单工厂就是根据传入不同的参数，生成不同类的实例，不同的实例继承自同一个基类，通过多态统一调用方法。</p>
+<h4 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h4><p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95.png" alt="工厂方法"></p>
+<p>工厂方法从一开始就需要选择创建的这个物体的专属工厂，它们都继承自同个接口，每个工厂生产专属的类实例。</p>
+<hr>
+<h4 id="简单工厂vs工厂方法"><a href="#简单工厂vs工厂方法" class="headerlink" title="简单工厂vs工厂方法"></a>简单工厂vs工厂方法</h4><p>简单工厂的优点在于工厂类中包含了必要的逻辑判断，根据客户端的选择动态实例化相关的类，对客户端来说去除了与具体类的依赖。而工厂方法需要在客户端中决定实例化哪一个工厂，就是将简单工厂的内部判断移到了客户端，如果想添加功能，简单工厂需要修改工厂类，工厂方法只需添加类。</p>
+<h4 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h4><p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F1.png" alt="策略模式1"></p>
+<p><strong>它定义了算法家族，分别封装，让它们之间可以互相替换，让它们可以互相替换，此模式让算法的变化，不会影响到使用算法的客户。</strong>解释：上下文中保存了一个策略类，使用具体的策略将它初始化，之后利用多态调用不同的策略。</p>
+<p><strong>通常用来定义一系列的算法，所有算法完成相同的工作，只是实现不同，可以以相同的方式调用所有算法，减少各种算法之间的耦合。且优化了单元检测，每个算法有自己的类，可以用自己的接口单独检测</strong></p>
+<h4 id="装饰模式"><a href="#装饰模式" class="headerlink" title="装饰模式"></a>装饰模式</h4><p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F1.png" alt="装饰模式1"></p>
+<p><strong>动态地给一个对象添加一些额外的职责，就增加功能来说，装饰模式比生成子类更加灵活。</strong>总的来说就是像包装，一层包一层，调用时一次拆开，调用每层的方法。</p>
+<p><strong>它是为已有的功能能够动态的添加更多功能的一种方式。</strong>它即不会增加主类的复杂度、也让每种装饰（功能）之间分离开来，<strong>有效的把类的核心职责和装饰功能区分，</strong>客户可以按顺序包装实现特殊功能。</p>
+]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>书籍</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二十：前情回顾</title>
     <url>/2022/08/09/%E5%85%89%E8%BF%BD20/</url>
     <content><![CDATA[<p>上一章我们引入包围盒的概念后，大大缩短了我们运行时间，但整体逻辑开始变的复杂起来，没关系，让我们来一起梳理一下之前的内容。</p>
@@ -372,6 +395,9 @@
 <p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644766227253-9d89c9bf-50c5-4a67-b84b-2454a519801f.png" alt="img"></p>
 <p>如果想使用单线程，就再次编辑上述预处理器文本，删除MULTITHREAD命令即可。</p>
 <p>其他编辑器有各自的预处理命令的添加方式，或者你可以通过新建一个.h文件作为配置文件，再把<code>#define MULTITHREAD 1or0</code>输入到配置文件中，来定义并使用宏。</p>
+<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><ol>
+<li>我使用的是互斥锁来进行加锁，尝试使用其他方法来对临界区访问（也就是互斥区），如：</li>
+</ol>
 ]]></content>
       <categories>
         <category>光线追踪</category>
