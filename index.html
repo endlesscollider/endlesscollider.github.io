@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">43</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">45</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -186,6 +186,236 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2023/04/17/%E4%B8%AD%E7%A7%91%E9%99%A2GPT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/17/%E4%B8%AD%E7%A7%91%E9%99%A2GPT/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-04-17 15:10:40 / 修改时间：17:19:46" itemprop="dateCreated datePublished" datetime="2023-04-17T15:10:40+08:00">2023-04-17</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/04/17/%E4%B8%AD%E7%A7%91%E9%99%A2GPT/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/17/%E4%B8%AD%E7%A7%91%E9%99%A2GPT/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="中科院ChatGPT详细安装部署方法"><a href="#中科院ChatGPT详细安装部署方法" class="headerlink" title="中科院ChatGPT详细安装部署方法"></a>中科院ChatGPT详细安装部署方法</h1><h3 id="1-下载项目"><a href="#1-下载项目" class="headerlink" title="1.下载项目"></a>1.下载项目</h3><p>打开项目地址：<a target="_blank" rel="noopener" href="https://github.com/binary-husky/chatgpt_academic，按下图下载项目压缩包，放在随意路径下，进行解压。">https://github.com/binary-husky/chatgpt_academic，按下图下载项目压缩包，放在随意路径下，进行解压。</a></p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20230417151426691.png" alt="image-20230417151426691"></p>
+<h3 id="2-安装依赖环境"><a href="#2-安装依赖环境" class="headerlink" title="2.安装依赖环境"></a>2.安装依赖环境</h3><p>安装依赖的意思就是安装该项目运行所需要用到的库。</p>
+<p>Anaconda的安装教程（Windows版）可参考这篇博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42855758/article/details/122795125">https://blog.csdn.net/weixin_42855758/article/details/122795125</a></p>
+<p>Anaconda成功安装之后，打开终端<br><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20230417153922227.png" alt="image-20230417153922227"></p>
+<p>1.创建项目运行的虚拟环境，中途会询问yes还是no，一直y就行</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">conda</span> create -n chatgpt python=<span class="number">3</span>.<span class="number">11</span></span><br></pre></td></tr></table></figure>
+<p>2.激活创建的虚拟环境</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda <span class="built_in">activate</span> chatgpt</span><br></pre></td></tr></table></figure>
+<p>3.在创建的虚拟环境中进入项目所在的目录安装项目运行所需要的库，这一步操作后面每次使用时都需要用到，请牢记：</p>
+<p>例如：我项目路径是F:\中科院chatgpt\chatgpt_academic-master那么需要首先输入</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">F:</span></span><br></pre></td></tr></table></figure>
+<p>之后输入下列代码，注意cd后的空格：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd F:<span class="symbol">\中</span>科院chatgpt<span class="symbol">\c</span>hatgpt_academic-master</span><br></pre></td></tr></table></figure>
+<p>通过这两步定位到程序所在位置，再使用下面代码安装依赖：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pip <span class="keyword">install</span> -r requirements.txt</span><br></pre></td></tr></table></figure>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/image-20230417160114809.png" alt="image-20230417160114809"></p>
+<p>成功安装可跳到第三步。</p>
+<p>这里一般会有错误，因为会遇到没有gradio-3.23.0这个版本，所以我们去网站上下载：<a target="_blank" rel="noopener" href="https://pypi.org/project/gradio/#file下载完之后可以放在一个位置（自己决定）">https://pypi.org/project/gradio/#file下载完之后可以放在一个位置（自己决定）</a></p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/a2d618ed296d45579a72b1e2959c9204.png" alt="img"></p>
+<p>然后直接pip刚刚下载的文件：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">pip</span> install gradio-<span class="number">3</span>.<span class="number">23</span>.<span class="number">0</span>-py<span class="number">3</span>-none-any.whl</span><br></pre></td></tr></table></figure>
+<p>然后再在项目文件中找到requirements.txt文件，注释这第一行，因为不需要安装gradio了，加个#号即可。再重新安装一遍：</p>
+<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1cbc7961de374287a8b697cf3a734592.png" alt="在这里插入图片描述"></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pip <span class="keyword">install</span> -r requirements.txt</span><br></pre></td></tr></table></figure>
+<h3 id="配置代理和KEY"><a href="#配置代理和KEY" class="headerlink" title="配置代理和KEY"></a>配置代理和KEY</h3><p>打开 config.py 文件，配置进行配置</p>
+<p><img src="https://img-blog.csdnimg.cn/e7a7186672e947b48463daab8bc9d7cd.png#pic_center" alt="在这里插入图片描述">1）OpenAI API Key 获取参考：<br><a target="_blank" rel="noopener" href="https://www.baidu.com/link?url=1Z77TwA3QR9cI0Xpcuubvxa_ggp9FHhVITVYE9Ne1ZRFqWvugamsCJrGjRh1QsPtg0oQq-DS_w38sF6DRCLvV1YCWxWFpW-4dxHlFCJpCnC&amp;wd=&amp;eqid=de017e7d0008120200000006643cff5e">https://www.baidu.com/link?url=1Z77TwA3QR9cI0Xpcuubvxa_ggp9FHhVITVYE9Ne1ZRFqWvugamsCJrGjRh1QsPtg0oQq-DS_w38sF6DRCLvV1YCWxWFpW-4dxHlFCJpCnC&amp;wd=&amp;eqid=de017e7d0008120200000006643cff5e</a><br>2）代理地址和端口<br><a target="_blank" rel="noopener" href="https://github.com/binary-husky/chatgpt_academic/issues/1">https://github.com/binary-husky/chatgpt_academic/issues/1</a></p>
+<p>将项目中的config.py复制一份，更名为config_private.py，<code>config_private.py</code>不受git管控，可以让您的隐私信息更加安全。</p>
+<p>最后使用Anaconda，同样的进入到项目地址，输入下列代码运行程序，会自动打开网页版中科院GPT，可直接使用</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python</span> main.<span class="keyword">py</span></span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_37977006/article/details/129920530?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-129920530-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-129920530-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;utm_relevant_index=2">https://blog.csdn.net/weixin_37977006/article/details/129920530?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-129920530-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-129920530-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;utm_relevant_index=2</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44383402/article/details/129888358?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-129888358-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-129888358-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;utm_relevant_index=3">https://blog.csdn.net/weixin_44383402/article/details/129888358?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-129888358-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-129888358-blog-129866977.235%5Ev29%5Epc_relevant_default_base3&amp;utm_relevant_index=3</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Th411V75K/?spm_id_from=333.337.search-card.all.click&amp;vd_source=3fd6272f9e1a2f5ab97bcdd9e17bb11f">https://www.bilibili.com/video/BV1Th411V75K/?spm_id_from=333.337.search-card.all.click&amp;vd_source=3fd6272f9e1a2f5ab97bcdd9e17bb11f</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1hL411X7bZ/?spm_id_from=333.337.search-card.all.click&amp;vd_source=3fd6272f9e1a2f5ab97bcdd9e17bb11f">https://www.bilibili.com/video/BV1hL411X7bZ/?spm_id_from=333.337.search-card.all.click&amp;vd_source=3fd6272f9e1a2f5ab97bcdd9e17bb11f</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/11/11/%E5%85%89%E8%BF%BD2.6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/11/%E5%85%89%E8%BF%BD2.6/" class="post-title-link" itemprop="url">二十一：简单纹理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-11T00:00:00+08:00">2022-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-19 09:51:07" itemprop="dateModified" datetime="2022-11-19T09:51:07+08:00">2022-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/11/11/%E5%85%89%E8%BF%BD2.6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/11/11/%E5%85%89%E8%BF%BD2.6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="二十一：简单纹理"><a href="#二十一：简单纹理" class="headerlink" title="二十一：简单纹理"></a>二十一：简单纹理</h1><p>别沉浸在包围盒的那些递归函数里了，暂时忘掉它们。接下来几章的内容和包围盒毫无关系，甚至和动态模糊以及时空光追都没有什么关系。换句话说，丢弃掉之前的那些代码也不影响这几章程序的运行。</p>
+<p>从这一章开始，我们将目光重新移回物体表面。回顾一下初篇中介绍的三大材质：磨砂、金属和玻璃——难道我们的世界仅限于此吗？渲染器还不能描述陶瓷的纹路，又或是婴儿细腻的皮肤，甚至这个世界上的所有物体表面！世界上所有的东西都是不完美的，你见过没有划痕的金属和不沾上人类指纹的玻璃球么？</p>
+<p>换句话来说，这个世界上不存在仅仅使用材质就可以完美模拟的物体表面。是时候请出材质最好的搭档——“纹理”了！</p>
+<h4 id="纹理简谈"><a href="#纹理简谈" class="headerlink" title="纹理简谈"></a>纹理简谈</h4><p>纹理，在图形学领域通常表示程序化的物体表面颜色。比如，通过一些参数和数据，来计算得到物体表面某一点的颜色。根据具体计算方式不同可以大致分为两种：</p>
+<p>①：找一张图，对于这个物体表面上的任意一点，都赋予其一个二维坐标，通过这个二维坐标在这个二维平面图上去找，找到的那一点是什么颜色，那物体表面该处就是什么颜色。这个二维坐标如何找到呢？一般来说是由建模师进行安排，建模师在制作模型的时候会为模型上的一些点指定一个二维坐标，其他的点的二维坐标就由这些给定点的插值进行计算——当然我们的渲染器到目前为止尚未引入三角面片的概念，这里不多谈。</p>
+<p>这种方式得到的纹理看上去就好像是把这张二维图片贴到三维表面上一样，所以这又叫做贴图纹理。它的应用相当的广泛。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1651803841431-cf8bc296-b384-4de9-9300-b05c1816e02f.png?x-oss-process=image%2Fresize%2Cw_688%2Climit_0" alt="image.png"></p>
+<p>②：另一种获取各点的颜色的方式就显得比较理科生了：利用某种数学函数直接得到某点的颜色。这种纹理我们已经接触过了。还记得“元气弹”么？这就是一种纹理，我们把物体表面的法线信息映射到颜色区间并显示出来，当然这种纹理还有很多，利用法线只是其中的一种。</p>
+<p> 纹理基类 </p>
+<p>每次引入一个新事物必定要先完成基类的编写，新建文件texture.h，并敲入如下代码：</p>
+<p>本纹理基类基于上小节中的第一种纹理类型：他只有一个函数，这个函数需要一个二维坐标u和v，返回一个颜色。当然，我们提到的拿着这个坐标去贴图中找颜色等等，这些都放到子类的value函数里来处理。从这个基类建立完成之后，如何得到颜色也就被规范化了，无论你是拿这个uv进行某种函数计算得到颜色，还是拿到某张图里去查找，这些都是子类该干的事情。</p>
+<p>当然，仅仅传入uv并不能得到诸如“元气弹”之类的纹理，如果你需要通过纹理类创建元气弹，我们可以在之后再改造这个基类，加入诸如法线等等的参数。</p>
+<p>至于这个u,v坐标从何而来，不是纹理类该管的事情，uv的计算不该放在这个类里，这个我们之后介绍。</p>
+<p>uv坐标作为引入纹理之后碰撞中最重要的信息之一，需要把它写进record结构体：</p>
+<p> 纯色纹理 </p>
+<p>我们的金属和磨砂类都有名为albedo的变量来控制最终颜色。其实纯色也可以被当作一种纹理，就好像我们把</p>
+<p><em>y</em>=<em>c</em></p>
+<p>也当作一种函数（常值函数）一样。</p>
+<p>并不是所有的渲染器都会把纯色当作一种纹理，但在本渲染器中，我推荐这么做。这样意味着纹理类搭建完毕之后，对物体表面颜色的所有的解释都会被放到一个类里面。这会使代码架构变得更加易懂。</p>
+<p>当然，把纯色解释为纹理会使得纯色材质会比过去更加耗时，因为有更多需要维护的变量，但不会比过去慢多少。</p>
+<p>继续把这个类写在texture.h文件里</p>
+<p> 球的纹理坐标——经纬度 </p>
+<p>现在，我们来思考一下关于uv坐标的事情，因为现在我们的物体类只有球这一个子类，现在我们要讨论的是如何把球的表面上任意一点和一个二维坐标uv对应起来。</p>
+<p>我们可以根据球的解析式轻松地把球的表面上的每一点和一个三维坐标对应，但是把球表面和一个二维平面对应有点反直觉。我们换一个生活中的例子去看你会明白很多——世界地图就好像是把空心球剪开之后平铺在平面上那样。你可以在世界地图上找到你家的位置，且你随机在地图上选一点也可以在现实世界中找到对应的真实的坐标，这简直就是我们这个问题的天然解决方案。</p>
+<p>假设</p>
+<p><em>θ</em></p>
+<p>是球上任意一点代表的向量和-Y方向向量的夹角，而</p>
+<p><em>ϕ</em></p>
+<p>是围绕Y轴的方向角（从</p>
+<p>-X 方向到+Z 再到+X 到-Z 最后返回-X</p>
+<p>）。这个</p>
+<p><em>ϕ</em></p>
+<p>和</p>
+<p><em>θ</em></p>
+<p>就是常说的经纬度。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -316,7 +546,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/08/09/%E5%85%89%E8%BF%BD20/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/08/09/%E5%85%89%E8%BF%BD2.5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -330,7 +560,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/08/09/%E5%85%89%E8%BF%BD20/" class="post-title-link" itemprop="url">二十：前情回顾</a>
+            <a href="/2022/08/09/%E5%85%89%E8%BF%BD2.5/" class="post-title-link" itemprop="url">二十：前情回顾</a>
         </h2>
 
         <div class="post-meta">
@@ -347,7 +577,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-14 15:53:09" itemprop="dateModified" datetime="2022-08-14T15:53:09+08:00">2022-08-14</time>
+                <time title="修改时间：2022-11-11 19:11:09" itemprop="dateModified" datetime="2022-11-11T19:11:09+08:00">2022-11-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -368,8 +598,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/08/09/%E5%85%89%E8%BF%BD20/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/09/%E5%85%89%E8%BF%BD20/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/08/09/%E5%85%89%E8%BF%BD2.5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/08/09/%E5%85%89%E8%BF%BD2.5/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -558,7 +788,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/18/%E5%85%89%E8%BF%BD19/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/18/%E5%85%89%E8%BF%BD2.4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -572,7 +802,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/07/18/%E5%85%89%E8%BF%BD19/" class="post-title-link" itemprop="url">十九：包围盒（下）</a>
+            <a href="/2022/07/18/%E5%85%89%E8%BF%BD2.4/" class="post-title-link" itemprop="url">十九：包围盒（下）</a>
         </h2>
 
         <div class="post-meta">
@@ -610,8 +840,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/07/18/%E5%85%89%E8%BF%BD19/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/18/%E5%85%89%E8%BF%BD19/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/07/18/%E5%85%89%E8%BF%BD2.4/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/18/%E5%85%89%E8%BF%BD2.4/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -682,7 +912,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD18/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/07/01/%E5%85%89%E8%BF%BD2.3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -696,7 +926,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/07/01/%E5%85%89%E8%BF%BD18/" class="post-title-link" itemprop="url">十八：包围盒（上）</a>
+            <a href="/2022/07/01/%E5%85%89%E8%BF%BD2.3/" class="post-title-link" itemprop="url">十八：包围盒（上）</a>
         </h2>
 
         <div class="post-meta">
@@ -713,7 +943,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-12 17:28:40" itemprop="dateModified" datetime="2022-08-12T17:28:40+08:00">2022-08-12</time>
+                <time title="修改时间：2022-08-14 15:51:56" itemprop="dateModified" datetime="2022-08-14T15:51:56+08:00">2022-08-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -734,8 +964,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/07/01/%E5%85%89%E8%BF%BD18/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/01/%E5%85%89%E8%BF%BD18/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/07/01/%E5%85%89%E8%BF%BD2.3/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/01/%E5%85%89%E8%BF%BD2.3/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -838,7 +1068,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/06/13/%E5%85%89%E8%BF%BD17/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/06/13/%E5%85%89%E8%BF%BD2.2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -852,7 +1082,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/06/13/%E5%85%89%E8%BF%BD17/" class="post-title-link" itemprop="url">十七：动态模糊</a>
+            <a href="/2022/06/13/%E5%85%89%E8%BF%BD2.2/" class="post-title-link" itemprop="url">十七：动态模糊</a>
         </h2>
 
         <div class="post-meta">
@@ -890,8 +1120,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/06/13/%E5%85%89%E8%BF%BD17/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/13/%E5%85%89%E8%BF%BD17/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/06/13/%E5%85%89%E8%BF%BD2.2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/13/%E5%85%89%E8%BF%BD2.2/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -988,7 +1218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/06/05/%E5%85%89%E8%BF%BD16/">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/06/05/%E5%85%89%E8%BF%BD2.1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1002,7 +1232,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/06/05/%E5%85%89%E8%BF%BD16/" class="post-title-link" itemprop="url">十六：时空光追</a>
+            <a href="/2022/06/05/%E5%85%89%E8%BF%BD2.1/" class="post-title-link" itemprop="url">十六：时空光追</a>
         </h2>
 
         <div class="post-meta">
@@ -1019,7 +1249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-14 15:50:53" itemprop="dateModified" datetime="2022-08-14T15:50:53+08:00">2022-08-14</time>
+                <time title="修改时间：2022-08-14 16:07:59" itemprop="dateModified" datetime="2022-08-14T16:07:59+08:00">2022-08-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1040,8 +1270,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/06/05/%E5%85%89%E8%BF%BD16/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/05/%E5%85%89%E8%BF%BD16/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/06/05/%E5%85%89%E8%BF%BD2.1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/05/%E5%85%89%E8%BF%BD2.1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1120,7 +1350,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-09 19:46:58" itemprop="dateModified" datetime="2022-09-09T19:46:58+08:00">2022-09-09</time>
+                <time title="修改时间：2022-10-19 10:09:47" itemprop="dateModified" datetime="2022-10-19T10:09:47+08:00">2022-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1168,7 +1398,7 @@
 <h4 id="平摊渲染循环任务"><a href="#平摊渲染循环任务" class="headerlink" title="平摊渲染循环任务"></a>平摊渲染循环任务</h4><p>输出管理类提供了写缓冲区和最终生成图片的函数，接下来的任务就很明确了：创建线程们调用write_buffer函数写缓冲区，再在main函数的最后，把缓冲区写成文件。</p>
 <p>为了拆分渲染循环，我们把它从main中抽离，并且把与之相关的一些变量都改为全局变量，方便多线程共享调用。</p>
 <p>以下代码会重构main函数所在文件，为保留之前的代码，建议新建RayTracingByMultithread.cpp文件作为新的main文件，老代码记得保存，新代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;camera.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;color.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable_list.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;sphere.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;material.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;imageoutput.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//图片参数</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> aspect_ratio = <span class="number">3.0</span> / <span class="number">2.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">400</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_height = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(image_width / aspect_ratio);</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//thread相关，我们可以先设置为50个线程</span></span><br><span class="line"><span class="keyword">int</span> numThread = <span class="number">50</span>;</span><br><span class="line"><span class="comment">//定义一个输出设置</span></span><br><span class="line">imageoutput* buf;</span><br><span class="line"></span><br><span class="line"><span class="comment">//相机与场景</span></span><br><span class="line">hittable_list world;</span><br><span class="line">camera* cam;</span><br><span class="line"></span><br><span class="line"><span class="comment">//着色函数，直接复制。</span></span><br><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world, <span class="keyword">int</span> depth)</span> </span>&#123;...&#125;</span><br><span class="line"><span class="comment">//最终场景，直接复制。</span></span><br><span class="line"><span class="function">hittable_list <span class="title">random_scene</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把渲染循环切分成numThread份，分配给每个线程执行。</span></span><br><span class="line"><span class="comment">//这是分配第k个线程的任务。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ray_tracing_by_thread</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height - k - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j -= numThread) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; image_width; i++) &#123;</span><br><span class="line">            <span class="function">color <span class="title">tmp</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; samples_per_pixel; s++) &#123;</span><br><span class="line">                <span class="keyword">auto</span> u = (i + <span class="built_in">random_double</span>()) / (image_width - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">auto</span> v = (j + <span class="built_in">random_double</span>()) / (image_height - <span class="number">1</span>);</span><br><span class="line">                ray r = cam-&gt;<span class="built_in">get_ray</span>(u, v);</span><br><span class="line">                tmp += <span class="built_in">ray_color</span>(r, world, max_depth);</span><br><span class="line">            &#125;</span><br><span class="line">            tmp /= <span class="built_in"><span class="keyword">float</span></span>(samples_per_pixel);</span><br><span class="line">            <span class="comment">//将颜色gamma矫正，存入缓冲区</span></span><br><span class="line">   			buf-&gt;<span class="built_in">write_buffer</span>(i, j, <span class="built_in">sqrt</span>(tmp[<span class="number">0</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">1</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">2</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 摆放场景</span></span><br><span class="line">    world = <span class="built_in">random_scene</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化缓冲区和输出文件流，并给图片命名。</span></span><br><span class="line">    buf = <span class="keyword">new</span> <span class="built_in">imageoutput</span>(image_width, image_height,<span class="string">&quot;image.ppm&quot;</span>);</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 线程列表</span></span><br><span class="line">    std::vector&lt;std::thread&gt; threads;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 放置相机</span></span><br><span class="line">    <span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">13</span>, <span class="number">2</span>, <span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dist_to_focus = <span class="number">10.0</span>;</span><br><span class="line">    <span class="keyword">auto</span> aperture = <span class="number">0.1</span>;</span><br><span class="line">    cam = <span class="keyword">new</span> <span class="built_in">camera</span>(lookfrom, lookat, <span class="built_in">vec3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//多线程下的renderloop</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; numThread; k++) &#123;</span><br><span class="line">        threads.<span class="built_in">push_back</span>(std::<span class="built_in">thread</span>(ray_tracing_by_thread, k));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; thread : threads) &#123;</span><br><span class="line">        <span class="comment">//阻塞主线程，必须等待所有线程执行完毕，再会执行后续的代码。</span></span><br><span class="line">        thread.<span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//缓冲区已经填充完毕，输出成文件。</span></span><br><span class="line">    buf-&gt;<span class="built_in">buffer_2_file</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//释放堆上内存。</span></span><br><span class="line">    <span class="keyword">delete</span> cam;</span><br><span class="line">    <span class="keyword">delete</span> buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;camera.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;rtweekend.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;color.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;hittable_list.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;sphere.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;material.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;imageoutput.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//图片参数</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> aspect_ratio = <span class="number">3.0</span> / <span class="number">2.0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">400</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> image_height = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(image_width / aspect_ratio);</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//thread相关，通过hardware_concurrency()获得处理器核心数量，来初始化线程数。</span></span><br><span class="line"><span class="keyword">int</span> numThread = <span class="built_in">max</span>(std::thread::<span class="built_in">hardware_concurrency</span>(), (<span class="keyword">unsigned</span> <span class="keyword">int</span>)<span class="number">1</span>);</span><br><span class="line"><span class="comment">//定义一个输出设置</span></span><br><span class="line">imageoutput* buf;</span><br><span class="line"></span><br><span class="line"><span class="comment">//相机与场景</span></span><br><span class="line">hittable_list world;</span><br><span class="line">camera* cam;</span><br><span class="line"></span><br><span class="line"><span class="comment">//着色函数，直接复制。</span></span><br><span class="line"><span class="function">color <span class="title">ray_color</span><span class="params">(<span class="keyword">const</span> ray&amp; r, <span class="keyword">const</span> hittable&amp; world, <span class="keyword">int</span> depth)</span> </span>&#123;...&#125;</span><br><span class="line"><span class="comment">//最终场景，直接复制。</span></span><br><span class="line"><span class="function">hittable_list <span class="title">random_scene</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//把渲染循环切分成numThread份，分配给每个线程执行。</span></span><br><span class="line"><span class="comment">//这是分配第k个线程的任务。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ray_tracing_by_thread</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height - k - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j -= numThread) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; image_width; i++) &#123;</span><br><span class="line">            <span class="function">color <span class="title">tmp</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> s = <span class="number">0</span>; s &lt; samples_per_pixel; s++) &#123;</span><br><span class="line">                <span class="keyword">auto</span> u = (i + <span class="built_in">random_double</span>()) / (image_width - <span class="number">1</span>);</span><br><span class="line">                <span class="keyword">auto</span> v = (j + <span class="built_in">random_double</span>()) / (image_height - <span class="number">1</span>);</span><br><span class="line">                ray r = cam-&gt;<span class="built_in">get_ray</span>(u, v);</span><br><span class="line">                tmp += <span class="built_in">ray_color</span>(r, world, max_depth);</span><br><span class="line">            &#125;</span><br><span class="line">            tmp /= <span class="built_in"><span class="keyword">float</span></span>(samples_per_pixel);</span><br><span class="line">            <span class="comment">//将颜色gamma矫正，存入缓冲区</span></span><br><span class="line">   			buf-&gt;<span class="built_in">write_buffer</span>(i, j, <span class="built_in">sqrt</span>(tmp[<span class="number">0</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">1</span>]), <span class="built_in">sqrt</span>(tmp[<span class="number">2</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 摆放场景</span></span><br><span class="line">    world = <span class="built_in">random_scene</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化缓冲区和输出文件流，并给图片命名。</span></span><br><span class="line">    buf = <span class="keyword">new</span> <span class="built_in">imageoutput</span>(image_width, image_height,<span class="string">&quot;image.ppm&quot;</span>);</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 线程列表</span></span><br><span class="line">    std::vector&lt;std::thread&gt; threads;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 放置相机</span></span><br><span class="line">    <span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">13</span>, <span class="number">2</span>, <span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dist_to_focus = <span class="number">10.0</span>;</span><br><span class="line">    <span class="keyword">auto</span> aperture = <span class="number">0.1</span>;</span><br><span class="line">    cam = <span class="keyword">new</span> <span class="built_in">camera</span>(lookfrom, lookat, <span class="built_in">vec3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//多线程下的renderloop</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; numThread; k++) &#123;</span><br><span class="line">        threads.<span class="built_in">push_back</span>(std::<span class="built_in">thread</span>(ray_tracing_by_thread, k));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; thread : threads) &#123;</span><br><span class="line">        <span class="comment">//阻塞主线程，必须等待所有线程执行完毕，再会执行后续的代码。</span></span><br><span class="line">        thread.<span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//缓冲区已经填充完毕，输出成文件。</span></span><br><span class="line">    buf-&gt;<span class="built_in">buffer_2_file</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//释放堆上内存。</span></span><br><span class="line">    <span class="keyword">delete</span> cam;</span><br><span class="line">    <span class="keyword">delete</span> buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>既然选择使用文件流的方式创建文件，那么也不需要使用命令窗口了，可以直接点击vs中的本地调试以生成文件，紧接着就可以在代码所在目录下找到image.ppm文件了。</p>
 <p>如果还是采用命令行的方式生成（不使用重定向符号，命令行中直接运行exe），image.ppm文件会生成在exe文件同目录下。</p>
 <p>如果本次生成感到卡顿，可以降低线程数量，但总体来说，生成文件的速度肯定比单线程要快上好几倍。</p>
@@ -1206,227 +1436,6 @@
 <h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><ol>
 <li>我使用的是互斥锁来进行加锁，尝试使用其他方法来对临界区访问（也就是互斥区），如：</li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/" class="post-title-link" itemprop="url">丧尸围城-框架</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-02T00:00:00+08:00">2022-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-10 13:45:05" itemprop="dateModified" datetime="2022-08-10T13:45:05+08:00">2022-08-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unity/" itemprop="url" rel="index"><span itemprop="name">unity</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/02/%E5%83%B5%E5%B0%B8%E5%9B%B4%E5%9F%8E-%E7%AE%A1%E7%90%86%E8%80%85/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>以前做的项目，复习一下以前写的框架，<em>注：</em>只针对代码讲解。</p>
-<h4 id="数据管理者"><a href="#数据管理者" class="headerlink" title="数据管理者"></a>数据管理者</h4><p>因为在游戏中我希望能将游戏的数据储存，或者在外部配置一些数据应用到游戏中，所以用到了json的数据存贮，这里我们直接基于Litjson开源项目来完成这个管理者类。其功能主要便是把数据序列化后储存到本地和将本地数据反序列化应用于游戏中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">using LitJson;</span><br><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.IO;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">// 序列化和反序列化Json时  使用的是哪种方案</span><br><span class="line">public enum JsonType</span><br><span class="line">&#123;</span><br><span class="line">    JsonUtlity,</span><br><span class="line">    LitJson,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Json数据管理类 主要用于进行Json的序列化存储到硬盘和反序列化从硬盘中读取到内存中</span><br><span class="line">public class JsonMgr</span><br><span class="line">&#123;</span><br><span class="line">    //单例模式，简单说就是将此脚本的代码暴露出去，供其他所有脚本使用，通常用在管理者脚本上</span><br><span class="line">    private static JsonMgr instance = new JsonMgr();</span><br><span class="line">    public static JsonMgr Instance =&gt; instance;</span><br><span class="line"></span><br><span class="line">    private JsonMgr() &#123; &#125;</span><br><span class="line"></span><br><span class="line">    //存储Json数据 序列化</span><br><span class="line">    public void SaveData(object data, string fileName, JsonType type = JsonType.LitJson)</span><br><span class="line">    &#123;</span><br><span class="line">        //确定存储路径</span><br><span class="line">        string path = Application.persistentDataPath + &quot;/&quot; + fileName + &quot;.json&quot;;</span><br><span class="line">        //序列化 得到Json字符串</span><br><span class="line">        string jsonStr = &quot;&quot;;</span><br><span class="line">        switch (type)</span><br><span class="line">        &#123;</span><br><span class="line">            case JsonType.JsonUtlity:</span><br><span class="line">                jsonStr = JsonUtility.ToJson(data);</span><br><span class="line">                break;</span><br><span class="line">            case JsonType.LitJson:</span><br><span class="line">                jsonStr = JsonMapper.ToJson(data);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">        //把序列化的Json字符串 存储到指定路径的文件中</span><br><span class="line">        File.WriteAllText(path, jsonStr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //读取指定文件中的 Json数据 反序列化</span><br><span class="line">    public T LoadData&lt;T&gt;(string fileName, JsonType type = JsonType.LitJson) where T : new()</span><br><span class="line">    &#123;</span><br><span class="line">        //确定从哪个路径读取</span><br><span class="line">        //首先先判断 默认数据文件夹中是否有我们想要的数据 如果有 就从中获取</span><br><span class="line">        string path = Application.streamingAssetsPath + &quot;/&quot; + fileName + &quot;.json&quot;;</span><br><span class="line">        //先判断 是否存在这个文件</span><br><span class="line">        //如果不存在默认文件 就从 读写文件夹中去寻找</span><br><span class="line">        if(!File.Exists(path))</span><br><span class="line">            path = Application.persistentDataPath + &quot;/&quot; + fileName + &quot;.json&quot;;</span><br><span class="line">        //如果读写文件夹中都还没有 那就返回一个默认对象</span><br><span class="line">        if (!File.Exists(path))</span><br><span class="line">            return new T();</span><br><span class="line"></span><br><span class="line">        //进行反序列化</span><br><span class="line">        string jsonStr = File.ReadAllText(path);</span><br><span class="line">        //数据对象</span><br><span class="line">        T data = default(T);</span><br><span class="line">        switch (type)</span><br><span class="line">        &#123;</span><br><span class="line">            case JsonType.JsonUtlity:</span><br><span class="line">                data = JsonUtility.FromJson&lt;T&gt;(jsonStr);</span><br><span class="line">                break;</span><br><span class="line">            case JsonType.LitJson:</span><br><span class="line">                data = JsonMapper.ToObject&lt;T&gt;(jsonStr);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //把对象返回出去</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="UI管理者类"><a href="#UI管理者类" class="headerlink" title="UI管理者类"></a>UI管理者类</h4><p>我们需要一个管理者类来控制和管理我们所有面板的显示以及隐藏，因为我们需要管理不同的面板，所以需要使用模板，此时我们制作面板基类的好处就是，可以通过它来统一管理所有面板，也符合面向对象设计原则。来看代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.UI;</span><br><span class="line"></span><br><span class="line">public class UIManager </span><br><span class="line">&#123;</span><br><span class="line">    //单例模式</span><br><span class="line">    private static UIManager instance = new UIManager();</span><br><span class="line"></span><br><span class="line">    public static UIManager Instance &#123; get =&gt; instance; set =&gt; instance = value; &#125;</span><br><span class="line"></span><br><span class="line">    //用与显示的面板，每显示一个面板就将其加入字典中，以便于调用</span><br><span class="line">    private Dictionary&lt;string, BasePanel&gt; panelDic = new Dictionary&lt;string, BasePanel&gt;();</span><br><span class="line"></span><br><span class="line">    //得到自身的Transform，</span><br><span class="line">    private Transform canvasTrans;</span><br><span class="line"></span><br><span class="line">    //初始化</span><br><span class="line">    private UIManager()</span><br><span class="line">    &#123;</span><br><span class="line">        //创建canvas空白画布</span><br><span class="line">        GameObject canvas = GameObject.Instantiate(Resources.Load&lt;GameObject&gt;(&quot;UI/Canvas&quot;));</span><br><span class="line">        //把画布位置保存下来</span><br><span class="line">        canvasTrans = canvas.transform;</span><br><span class="line">		</span><br><span class="line">        //防止场景加载的时候被销毁</span><br><span class="line">        GameObject.DontDestroyOnLoad(canvas);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //传入想调用的面板，来将它显示</span><br><span class="line">    public T showPanel&lt;T&gt;(bool isFade = true) where T:BasePanel</span><br><span class="line">    &#123;</span><br><span class="line">        //type(T)获取该对象，并取得其名字</span><br><span class="line">        string panelName = typeof(T).Name;</span><br><span class="line"></span><br><span class="line">        //查看字典中有无该面板，如果有表明已经显示，直接return该面板，注意此处要将BasePanel重新转换为子类类型</span><br><span class="line">        if (panelDic.ContainsKey(panelName))</span><br><span class="line">        &#123;</span><br><span class="line">            return panelDic[panelName] as T;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //显示面板 根据面板名字 动态创建预制体 设置父对象</span><br><span class="line">        GameObject panelObj = GameObject.Instantiate(Resources.Load&lt;GameObject&gt;(&quot;UI/&quot; + panelName));</span><br><span class="line">        panelObj.transform.SetParent(canvasTrans, false);</span><br><span class="line"></span><br><span class="line">        //指向面板上 显示逻辑  并且把它保存起来</span><br><span class="line">        T panel = panelObj.GetComponent&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">        //把这个面板脚本 存储在字典中方便之后的获取和隐藏；</span><br><span class="line">        panelDic.Add(panelName, panel);</span><br><span class="line"></span><br><span class="line">        panel.ShowMe(isFade);</span><br><span class="line"></span><br><span class="line">        return panel;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  	//隐藏面板</span><br><span class="line">    public void HidePanel&lt;T&gt;(bool isFade = true) where T:BasePanel</span><br><span class="line">    &#123;</span><br><span class="line">        //根据泛型取得名字</span><br><span class="line">        string panelName = typeof(T).Name;</span><br><span class="line"></span><br><span class="line">        //如果存在，调用其基类的HideMe函数，并传入lambda让其释放内存并在字典中删除</span><br><span class="line">        if (panelDic.ContainsKey(panelName))</span><br><span class="line">        &#123;</span><br><span class="line">            if (isFade)</span><br><span class="line">            &#123;</span><br><span class="line">                panelDic[panelName].HideMe(() =&gt;</span><br><span class="line">               &#123;</span><br><span class="line">                    //删除对象</span><br><span class="line">                    GameObject.Destroy(panelDic[panelName].gameObject);</span><br><span class="line">                    //删除字典里面储存 面板脚本</span><br><span class="line">                    panelDic.Remove(panelName);</span><br><span class="line">               &#125;); </span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                //删除对象</span><br><span class="line">                GameObject.Destroy(panelDic[panelName].gameObject);</span><br><span class="line">                //删除字典里面储存 面板脚本</span><br><span class="line">                panelDic.Remove(panelName); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //得到面板</span><br><span class="line">    public T GetPanel&lt;T&gt;() where T:BasePanel</span><br><span class="line">    &#123;</span><br><span class="line">        string panelName = typeof(T).Name;</span><br><span class="line">        if (panelDic.ContainsKey(panelName))</span><br><span class="line">        &#123;</span><br><span class="line">            return panelDic[panelName] as T;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>有了这个脚本，我们就可以非常方便的调出和删除面板，所有的UI控制我们都可以使用此脚本来实现。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/03/28/%E5%85%89%E8%BF%BD1.14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Collider">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="祥瑞客栈">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" class="post-title-link" itemprop="url">十四：散焦模糊</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-28 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-28T00:00:00+08:00">2022-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-14 15:50:28" itemprop="dateModified" datetime="2022-08-14T15:50:28+08:00">2022-08-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2022/03/28/%E5%85%89%E8%BF%BD1.14/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/03/28/%E5%85%89%E8%BF%BD1.14/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="传统相机的局限"><a href="#传统相机的局限" class="headerlink" title="传统相机的局限"></a>传统相机的局限</h4><p>现实中的相机可无法把它获取的所有光线都汇聚到一点，通过逆光路模型来解释，就是它无法精准的控制发射光线的起点都重合在一起。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643969907150-aefe4446-4da2-4de0-9bd2-fe176e670885.png" alt="img"></p>
-<p>如上图所示，inside表示相机内部，outside是相机的外部。</p>
-<p>相机通过镜头采集光线，镜头采集到的光线会被汇总，在镜头后的胶片上成像。在镜头之外，根据镜头凹透镜的焦距，在某个距离处采集到的光线都来自于一点，这个平面上的所有物体都处于完美对焦状态，而其他距离下的物体，都会因为光线无法精准落于一点而出现模糊。离完美对焦距离越远，就越模糊。</p>
-<h2 id="模拟散焦模糊"><a href="#模拟散焦模糊" class="headerlink" title="模拟散焦模糊"></a>模拟散焦模糊</h2><p>在《抗锯齿》那一章我们编写的多采样求平均的算法就可以完美模拟从镜头采集到成像的过程，现在，只需要改变我们光线的发射位置，假装光线是从镜头上任意一点发射的即可。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643970443347-3db9b25c-c319-4f16-92fe-841fa915af9c.png" alt="img"></p>
-<p>具体要怎么做呢？</p>
-<p><strong>1.要如何模拟镜头呢？</strong></p>
-<p>我们可以以原来的固定光线发射点为圆心，找一个圆片，这个圆片和虚拟视口所在平面平行，和相机正对方向垂直。然后在这个圆片上随机找一个点，以这个点为起点发射光线（这个圆片就是虚拟相机的镜头）。这个圆片的大小对应着真实相机中的镜头光圈大小，圆片越大，散焦模糊效果就越大。</p>
-<p><strong>2.要如何模拟光线聚焦效果呢？</strong></p>
-<p>光线是射向虚拟视口上的虚拟像素内的。在我们原来的设计里，虚拟视口和相机位置的距离始终为1，这意味着，我们的光线都会在镜头前方距离为1的平面上聚焦，如果我们需要让他能在任意位置聚焦，我们只需要改变虚拟视口距离相机的距离即可。</p>
-<p>还记得是如何在代码中规定虚拟视口的位置的吗？</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - w;</span><br></pre></td></tr></table></figure>
-<p>如果我想把它推到和相机位置距离为2的平面上，仅仅是修改w的系数就可以了吗？比如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - <span class="number">2</span>*w;</span><br></pre></td></tr></table></figure>
-<p>这样就足够了吗？不行，看下图：</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643973076508-497c8957-39b9-46c8-8202-5b3052917235.png" alt="img"></p>
-<p>图上描绘的是相机空间下VoW面上的截面，假设中间的绿色竖线就是原先的虚拟视口，它离相机的距离为1，现在要把它移动到右边的蓝色平面上，根据相似三角形，如果它离相机的距离改成2，那它的高度会同步扩大为2，且因为像素数量没变，每个虚拟像素的大小也会增加为2。<strong>这意味着horizontal和vertical也得同步进行放大。</strong></p>
-<p>图中射向虚拟视口的光线假设命中了第x行，如果像素的大小扩大两倍，这根光线的延长线也会命中蓝色视口的第x行。如果像素没有放大，它将命中第2x行，这就不对了。</p>
-<p>更改相机代码，现在我们可以传入焦距和光圈大小：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">camera</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">camera</span>(</span><br><span class="line">            point3 lookfrom,</span><br><span class="line">            point3 lookat,</span><br><span class="line">            vec3   vup,</span><br><span class="line">            <span class="keyword">double</span> vfov,</span><br><span class="line">            <span class="keyword">double</span> aspect_ratio,</span><br><span class="line">            <span class="comment">//光圈直径</span></span><br><span class="line">            <span class="keyword">double</span> aperture,</span><br><span class="line">            <span class="comment">//焦距</span></span><br><span class="line">            <span class="keyword">double</span> focus_dist</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="keyword">auto</span> theta = <span class="built_in">degrees_to_radians</span>(vfov);</span><br><span class="line">            <span class="keyword">auto</span> h = <span class="built_in">tan</span>(theta/<span class="number">2</span>);</span><br><span class="line">            <span class="keyword">auto</span> viewport_height = <span class="number">2.0</span> * h;</span><br><span class="line">            <span class="keyword">auto</span> viewport_width = aspect_ratio * viewport_height;</span><br><span class="line"></span><br><span class="line">            w = <span class="built_in">unit_vector</span>(lookfrom - lookat);</span><br><span class="line">            u = <span class="built_in">unit_vector</span>(<span class="built_in">cross</span>(vup, w));</span><br><span class="line">            v = <span class="built_in">cross</span>(w, u);</span><br><span class="line"></span><br><span class="line">            origin = lookfrom;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//我们要把虚拟视口推到离相机位置有focus_dist的距离的平面上。</span></span><br><span class="line">            <span class="comment">//原本的距离是1，距离变成原来的focus_dist倍。</span></span><br><span class="line">            <span class="comment">//所以，horizontal和vertical得同步乘以focus_dist倍。</span></span><br><span class="line">            horizontal = focus_dist * viewport_width * u;</span><br><span class="line">            vertical = focus_dist * viewport_height * v;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//距离不再是w，而是focus_dist*w。</span></span><br><span class="line">            lower_left_corner = origin - horizontal/<span class="number">2</span> - vertical/<span class="number">2</span> - focus_dist*w;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//处理一下，拿到半径。</span></span><br><span class="line">            lens_radius = aperture / <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function">ray <span class="title">get_ray</span><span class="params">(<span class="keyword">double</span> s, <span class="keyword">double</span> t)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 生成一个偏移值。</span></span><br><span class="line">            <span class="comment">// 这个random_in_unit_disk()函数会产生一个XoY平面上的以原点为圆心的单位圆片内随机一点。</span></span><br><span class="line">            <span class="comment">// 该函数之后给出。</span></span><br><span class="line">            vec3 rd = lens_radius * <span class="built_in">random_in_unit_disk</span>();</span><br><span class="line">            <span class="comment">// 把圆片从XoY平面，调整到uv平面上。</span></span><br><span class="line">            vec3 offset = u * rd.<span class="built_in">x</span>() + v * rd.<span class="built_in">y</span>();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">ray</span>(</span><br><span class="line">                <span class="comment">// 顶点加上偏移。</span></span><br><span class="line">                origin + offset,</span><br><span class="line">                <span class="comment">// -offset使得光线还是朝虚拟视口上的当前像素上发射的。</span></span><br><span class="line">                lower_left_corner + s*horizontal + t*vertical - origin - offset</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        point3 origin;</span><br><span class="line">        point3 lower_left_corner;</span><br><span class="line">        vec3 horizontal;</span><br><span class="line">        vec3 vertical;</span><br><span class="line">        vec3 u, v, w;</span><br><span class="line">        <span class="keyword">double</span> lens_radius;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>把random_in_unit_disk函数写在vec3.h类的类外，这个函数负责生成一个XoY面上以原点为圆心的圆片内的随机一点：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//XoY面上以原点为圆心的圆片内的随机一点。</span></span><br><span class="line"><span class="function">vec3 <span class="title">random_in_unit_disk</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">auto</span> p = <span class="built_in">vec3</span>(<span class="built_in">random_double</span>(<span class="number">-1</span>,<span class="number">1</span>), <span class="built_in">random_double</span>(<span class="number">-1</span>,<span class="number">1</span>), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (p.<span class="built_in">length_squared</span>() &gt;= <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还是使用上一章的场景，但要调整相机，给一个很大的光圈直径，并且把对焦平面（虚拟视口）放在画面正中心的小球上：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">3</span>,<span class="number">3</span>,<span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>)</span></span>;</span><br><span class="line"><span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> dist_to_focus = (lookfrom-lookat).<span class="built_in">length</span>();</span><br><span class="line"><span class="keyword">auto</span> aperture = <span class="number">2.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">camera <span class="title">cam</span><span class="params">(lookfrom, lookat, vup, <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>​    会得到这张图，这里的光圈很大，只要物体离虚拟视口有一点距离，就看不清了。</p>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1643976783038-8526d1b9-95c6-4cef-b5fc-413bf73fd84b.png" alt="img"></p>
-<h4 id="最终成果"><a href="#最终成果" class="headerlink" title="最终成果"></a>最终成果</h4><p>现在来汇总在第一章中学到的所有知识，绘制一张图片，这将会是集大成之作，写入代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这个函数帮助生成一个丰富多彩的场景！！！</span></span><br><span class="line"><span class="function">hittable_list <span class="title">random_scene</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    hittable_list world;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> ground_material = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>));</span><br><span class="line">    <span class="comment">//先来一个“地板”，它比我们之前创建过最大的球还要大十倍！！！</span></span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>,<span class="number">-1000</span>,<span class="number">0</span>), <span class="number">1000</span>, ground_material));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在这个循环里我们将生成数个小球！！！</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> a = <span class="number">-11</span>; a &lt; <span class="number">11</span>; a++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> b = <span class="number">-11</span>; b &lt; <span class="number">11</span>; b++) &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//先进行一次随机采样，这次采样用来决定本轮循环生成的小球的材质！！！</span></span><br><span class="line">            <span class="keyword">auto</span> choose_mat = <span class="built_in">random_double</span>();</span><br><span class="line">            <span class="comment">//在一个y=0.2这个平面上的一块方形区域里随机找一个点，作为这颗小球的球心！！！</span></span><br><span class="line">            <span class="function">point3 <span class="title">center</span><span class="params">(a + <span class="number">0.9</span>*random_double(), <span class="number">0.2</span>, b + <span class="number">0.9</span>*random_double())</span></span>;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//我们腾出一个位置，让生成的这些小球离(4, 0.2, 0)这个点远一点！！！</span></span><br><span class="line">            <span class="comment">//因为这里我们要放置一个非常明显的大球，如果出现球与球重合就会影响美观了！！！</span></span><br><span class="line">            <span class="keyword">if</span> ((center - <span class="built_in">point3</span>(<span class="number">4</span>, <span class="number">0.2</span>, <span class="number">0</span>)).<span class="built_in">length</span>() &gt; <span class="number">0.9</span>) &#123;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">//定义一个智能指针，但先别急着决定指向什么类型的材质对象！！！</span></span><br><span class="line">                shared_ptr&lt;material&gt; sphere_material;</span><br><span class="line">				</span><br><span class="line">          </span><br><span class="line">                <span class="keyword">if</span> (choose_mat &lt; <span class="number">0.8</span>) &#123;<span class="comment">//我们的材质有百分之八十的概率会是磨砂材质。</span></span><br><span class="line">                    <span class="keyword">auto</span> albedo = color::<span class="built_in">random</span>() * color::<span class="built_in">random</span>();</span><br><span class="line">                    sphere_material = make_shared&lt;lambertian&gt;(albedo);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125; </span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (choose_mat &lt; <span class="number">0.95</span>) &#123;<span class="comment">//我们的材质有百分之十五的概率会是金属材质。</span></span><br><span class="line">                    <span class="keyword">auto</span> albedo = color::<span class="built_in">random</span>(<span class="number">0.5</span>, <span class="number">1</span>);</span><br><span class="line">                    <span class="keyword">auto</span> fuzz = <span class="built_in">random_double</span>(<span class="number">0</span>, <span class="number">0.5</span>);</span><br><span class="line">                    sphere_material = make_shared&lt;metal&gt;(albedo, fuzz);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;<span class="comment">//我们的材质有百分之五的概率会是玻璃材质。</span></span><br><span class="line">                    sphere_material = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line">                    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(center, <span class="number">0.2</span>, sphere_material));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//三颗站在C位的大球！！！</span></span><br><span class="line">    <span class="keyword">auto</span> material1 = make_shared&lt;dielectric&gt;(<span class="number">1.5</span>);</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material1));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> material2 = make_shared&lt;lambertian&gt;(<span class="built_in">color</span>(<span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.1</span>));</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">-4</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material2));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> material3 = make_shared&lt;metal&gt;(<span class="built_in">color</span>(<span class="number">0.7</span>, <span class="number">0.6</span>, <span class="number">0.5</span>), <span class="number">0.0</span>);</span><br><span class="line">    world.<span class="built_in">add</span>(make_shared&lt;sphere&gt;(<span class="built_in">point3</span>(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="number">1.0</span>, material3));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> world;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调整图片参数</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> aspect_ratio = <span class="number">3.0</span> / <span class="number">2.0</span>;</span><br><span class="line">    <span class="comment">//分辨率调高点，玩票大的！！！</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> image_width = <span class="number">1200</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> image_height = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(image_width / aspect_ratio);</span><br><span class="line">    <span class="comment">//拉高采样率会增加最终艺术品的成色！！！</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> samples_per_pixel = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> max_depth = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//调用函数生成一个有着许多随机小球的场景！！！</span></span><br><span class="line">    <span class="keyword">auto</span> world = <span class="built_in">random_scene</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 放置相机</span></span><br><span class="line">    <span class="function">point3 <span class="title">lookfrom</span><span class="params">(<span class="number">13</span>,<span class="number">2</span>,<span class="number">3</span>)</span></span>;</span><br><span class="line">    <span class="function">point3 <span class="title">lookat</span><span class="params">(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vec3 <span class="title">vup</span><span class="params">(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">auto</span> dist_to_focus = <span class="number">10.0</span>;</span><br><span class="line">    <span class="comment">//这次是小光圈。</span></span><br><span class="line">    <span class="keyword">auto</span> aperture = <span class="number">0.1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">camera <span class="title">cam</span><span class="params">(lookfrom, lookat, vup, <span class="number">20</span>, aspect_ratio, aperture, dist_to_focus)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// renderloop</span></span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;P3\n&quot;</span> &lt;&lt; image_width &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; image_height &lt;&lt; <span class="string">&quot;\n255\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = image_height<span class="number">-1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://imagebed001.oss-cn-shenzhen.aliyuncs.com/1644241403158-330630b4-149f-456e-9abd-a749828948f6.png" alt="image.png"></p>
-<p>可以给你的随机数生成器其他的种子，来改变小球的随机位置，直到你得到满意的结果。</p>
-<p>到此为止，这本书的内容就结束喽！但这个渲染器并没有完成，接下来的内容在《Ray Tracing: The Next Week》中。</p>
-<h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><ol>
-<li><p>非常明显，高分辨率多个物体的图片是非常耗费时间的，想想如何充分利用CPU来给我们的程序提提速。</p>
-<p>答案见下章。</p>
-</li>
-</ol>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a target="_blank" rel="noopener" href="https://raytracing.github.io/books/RayTracingInOneWeekend.html">https://raytracing.github.io/books/RayTracingInOneWeekend.html</a></p>
-<p>参考自《RayTracingInOneWeekend》第12节。</p>
 
       
     </div>
@@ -1513,7 +1522,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">45</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1561,7 +1570,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

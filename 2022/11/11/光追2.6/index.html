@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"mackrui.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="二十一：简单纹理别沉浸在包围盒的那些递归函数里了，暂时忘掉它们。接下来几章的内容和包围盒毫无关系，甚至和动态模糊以及时空光追都没有什么关系。换句话说，丢弃掉之前的那些代码也不影响这几章程序的运行。 从这一章开始，我们将目光重新移回物体表面。回顾一下初篇中介绍的三大材质：磨砂、金属和玻璃——难道我们的世界仅限于此吗？渲染器还不能描述陶瓷的纹路，又或是婴儿细腻的皮肤，甚至这个世界上的所有物体表面！世界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二十一：简单纹理">
+<meta property="og:url" content="http://mackrui.com/2022/11/11/%E5%85%89%E8%BF%BD2.6/index.html">
+<meta property="og:site_name" content="祥瑞客栈">
+<meta property="og:description" content="二十一：简单纹理别沉浸在包围盒的那些递归函数里了，暂时忘掉它们。接下来几章的内容和包围盒毫无关系，甚至和动态模糊以及时空光追都没有什么关系。换句话说，丢弃掉之前的那些代码也不影响这几章程序的运行。 从这一章开始，我们将目光重新移回物体表面。回顾一下初篇中介绍的三大材质：磨砂、金属和玻璃——难道我们的世界仅限于此吗？渲染器还不能描述陶瓷的纹路，又或是婴儿细腻的皮肤，甚至这个世界上的所有物体表面！世界">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1651803841431-cf8bc296-b384-4de9-9300-b05c1816e02f.png?x-oss-process=image%2Fresize%2Cw_688%2Climit_0">
+<meta property="article:published_time" content="2022-11-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-19T01:51:07.957Z">
+<meta property="article:author" content="Collider">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="光追渲染器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/png/25639626/1651803841431-cf8bc296-b384-4de9-9300-b05c1816e02f.png?x-oss-process=image%2Fresize%2Cw_688%2Climit_0">
+
+<link rel="canonical" href="http://mackrui.com/2022/11/11/%E5%85%89%E8%BF%BD2.6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>二十一：简单纹理 | 祥瑞客栈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">祥瑞客栈</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录点滴的成长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">12</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">45</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mackrui.com/2022/11/11/%E5%85%89%E8%BF%BD2.6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Collider">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="祥瑞客栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二十一：简单纹理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-11 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-11T00:00:00+08:00">2022-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-19 09:51:07" itemprop="dateModified" datetime="2022-11-19T09:51:07+08:00">2022-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/" itemprop="url" rel="index"><span itemprop="name">光线追踪</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/11/11/%E5%85%89%E8%BF%BD2.6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/11/11/%E5%85%89%E8%BF%BD2.6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="二十一：简单纹理"><a href="#二十一：简单纹理" class="headerlink" title="二十一：简单纹理"></a>二十一：简单纹理</h1><p>别沉浸在包围盒的那些递归函数里了，暂时忘掉它们。接下来几章的内容和包围盒毫无关系，甚至和动态模糊以及时空光追都没有什么关系。换句话说，丢弃掉之前的那些代码也不影响这几章程序的运行。</p>
+<p>从这一章开始，我们将目光重新移回物体表面。回顾一下初篇中介绍的三大材质：磨砂、金属和玻璃——难道我们的世界仅限于此吗？渲染器还不能描述陶瓷的纹路，又或是婴儿细腻的皮肤，甚至这个世界上的所有物体表面！世界上所有的东西都是不完美的，你见过没有划痕的金属和不沾上人类指纹的玻璃球么？</p>
+<p>换句话来说，这个世界上不存在仅仅使用材质就可以完美模拟的物体表面。是时候请出材质最好的搭档——“纹理”了！</p>
+<h4 id="纹理简谈"><a href="#纹理简谈" class="headerlink" title="纹理简谈"></a>纹理简谈</h4><p>纹理，在图形学领域通常表示程序化的物体表面颜色。比如，通过一些参数和数据，来计算得到物体表面某一点的颜色。根据具体计算方式不同可以大致分为两种：</p>
+<p>①：找一张图，对于这个物体表面上的任意一点，都赋予其一个二维坐标，通过这个二维坐标在这个二维平面图上去找，找到的那一点是什么颜色，那物体表面该处就是什么颜色。这个二维坐标如何找到呢？一般来说是由建模师进行安排，建模师在制作模型的时候会为模型上的一些点指定一个二维坐标，其他的点的二维坐标就由这些给定点的插值进行计算——当然我们的渲染器到目前为止尚未引入三角面片的概念，这里不多谈。</p>
+<p>这种方式得到的纹理看上去就好像是把这张二维图片贴到三维表面上一样，所以这又叫做贴图纹理。它的应用相当的广泛。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/25639626/1651803841431-cf8bc296-b384-4de9-9300-b05c1816e02f.png?x-oss-process=image%2Fresize%2Cw_688%2Climit_0" alt="image.png"></p>
+<p>②：另一种获取各点的颜色的方式就显得比较理科生了：利用某种数学函数直接得到某点的颜色。这种纹理我们已经接触过了。还记得“元气弹”么？这就是一种纹理，我们把物体表面的法线信息映射到颜色区间并显示出来，当然这种纹理还有很多，利用法线只是其中的一种。</p>
+<p> 纹理基类 </p>
+<p>每次引入一个新事物必定要先完成基类的编写，新建文件texture.h，并敲入如下代码：</p>
+<p>本纹理基类基于上小节中的第一种纹理类型：他只有一个函数，这个函数需要一个二维坐标u和v，返回一个颜色。当然，我们提到的拿着这个坐标去贴图中找颜色等等，这些都放到子类的value函数里来处理。从这个基类建立完成之后，如何得到颜色也就被规范化了，无论你是拿这个uv进行某种函数计算得到颜色，还是拿到某张图里去查找，这些都是子类该干的事情。</p>
+<p>当然，仅仅传入uv并不能得到诸如“元气弹”之类的纹理，如果你需要通过纹理类创建元气弹，我们可以在之后再改造这个基类，加入诸如法线等等的参数。</p>
+<p>至于这个u,v坐标从何而来，不是纹理类该管的事情，uv的计算不该放在这个类里，这个我们之后介绍。</p>
+<p>uv坐标作为引入纹理之后碰撞中最重要的信息之一，需要把它写进record结构体：</p>
+<p> 纯色纹理 </p>
+<p>我们的金属和磨砂类都有名为albedo的变量来控制最终颜色。其实纯色也可以被当作一种纹理，就好像我们把</p>
+<p><em>y</em>=<em>c</em></p>
+<p>也当作一种函数（常值函数）一样。</p>
+<p>并不是所有的渲染器都会把纯色当作一种纹理，但在本渲染器中，我推荐这么做。这样意味着纹理类搭建完毕之后，对物体表面颜色的所有的解释都会被放到一个类里面。这会使代码架构变得更加易懂。</p>
+<p>当然，把纯色解释为纹理会使得纯色材质会比过去更加耗时，因为有更多需要维护的变量，但不会比过去慢多少。</p>
+<p>继续把这个类写在texture.h文件里</p>
+<p> 球的纹理坐标——经纬度 </p>
+<p>现在，我们来思考一下关于uv坐标的事情，因为现在我们的物体类只有球这一个子类，现在我们要讨论的是如何把球的表面上任意一点和一个二维坐标uv对应起来。</p>
+<p>我们可以根据球的解析式轻松地把球的表面上的每一点和一个三维坐标对应，但是把球表面和一个二维平面对应有点反直觉。我们换一个生活中的例子去看你会明白很多——世界地图就好像是把空心球剪开之后平铺在平面上那样。你可以在世界地图上找到你家的位置，且你随机在地图上选一点也可以在现实世界中找到对应的真实的坐标，这简直就是我们这个问题的天然解决方案。</p>
+<p>假设</p>
+<p><em>θ</em></p>
+<p>是球上任意一点代表的向量和-Y方向向量的夹角，而</p>
+<p><em>ϕ</em></p>
+<p>是围绕Y轴的方向角（从</p>
+<p>-X 方向到+Z 再到+X 到-Z 最后返回-X</p>
+<p>）。这个</p>
+<p><em>ϕ</em></p>
+<p>和</p>
+<p><em>θ</em></p>
+<p>就是常说的经纬度。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"># C/C++</a>
+              <a href="/tags/%E5%85%89%E8%BF%BD%E6%B8%B2%E6%9F%93%E5%99%A8/" rel="tag"># 光追渲染器</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/09/%E5%A4%A7%E8%AF%9D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B8%80/" rel="prev" title="一：大话设计模式">
+      <i class="fa fa-chevron-left"></i> 一：大话设计模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/17/%E4%B8%AD%E7%A7%91%E9%99%A2GPT/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-livere">livere</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane livere" id="comment-livere">
+              
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NDkwMi8zMTM3MQ"></div>
+  </div>
+  
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8D%81%E4%B8%80%EF%BC%9A%E7%AE%80%E5%8D%95%E7%BA%B9%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">二十一：简单纹理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E7%AE%80%E8%B0%88"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">纹理简谈</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Collider"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Collider</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/endlesscollider" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;endlesscollider" rel="noopener" target="_blank"><i class="GitHub fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1652737065@qq.com" title="E-Mail → mailto:1652737065@qq.com" rel="noopener" target="_blank"><i class="E-Mail fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Collider</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz","app_key":"6k9HROMoqf6vzPadEMksx26r","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'QIIyEcbRNaOewES2MuIhSKXf-gzGzoHsz',
+      appKey     : '6k9HROMoqf6vzPadEMksx26r',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-CN' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+  
+  
+    <script src="/js/cursor/cherry.js"></script>
+  
+
+</body>
+</html>
